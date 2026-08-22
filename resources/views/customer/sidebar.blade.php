@@ -32,10 +32,10 @@
         <li class="nav-item"><a class="nav-link" href="dashboard-admin.html">Admin Panel</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
-            <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar"> Hamza Yousaf
+            <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
-            <li><a class="dropdown-item rounded-2" href="#settings" data-nav="settings">Profile settings</a></li>
+            <li><a class="dropdown-item rounded-2" href="{{route('profile.edit')}}" data-nav="">Profile settings</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item rounded-2 text-danger" href="auth.html">Logout</a></li>
           </ul>
@@ -57,7 +57,7 @@
           <a class="side-link" data-nav="active"><i class="bi bi-calendar2-event"></i> Active appointments</a>
           <a class="side-link" data-nav="history"><i class="bi bi-clock-history"></i> Booking history</a>
           <a class="side-link" data-nav="consultations"><i class="bi bi-chat-left-text"></i> Recent consultations</a>
-          <a class="side-link" data-nav="settings"><i class="bi bi-gear"></i> Profile settings</a>
+          <a class="{{route('profile.edit')}}" data-nav=""><i class="bi bi-gear"></i> Profile settings</a>
         </div>
         <hr class="border-secondary">
         <a href="lawyers.html" class="btn btn-gold btn-sm w-100">Book new consultation</a>

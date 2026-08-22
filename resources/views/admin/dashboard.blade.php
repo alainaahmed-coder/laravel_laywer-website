@@ -1,14 +1,6 @@
 @extends('admin.sidebar')
-
-
 @section('admin')
-
-
-
-
-
     <main class="col-lg-9 col-xl-10">
-
       <section data-pane="overview">
         <h1 class="h4 mb-1">Platform dashboard</h1>
         <p class="text-muted-legal">System-wide activity for August 2026.</p>

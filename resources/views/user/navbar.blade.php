@@ -30,8 +30,8 @@
     </button>
     <div class="collapse navbar-collapse" id="mainNav">
       <ul class="navbar-nav mx-lg-auto align-items-lg-center gap-lg-1">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="">Find Lawyers</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{route('Home')}}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{route('lawyerfind')}}">Find Lawyers</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Practice Areas</a>
           <ul class="dropdown-menu border-0 shadow rounded-3 p-2">
@@ -45,14 +45,13 @@
         <li class="nav-item"><a class="nav-link" href="dashboard-customer.html">Dashboard</a></li>
       </ul>
       <div class="d-flex flex-column flex-lg-row gap-2 mt-3 mt-lg-0">
-        <a href="auth.html" class="btn btn-outline-navy btn-sm px-3 py-2">Login</a>
-        <a href="auth.html?tab=register&role=client" class="btn btn-navy btn-sm px-3 py-2">Register as Client</a>
+        <a href="{{route('login')}}" class="btn btn-outline-navy btn-sm px-3 py-2">Login</a>
+        <a href="{{route('register')}}" class="btn btn-navy btn-sm px-3 py-2">Register as Client</a>
         <a href="auth.html?tab=register&role=lawyer" class="btn btn-gold btn-sm px-3 py-2">Join as Lawyer</a>
       </div>
     </div>
   </div>
 </nav>
-
 <!-- ============ HERO ============ -->
 <header class="hero">
   <div class="container">
@@ -153,5 +152,97 @@
     document.getElementById("featuredGrid").innerHTML = featured.map(lawyerCard).join("");
   });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(location.search);
+  const el = (id) => document.getElementById(id);
+
+  fillSelect(el("fCity"), CITIES, "All cities");
+  fillSelect(el("fSpec"), SPECIALIZATIONS, "All service types");
+  if (params.get("city")) el("fCity").value = params.get("city");
+  if (params.get("spec")) el("fSpec").value = params.get("spec");
+  if (params.get("q")) el("fSearch").value = params.get("q");
+
+  let listMode = false;
+
+  function listRow(l) {
+    return `
+    <div class="col-12">
+      <article class="card-legal p-3 p-md-4">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto"><img src="${l.img}" alt="Portrait of ${l.name}" class="avatar" loading="lazy"></div>
+          <div class="col">
+            <h3 class="h6 mb-1">${l.name} ${l.verified ? '<i class="bi bi-patch-check-fill text-gold"></i>' : ""}</h3>
+            <div class="d-flex flex-wrap gap-2 my-2">
+              <span class="badge-spec small">${l.spec}</span>
+              <span class="badge-gold small"><i class="bi bi-geo-alt me-1"></i>${l.city}</span>
+              <span class="badge-spec small">${l.exp} yrs</span>
+            </div>
+            <div class="rating">${stars(l.rating)} <span class="text-muted-legal small ms-1">${l.rating.toFixed(1)} (${l.reviews} reviews)</span></div>
+          </div>
+          <div class="col-12 col-md-auto text-md-end">
+            <div class="fw-bold text-navy mb-2">${money(l.fee)}</div>
+            <a href="lawyer-profile.html?id=${l.id}" class="btn btn-navy btn-sm">View Full Profile &amp; Book</a>
+          </div>
+        </div>
+      </article>
+    </div>`;
+  }
+
+  function render() {
+    const city = el("fCity").value;
+    const spec = el("fSpec").value;
+    const minRating = parseFloat(el("fRating").value);
+    const maxFee = parseInt(el("fFee").value, 10);
+    const onlyVerified = el("fVerified").checked;
+    const q = el("fSearch").value.trim().toLowerCase();
+
+    el("fRatingVal").textContent = minRating === 0 ? "Any" : minRating + "+";
+    el("fFeeVal").textContent = money(maxFee);
+
+    let rows = LAWYERS.filter((l) =>
+      (!city || l.city === city) &&
+      (!spec || l.spec === spec) &&
+      l.rating >= minRating &&
+      l.fee <= maxFee &&
+      (!onlyVerified || l.verified) &&
+      (!q || l.name.toLowerCase().includes(q) || l.spec.toLowerCase().includes(q))
+    );
+
+    const sort = el("fSort").value;
+    rows.sort((a, b) =>
+      sort === "feeAsc" ? a.fee - b.fee :
+      sort === "feeDesc" ? b.fee - a.fee :
+      sort === "exp" ? b.exp - a.exp : b.rating - a.rating
+    );
+
+    el("resultCount").textContent = rows.length + " lawyer" + (rows.length === 1 ? "" : "s") + " found";
+    el("resultsGrid").innerHTML = rows.map(listMode ? listRow : lawyerCard).join("");
+    el("emptyState").classList.toggle("d-none", rows.length > 0);
+  }
+
+  ["fCity", "fSpec", "fRating", "fFee", "fVerified", "fSearch", "fSort"].forEach((id) => {
+    el(id).addEventListener("input", render);
+  });
+
+  function reset() {
+    el("fCity").value = ""; el("fSpec").value = ""; el("fRating").value = 0;
+    el("fFee").value = 12000; el("fVerified").checked = false; el("fSearch").value = "";
+    render();
+  }
+  el("resetFilters").addEventListener("click", reset);
+  el("emptyReset").addEventListener("click", reset);
+
+  el("gridView").addEventListener("click", function () {
+    listMode = false; this.classList.add("active"); el("listView").classList.remove("active"); render();
+  });
+  el("listView").addEventListener("click", function () {
+    listMode = true; this.classList.add("active"); el("gridView").classList.remove("active"); render();
+  });
+
+  render();
+});
+</script>
+
 </body>
 </html>
