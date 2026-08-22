@@ -31,7 +31,7 @@
     <div class="collapse navbar-collapse" id="mainNav">
       <ul class="navbar-nav mx-lg-auto align-items-lg-center gap-lg-1">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{route('lawyer.find-lawyer')}}">Find Lawyers</a></li>
+        <li class="nav-item"><a class="nav-link" href="">Find Lawyers</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Practice Areas</a>
           <ul class="dropdown-menu border-0 shadow rounded-3 p-2">
