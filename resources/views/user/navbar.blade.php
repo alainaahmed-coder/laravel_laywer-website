@@ -42,7 +42,9 @@
             <li><a class="dropdown-item rounded-2" href="lawyers.html?spec=Corporate"><i class="bi bi-buildings me-2 text-gold"></i>Corporate</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link" href="dashboard-customer.html">Dashboard</a></li>
+       
+           <li class="nav-item"><a class="nav-link" href="dashboard-customer.html">About Us</a></li>
+              <li class="nav-item"><a class="nav-link" href="dashboard-customer.html">Contact Us</a></li>
       </ul>
       <div class="d-flex flex-column flex-lg-row gap-2 mt-3 mt-lg-0">
         <a href="auth.html" class="btn btn-outline-navy btn-sm px-3 py-2">Login</a>
