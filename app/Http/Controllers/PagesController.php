@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactFormMail;
+use Exception;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller
@@ -17,17 +19,21 @@ class PagesController extends Controller
     }
 
     public function sendContactForm(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
-        ]);
+{
+    $validatedData = $request->validate([
+        'name'    => 'required|string|max:255',
+        'email'   => 'required|email',
+        'subject' => 'required|string|max:255',
+        'message' => 'required|string',
+    ]);
 
-        // Process message (e.g., save to DB or send email)
-
-        return back()->with('success', 'Thank you! Your message has been sent successfully. Our legal team will get back to you shortly.');
+    try {
+        Mail::to('alainaahmed911@gmail.com')->send(new ContactFormMail($validatedData));
+        return back()->with('success', 'Thank you! Your message has been sent successfully.');
+    } catch (Exception $e) {
+        // Return the exact error to screen
+        return back()->withErrors(['email_error' => 'Email Error: ' . $e->getMessage()]);
     }
+}
 }
 
