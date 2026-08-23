@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 class lawyerdashboardController extends Controller
 {
-         function lawyerdashboard(){
-        return view ('customer.dashboard');
+    function lawyerdashboard()
+    {
+        return view('lawyer.dashboard');
     }
 }

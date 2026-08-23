@@ -2,7 +2,49 @@
 
 
 @section('user')
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="container">
+    <div class="row justify-content-center text-center">
+      <div class="col-lg-9">
+        <span class="eyebrow"><i class="bi bi-patch-check-fill"></i> 1,200+ verified advocates across Pakistan</span>
+        <h1 class="mt-3">Find &amp; Book Top Legal Experts Instantly</h1>
+        <p class="lead mt-3 mb-0">Compare verified lawyers by specialization, city, experience and consultation fee — then lock a confirmed appointment slot in under two minutes.</p>
+      </div>
+    </div>
 
+    <div class="row justify-content-center mt-4">
+      <div class="col-lg-10">
+        <form class="search-panel" action="lawyers.html" method="get">
+          <div class="row g-2 align-items-center">
+            <div class="col-12 col-lg-4">
+              <label for="q" class="visually-hidden">Search lawyers</label>
+              <input type="search" class="form-control" id="q" name="q" placeholder="Search lawyer name or keyword">
+            </div>
+            <div class="col-6 col-lg-3">
+              <label for="heroCity" class="visually-hidden">City</label>
+              <select class="form-select" id="heroCity" name="city"></select>
+            </div>
+            <div class="col-6 col-lg-3">
+              <label for="heroSpec" class="visually-hidden">Specialization</label>
+              <select class="form-select" id="heroSpec" name="spec"></select>
+            </div>
+            <div class="col-12 col-lg-2">
+              <button class="btn btn-gold w-100 py-3" type="submit"><i class="bi bi-search me-1"></i> Search</button>
+            </div>
+          </div>
+        </form>
+        <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+          <a href="lawyers.html?spec=Criminal%20Law" class="btn btn-outline-gold btn-sm">Criminal Law</a>
+          <a href="lawyers.html?spec=Divorce%20%26%20Family" class="btn btn-outline-gold btn-sm">Divorce &amp; Family</a>
+          <a href="lawyers.html?spec=Affidavit" class="btn btn-outline-gold btn-sm">Affidavit</a>
+          <a href="lawyers.html?spec=Civil%20Law" class="btn btn-outline-gold btn-sm">Civil Law</a>
+          <a href="lawyers.html?spec=Corporate" class="btn btn-outline-gold btn-sm">Corporate</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 <!-- ============ WHY CHOOSE US ============ -->
 <section class="section">
   <div class="container">

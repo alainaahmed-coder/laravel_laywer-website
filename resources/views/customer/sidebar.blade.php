@@ -37,8 +37,15 @@
           <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
             <li><a class="dropdown-item rounded-2" href="{{route('profile.edit')}}" data-nav="">Profile settings</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item rounded-2 text-danger" href="auth.html">Logout</a></li>
-          </ul>
+             <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>  </ul>
         </li>
       </ul>
     </div>

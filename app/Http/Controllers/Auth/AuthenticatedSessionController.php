@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
     }
 
     if ($user->role === 'lawyer') {
-        return redirect()->route('lawyerProfile');
+        return redirect()->route('lawyerdashboard');
     }
 
     if ($user->role === 'customer') {

@@ -6,20 +6,34 @@ use App\Http\Controllers\landingpageController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\lawyerdashboardController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('Home');
-
 Route::get('/FindLawyer', [landingpageController::class, 'findLawyer'])
     ->name('lawyerfind');
 
-Route::get('/lawyerProfile', [landingpageController::class, 'lawyerProfile'])
-    ->name('lawyerProfile');
+Route::get('/About', [landingpageController::class, 'about'])
+    ->name('about');
+Route::get('/contact', [landingpageController::class, 'contact'])
+    ->name('contact');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user = Auth::user();
+
+  if ($user->role === 'admin') {
+        return redirect()->route('admindashboard');
+    }
+
+    if ($user->role === 'lawyer') {
+        return redirect()->route('lawyerdashboard');
+    }
+
+    if ($user->role === 'customer') {
+        return redirect()->route('customerdashboard');
+    }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -52,9 +66,3 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
-
-//contact us and about us pages routes
-Route::get('/about-us', [PagesController::class, 'about'])->name('about');
-Route::get('/contact-us', [PagesController::class, 'contact'])->name('contact');
-Route::post('/contact-us', [PagesController::class, 'sendContactForm'])->name('contact.send');

@@ -9,6 +9,11 @@ class landingpageController extends Controller
     function findLawyer(){
         return view('findLawyer');
     }
-    
+    function about(){
+        return view('about');
+    }
+    function  contact(){
+        return view('contact');
+    }
     
 }

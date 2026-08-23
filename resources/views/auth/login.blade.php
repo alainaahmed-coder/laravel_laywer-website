@@ -1,3 +1,37 @@
+<!-- LOGIN -->
+          <!-- <div class="tab-pane fade show active" id="loginPane">
+            <h2 class="h5 mb-1">Welcome back<span id="loginRoleLabel" class="text-gold"></span></h2>
+            <p class="text-muted-legal small mb-4">Enter your credentials to access your dashboard.</p>
+            <form class="needs-validation row g-3" novalidate>
+              <div class="alert alert-success d-none" data-role="form-alert">Signed in successfully — redirecting to your dashboard.</div>
+              <div class="col-12">
+                <label class="form-label small fw-semibold" for="lEmail">Email address</label>
+                <input type="email" class="form-control" id="lEmail" required placeholder="you@example.com">
+                <div class="invalid-feedback">Enter a valid email address.</div>
+              </div>
+              <div class="col-12">
+                <label class="form-label small fw-semibold" for="lPass">Password</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="lPass" required minlength="6">
+                  <button class="btn btn-outline-navy" type="button" data-toggle-pw="lPass"><i class="bi bi-eye"></i></button>
+                  <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="remember">
+                  <label class="form-check-label small" for="remember">Remember me</label>
+                </div>
+                <a href="#" class="small text-gold">Forgot password?</a>
+              </div>
+              <div class="col-12"><button class="btn btn-navy w-100 py-2" type="submit">Login</button></div>
+            </form>
+          </div> -->
+
+
+
+
+
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
