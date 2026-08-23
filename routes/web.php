@@ -3,6 +3,7 @@
 use App\Http\Controllers\admindashboardController;
 use App\Http\Controllers\customerdashboardController;
 use App\Http\Controllers\landingpageController;
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\lawyerdashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -51,3 +52,9 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+//contact us and about us pages routes
+Route::get('/about-us', [PagesController::class, 'about'])->name('about');
+Route::get('/contact-us', [PagesController::class, 'contact'])->name('contact');
+Route::post('/contact-us', [PagesController::class, 'sendContactForm'])->name('contact.send');
