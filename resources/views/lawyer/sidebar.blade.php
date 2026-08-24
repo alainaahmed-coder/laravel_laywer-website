@@ -60,11 +60,13 @@
       <div class="dash-sidebar">
         <p class="text-uppercase small opacity-50 px-2 mb-2">Client menu</p>
         <div class="d-grid gap-1">
-          <a class="side-link active" data-nav="overview"><i class="bi bi-grid-1x2"></i> Overview</a>
-          <a class="side-link" data-nav="active"><i class="bi bi-calendar2-event"></i> Active appointments</a>
-          <a class="side-link" data-nav="history"><i class="bi bi-clock-history"></i> Booking history</a>
-          <a class="side-link" data-nav="consultations"><i class="bi bi-chat-left-text"></i> Recent consultations</a>
-          <a class="side-link" data-nav="settings"><i class="bi bi-gear"></i> Profile settings</a>
+         <a class="side-link active" href="{{ route('lawyer.overview') }}" data-nav="overview"><i class="bi bi-grid-1x2"></i> Overview</a>
+<a class="side-link" href="{{ route('lawyer.profile') }}" data-nav="active"><i class="bi bi-calendar2-event"></i> My Profile</a>
+<a class="side-link" href="{{ route('lawyer.services') }}" data-nav="history"><i class="bi bi-clock-history"></i> My Services</a>
+<a class="side-link" href="{{ route('lawyer.schedule') }}" data-nav="consultations"><i class="bi bi-chat-left-text"></i> My Schedule</a>
+<a class="side-link" href="{{ route('lawyer.clients') }}" data-nav="settings"><i class="bi bi-gear"></i> My Clients</a>
+<a class="side-link" href="{{ route('lawyer.appointment.history') }}" data-nav="settings"><i class="bi bi-gear"></i> Appointment History</a>
+<a class="side-link" href="{{ route('lawyer.settings') }}" data-nav="settings"><i class="bi bi-gear"></i> Setting</a>
         </div>
         <hr class="border-secondary">
         <a href="lawyers.html" class="btn btn-gold btn-sm w-100">Book new consultation</a>

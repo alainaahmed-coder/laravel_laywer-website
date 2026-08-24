@@ -3,9 +3,11 @@
 use App\Http\Controllers\admindashboardController;
 use App\Http\Controllers\customerdashboardController;
 use App\Http\Controllers\landingpageController;
-use App\Http\Controllers\PagesController;
-use App\Http\Controllers\lawyerdashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminSidebarController;
+use App\Http\Controllers\lawyerdashboardController;
+use App\Http\Controllers\LawyerSidebarController;
+use App\Http\Controllers\CustomerSidebarController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -66,3 +68,48 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+
+//Laywer Dahsbaord side bar links
+
+
+
+Route::prefix('lawyer')->name('lawyer.')->group(function () {
+    Route::get('/overview', [LawyerSidebarController::class, 'overview'])->name('overview');
+    Route::get('/profile', [LawyerSidebarController::class, 'profile'])->name('profile');
+    Route::get('/services', [LawyerSidebarController::class, 'services'])->name('services');
+    Route::get('/schedule', [LawyerSidebarController::class, 'schedule'])->name('schedule');
+    Route::get('/clients', [LawyerSidebarController::class, 'clients'])->name('clients');
+    Route::get('/appointment-history', [LawyerSidebarController::class, 'appointmentHistory'])->name('appointment.history');
+    Route::get('/settings', [LawyerSidebarController::class, 'settings'])->name('settings');
+});
+
+
+//Admin dashbaord side bar routes
+
+
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/approvals', [AdminSidebarController::class, 'approvals'])->name('approvals');
+    Route::get('/customers', [AdminSidebarController::class, 'customers'])->name('customers');
+    Route::get('/cities', [AdminSidebarController::class, 'cities'])->name('cities');
+    Route::get('/services', [AdminSidebarController::class, 'services'])->name('services');
+    Route::get('/schedules', [AdminSidebarController::class, 'schedules'])->name('schedules');
+    Route::get('/appointments', [AdminSidebarController::class, 'appointments'])->name('appointments');
+    Route::get('/website-content', [AdminSidebarController::class, 'websiteContent'])->name('website.content');
+    Route::get('/settings', [AdminSidebarController::class, 'settings'])->name('settings');
+});
+
+
+//customer sidebar routes
+
+
+
+Route::prefix('customer')->name('customer.')->group(function () {
+    Route::get('/overview', [CustomerSidebarController::class, 'overview'])->name('overview');
+    Route::get('/find-lawyer', [CustomerSidebarController::class, 'findLawyer'])->name('find.lawyer');
+    Route::get('/my-appointments', [CustomerSidebarController::class, 'myAppointments'])->name('my.appointments');
+    Route::get('/my-profile', [CustomerSidebarController::class, 'myProfile'])->name('my.profile');
+    Route::get('/profile-settings', [CustomerSidebarController::class, 'profileSettings'])->name('profile.settings');
+});
