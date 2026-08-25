@@ -8,36 +8,36 @@ class LawyerSidebarController extends Controller
 {
     public function overview()
     {
-        return view('lawyer.sidebar.overview');
+        return view('lawyer.overview');
     }
 
     public function profile()
     {
-        return view('lawyer.sidebar.profile');
+        return view('lawyer.myprofile');
     }
 
     public function services()
     {
-        return view('lawyer.sidebar.services');
+        return view('lawyer.myservices');
     }
 
     public function schedule()
     {
-        return view('lawyer.sidebar.schedule');
+        return view('lawyer.mysechedule');
     }
 
     public function clients()
     {
-        return view('lawyer.sidebar.clients');
+        return view('lawyer.myclients');
     }
 
     public function appointmentHistory()
     {
-        return view('lawyer.sidebar.appointment-history');
+        return view('lawyer.appointmenthistory');
     }
 
     public function settings()
     {
-        return view('lawyer.sidebar.settings');
+        return view('lawyer.settings');
     }
 }
