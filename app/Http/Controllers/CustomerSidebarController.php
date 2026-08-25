@@ -8,26 +8,26 @@ class CustomerSidebarController extends Controller
 {
     public function overview()
     {
-        return view('customer.sidebar.overview');
+        return view('customer.overview');
     }
 
     public function findLawyer()
     {
-        return view('customer.sidebar.find-lawyer');
+        return view('customer.findlawyer');
     }
 
     public function myAppointments()
     {
-        return view('customer.sidebar.my-appointments');
+        return view('customer.myappointments');
     }
 
     public function myProfile()
     {
-        return view('customer.sidebar.my-profile');
+        return view('customer.myprofile');
     }
 
     public function profileSettings()
     {
-        return view('customer.sidebar.profile-settings');
+        return view('customer.profilesettings');
     }
 }
