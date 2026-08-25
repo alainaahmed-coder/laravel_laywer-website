@@ -81,7 +81,7 @@
 <script src="assets/js/data.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/dashboard.js"></script>
-<script>
+<!-- <script>
 document.addEventListener("DOMContentLoaded", function () {
   fillSelect(document.getElementById("sCity"), CITIES, "Select city");
   document.getElementById("sCity").value = "Karachi";
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     </div>`).join("");
 });
-</script>
+</script> -->
 </body>
 </html>
 

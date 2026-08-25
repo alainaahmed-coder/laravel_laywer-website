@@ -8,12 +8,12 @@ class LawyerSidebarController extends Controller
 {
     public function overview()
     {
-        return view('lawyer.sidebar.overview');
+        return view('lawyer.overview');
     }
 
     public function profile()
     {
-        return view('lawyer.sidebar.profile');
+        return view('lawyer.profile');
     }
 
     public function services()
