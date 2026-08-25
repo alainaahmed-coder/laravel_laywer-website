@@ -49,7 +49,7 @@
         </div>
       </section>
 
-      <!-- ACTIVE -->
+      {{-- <!-- ACTIVE -->
       <section data-pane="active" class="d-none">
         <h1 class="h4 mb-3">Active appointments</h1>
         <div class="card-legal p-0 overflow-hidden">
@@ -131,5 +131,5 @@
     </div>
   </div>
 </div>
-
+ --}}
 @endsection
