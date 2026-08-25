@@ -49,72 +49,7 @@
         </div>
       </section>
 
-      {{-- <!-- ACTIVE -->
-      <section data-pane="active" class="d-none">
-        <h1 class="h4 mb-3">Active appointments</h1>
-        <div class="card-legal p-0 overflow-hidden">
-          <div class="table-responsive">
-            <table class="table table-legal align-middle mb-0">
-              <thead><tr><th>Ref</th><th>Lawyer</th><th>Date &amp; time</th><th>Mode</th><th>Fee</th><th>Status</th><th></th></tr></thead>
-              <tbody id="activeRows"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- HISTORY -->
-      <section data-pane="history" class="d-none">
-        <h1 class="h4 mb-3">Booking history</h1>
-        <div class="card-legal p-0 overflow-hidden">
-          <div class="table-responsive">
-            <table class="table table-legal align-middle mb-0">
-              <thead><tr><th>Ref</th><th>Lawyer</th><th>Specialization</th><th>Date</th><th>Fee</th><th>Status</th></tr></thead>
-              <tbody id="historyRows"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- CONSULTATIONS -->
-      <section data-pane="consultations" class="d-none">
-        <h1 class="h4 mb-3">Recent consultations</h1>
-        <div class="row g-4" id="consultCards"></div>
-      </section>
-
-      <!-- SETTINGS -->
-      <section data-pane="settings" class="d-none">
-        <h1 class="h4 mb-3">Profile settings</h1>
-        <div class="card-legal p-4 p-lg-5">
-          <form class="needs-validation row g-3" novalidate>
-            <div class="alert alert-success d-none" data-role="form-alert">Your profile has been updated.</div>
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold" for="sName">Full name</label>
-              <input class="form-control" id="sName" value="Hamza Yousaf" required>
-              <div class="invalid-feedback">Name is required.</div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold" for="sEmail">Email</label>
-              <input type="email" class="form-control" id="sEmail" value="hamza@example.com" required>
-              <div class="invalid-feedback">Enter a valid email.</div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold" for="sPhone">Phone</label>
-              <input class="form-control" id="sPhone" value="+92 300 1234567" required>
-              <div class="invalid-feedback">Phone is required.</div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label small fw-semibold" for="sCity">City</label>
-              <select class="form-select" id="sCity"></select>
-            </div>
-            <div class="col-12">
-              <label class="form-label small fw-semibold" for="sAddr">Address</label>
-              <textarea class="form-control" id="sAddr" rows="2">House 21, Block B, Gulshan-e-Iqbal, Karachi</textarea>
-            </div>
-            <div class="col-12"><button class="btn btn-navy px-4" type="submit">Save changes</button></div>
-          </form>
-        </div>
-      </section>
-
+    
     </main>
   </div>
 </div>
@@ -131,5 +66,5 @@
     </div>
   </div>
 </div>
- --}}
+
 @endsection
