@@ -28,7 +28,7 @@ class LawyerSidebarController extends Controller
 
     public function clients()
     {
-        return view('lawyer.myclients');
+        return view('lawyer.myclient');
     }
 
     public function appointmentHistory()
@@ -38,6 +38,6 @@ class LawyerSidebarController extends Controller
 
     public function settings()
     {
-        return view('lawyer.settings');
+        return view('lawyer.setting');
     }
 }

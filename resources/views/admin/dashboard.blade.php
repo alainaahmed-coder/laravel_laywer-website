@@ -22,7 +22,7 @@
         </div>
       </section>
 
-      <section data-pane="approvals" class="d-none">
+      {{-- <section data-pane="approvals" class="d-none">
         <h1 class="h4 mb-3">Approve / reject lawyer profiles</h1>
         <div class="row g-4" id="approvalCards"></div>
       </section>
@@ -111,10 +111,10 @@
         <button class="btn btn-gold" id="addArea" data-bs-dismiss="modal">Add area</button>
       </div>
     </div>
- 
 
 
 
+ --}}
 
 
 @endsection
