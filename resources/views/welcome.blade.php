@@ -149,8 +149,8 @@
               </div>
             </div>
 
-            <!-- Action Button -->
-            <a href="#" class="btn btn-dark w-100 py-2 rounded-3 fw-semibold mt-2">
+            <!-- Action Button Dynamic ID ke sath -->
+            <a href="{{ route('lawyer.profile', $lawyer->id) }}" class="btn btn-dark w-100 py-2 rounded-3 fw-semibold mt-2">
               View Full Profile &amp; Book
             </a>
           </div>

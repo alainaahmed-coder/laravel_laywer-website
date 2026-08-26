@@ -48,6 +48,14 @@ class landingpageController extends Controller
         return view('findLawyer', compact('lawyers', 'cities', 'specializations'));
     }
 
+   public function lawyerProfile($id)
+{
+    $lawyer = Lawyer::findOrFail($id);
+
+    // 'user.' hata diya kyunke file direct views folder mein hai
+    return view('lawyer_profile', compact('lawyer'));
+}
+
     public function about()
     {
         return view('about');

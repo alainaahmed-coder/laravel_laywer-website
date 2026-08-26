@@ -18,6 +18,9 @@ Route::get('/', [landingpageController::class, 'index'])->name('Home');
 // Find Lawyer Page
 Route::get('/FindLawyer', [landingpageController::class, 'findLawyer'])->name('lawyerfind');
 
+// Dynamic Lawyer Profile Page Route
+Route::get('/lawyer/profile/{id}', [landingpageController::class, 'lawyerProfile'])->name('lawyer.profile');
+
 // About & Contact
 Route::get('/About', [landingpageController::class, 'about'])->name('about');
 Route::get('/contact', [landingpageController::class, 'contact'])->name('contact');
