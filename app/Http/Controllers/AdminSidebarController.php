@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 class AdminSidebarController extends Controller
 {
-    public function approvals()
-    {
-        return view('admin.approvals');
+    public function dashboard(){
+        return view('admin.dashboard');
     }
+    
 
     public function customers()
     {

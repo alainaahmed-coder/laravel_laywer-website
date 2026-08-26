@@ -51,16 +51,48 @@
  <aside class="col-lg-3 col-xl-2">
       <div class="dash-sidebar">
         <p class="text-uppercase small opacity-50 px-2 mb-2">Administration</p>
-        <div class="d-grid gap-1">
-      <a class="side-link" href="{{ route('admin.approvals') }}" data-nav="approvals"><i class="bi bi-patch-check"></i> Lawyer approvals</a>
-<a class="side-link" href="{{ route('admin.customers') }}" data-nav="lawyers"><i class="bi bi-briefcase"></i> Customers</a>
-<a class="side-link" href="{{ route('admin.cities') }}" data-nav="customers"><i class="bi bi-people"></i> Cities </a>
-<a class="side-link" href="{{ route('admin.services') }}" data-nav="logs"><i class="bi bi-journal-text"></i> Services</a>
-<a class="side-link" href="{{ route('admin.schedules') }}" data-nav="areas"><i class="bi bi-tags"></i> Schedules</a>
-<a class="side-link" href="{{ route('admin.appointments') }}" data-nav="content"><i class="bi bi-layout-text-window"></i> Appointments</a>
-<a class="side-link" href="{{ route('admin.website.content') }}" data-nav="website"><i class="bi bi-layout-text-window"></i> Website Content</a>
-<a class="side-link" href="{{ route('admin.settings') }}" data-nav="setting"><i class="bi bi-layout-text-window"></i> Setting</a>
-        </div>
+       <div class="d-grid gap-1">
+
+      <a class="side-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+       href="{{ route('admin.dashboard') }}">
+        <i class="bi bi-grid-1x2"></i> Dashboard
+    </a> 
+    <a class="side-link {{ request()->routeIs('admin.customers') ? 'active' : '' }}"
+       href="{{ route('admin.customers') }}">
+        <i class="bi bi-people"></i> Customers
+    </a>
+
+    <a class="side-link {{ request()->routeIs('admin.cities') ? 'active' : '' }}"
+       href="{{ route('admin.cities') }}">
+        <i class="bi bi-building"></i> Cities
+    </a>
+
+    <a class="side-link {{ request()->routeIs('admin.services') ? 'active' : '' }}"
+       href="{{ route('admin.services') }}">
+        <i class="bi bi-journal-text"></i> Services
+    </a>
+
+    <a class="side-link {{ request()->routeIs('admin.schedules') ? 'active' : '' }}"
+       href="{{ route('admin.schedules') }}">
+        <i class="bi bi-calendar3"></i> Schedules
+    </a>
+
+    <a class="side-link {{ request()->routeIs('admin.appointments') ? 'active' : '' }}"
+       href="{{ route('admin.appointments') }}">
+        <i class="bi bi-calendar-check"></i> Appointments
+    </a>
+
+    <a class="side-link {{ request()->routeIs('admin.website.content') ? 'active' : '' }}"
+       href="{{ route('admin.website.content') }}">
+        <i class="bi bi-layout-text-window"></i> Website Content
+    </a>
+
+    <a class="side-link {{ request()->routeIs('admin.settings') ? 'active' : '' }}"
+       href="{{ route('admin.settings') }}">
+        <i class="bi bi-gear"></i> Setting
+    </a>
+
+</div>
       </div>
     </aside>
     @yield('admin')

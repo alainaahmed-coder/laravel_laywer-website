@@ -73,7 +73,8 @@ Route::prefix('lawyer')->name('lawyer.')->group(function () {
 
 // Admin Sidebar Routes
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/approvals', [AdminSidebarController::class, 'approvals'])->name('approvals');
+    Route::get('/Dashboard', [AdminSidebarController::class, 'dashboard'])->name('dashboard');
+   
     Route::get('/customers', [AdminSidebarController::class, 'customers'])->name('customers');
     Route::get('/cities', [AdminSidebarController::class, 'cities'])->name('cities');
     Route::get('/services', [AdminSidebarController::class, 'services'])->name('services');
