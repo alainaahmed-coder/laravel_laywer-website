@@ -103,7 +103,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/data.js"></script>
 <script src="assets/js/app.js"></script>
-<script>
+{{-- <script>
   document.addEventListener("DOMContentLoaded", function () {
     fillSelect(document.getElementById("heroCity"), CITIES, "All cities");
     fillSelect(document.getElementById("heroSpec"), SPECIALIZATIONS, "All specializations");
@@ -202,6 +202,6 @@ document.addEventListener("DOMContentLoaded", function () {
   render();
 });
 </script>
-
+ --}}
 </body>
 </html>
