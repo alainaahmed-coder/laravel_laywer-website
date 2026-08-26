@@ -12,11 +12,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Public Pages
-Route::get('/', function () {
-    return view('welcome');
-})->name('Home');
+// Welcome / Landing Page
+Route::get('/', [landingpageController::class, 'index'])->name('Home');
 
+// Find Lawyer Page
 Route::get('/FindLawyer', [landingpageController::class, 'findLawyer'])->name('lawyerfind');
+
+// About & Contact
 Route::get('/About', [landingpageController::class, 'about'])->name('about');
 Route::get('/contact', [landingpageController::class, 'contact'])->name('contact');
 Route::post('/contact/send', [landingpageController::class, 'contactSend'])->name('contact.send');
