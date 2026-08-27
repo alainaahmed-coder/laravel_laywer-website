@@ -26,6 +26,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function lawyer()
+{
+    return $this->hasOne(Lawyer::class);
+}
     /**
      * The attributes that should be hidden for serialization.
      *

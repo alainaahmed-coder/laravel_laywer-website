@@ -69,7 +69,6 @@
     <aside class="col-lg-3 col-xl-2">
       <div class="dash-sidebar">
         <p class="text-uppercase small opacity-50 px-2 mb-2">Administration</p>
-<<<<<<< HEAD
        <div class="d-grid gap-1">
 
       <a class="side-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
@@ -112,18 +111,7 @@
     </a>
 
 </div>
-=======
-        <div class="d-grid gap-1">
-          <a class="side-link" href="{{ route('admin.approvals') }}" data-nav="approvals"><i class="bi bi-patch-check"></i> Lawyer approvals</a>
-          <a class="side-link" href="{{ route('admin.customers') }}" data-nav="lawyers"><i class="bi bi-briefcase"></i> Customers</a>
-          <a class="side-link" href="{{ route('admin.cities') }}" data-nav="customers"><i class="bi bi-people"></i> Cities </a>
-          <a class="side-link" href="{{ route('admin.services') }}" data-nav="logs"><i class="bi bi-journal-text"></i> Services</a>
-          <a class="side-link" href="{{ route('admin.schedules') }}" data-nav="areas"><i class="bi bi-tags"></i> Schedules</a>
-          <a class="side-link" href="{{ route('admin.appointments') }}" data-nav="content"><i class="bi bi-layout-text-window"></i> Appointments</a>
-          <a class="side-link" href="{{ route('admin.website.content') }}" data-nav="website"><i class="bi bi-layout-text-window"></i> Website Content</a>
-          <a class="side-link" href="{{ route('admin.settings') }}" data-nav="setting"><i class="bi bi-layout-text-window"></i> Setting</a>
-        </div>
->>>>>>> 84882e5d0e735b688763c14334c90d0fa29b6fa9
+
       </div>
     </aside>
 

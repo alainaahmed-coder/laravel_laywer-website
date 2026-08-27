@@ -12,6 +12,7 @@ class Lawyer extends Model
     protected $table = 'lawyers';
 
     protected $fillable = [
+        'user_id',
         'name',
         'email',
         'phone',
@@ -21,5 +22,24 @@ class Lawyer extends Model
         'bio',
         'fee',
         'image',
+        'is_verified',
+        'office_address',
+        'qualifications',
+        'rating',
+        'total_reviews',
+        'is_approved',
+        'is_active',
     ];
+
+    protected $casts = [
+        'qualifications' => 'array',
+        'is_verified' => 'boolean',
+        'is_approved' => 'boolean',
+        'is_active' => 'boolean',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
