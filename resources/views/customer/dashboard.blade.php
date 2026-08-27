@@ -1,10 +1,5 @@
 @extends('customer.sidebar')
-
 @section('customer')
-
-
-
-
     <main class="col-lg-9 col-xl-10">
 
       <!-- OVERVIEW -->
@@ -50,7 +45,7 @@
         </div>
       </section>
 
-      {{-- <!-- ACTIVE -->
+      <!-- ACTIVE -->
       <section data-pane="active" class="d-none">
         <h1 class="h4 mb-3">Active appointments</h1>
         <div class="card-legal p-0 overflow-hidden">
@@ -135,6 +130,6 @@
 
 
 
- --}}
+
 
 @endsection
