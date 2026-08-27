@@ -61,13 +61,13 @@
         <div class="dash-sidebar">
           <p class="text-uppercase small opacity-50 px-2 mb-2">Client menu</p>
           <div class="d-grid gap-1">
-            <a class="side-link {{ request()->routeIs('lawyer.overview') ? 'active' : '' }}"
-              href="{{ route('lawyer.overview') }}">
-              <i class="bi bi-grid-1x2"></i> Overview
+            <a class="side-link {{ request()->routeIs('lawyerdashboard') ? 'active' : '' }}"
+              href="{{ route('lawyerdashboard') }}">
+              <i class="bi bi-grid-1x2"></i> Dashboard
             </a>
 
-            <a class="side-link {{ request()->routeIs('lawyer.profile') ? 'active' : '' }}"
-              href="{{ route('lawyer.profile') }}">
+            <a class="side-link {{ request()->routeIs('lawyer.profiles') ? 'active' : '' }}"
+              href="{{ route('lawyer.profiles') }}">
               <i class="bi bi-calendar2-event"></i> My Profile
             </a>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\City; // 👈 1. City Model import karein
+use App\Models\services;
 
 class AdminSidebarController extends Controller
 {
@@ -65,7 +66,8 @@ class AdminSidebarController extends Controller
 
     public function services()
     {
-        return view('admin.services');
+         $services = services::latest()->get(); // Database se cities mangwai
+        return view('admin.services', compact('services'));
     }
 
     public function schedules()

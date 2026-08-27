@@ -67,9 +67,8 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 });
 
 // Lawyer Sidebar Routes
-Route::prefix('lawyer')->name('lawyer.')->group(function () {
-    Route::get('/overview', [LawyerSidebarController::class, 'overview'])->name('overview');
-    Route::get('/profile', [LawyerSidebarController::class, 'profile'])->name('profile');
+Route::prefix('lawyer')->name('lawyer.')->group(function () { 
+    Route::get('/profile', [LawyerSidebarController::class, 'profile'])->name('profiles');
     Route::get('/services', [LawyerSidebarController::class, 'services'])->name('services');
     Route::get('/schedule', [LawyerSidebarController::class, 'schedule'])->name('schedule');
     Route::get('/clients', [LawyerSidebarController::class, 'clients'])->name('clients');
@@ -80,10 +79,10 @@ Route::prefix('lawyer')->name('lawyer.')->group(function () {
 // Admin Sidebar Routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/Dashboard', [AdminSidebarController::class, 'dashboard'])->name('dashboard');
-
     Route::get('/customers', [AdminSidebarController::class, 'customers'])->name('customers');
     Route::get('/cities', [AdminSidebarController::class, 'cities'])->name('cities');
     Route::get('/services', [AdminSidebarController::class, 'services'])->name('services');
+    
     Route::get('/schedules', [AdminSidebarController::class, 'schedules'])->name('schedules');
     Route::get('/appointments', [AdminSidebarController::class, 'appointments'])->name('appointments');
     Route::get('/website-content', [AdminSidebarController::class, 'websiteContent'])->name('website.content');
@@ -107,6 +106,15 @@ Route::prefix('admin')->group(function () {
     Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
     Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+    /////////// Add Services ///////////////////
+    Route::post('/ServicesPost', [admindashboardController::class, 'serviceStore'])->name('customers.Servcies');
+    Route::put('/Services/{id}', [admindashboardController::class, 'updateService'])->name('customers.updateService');
+    Route::delete('/Services/{id}', [admindashboardController::class, 'deleteService'])->name('customers.deleteService');
+    /////////// Cities Routes //////////////////
+    Route::post('/CitiesPost', [admindashboardController::class, 'citieStore'])->name('customers.citieStore');
+    Route::put('/Citiesupdate/{id}', [admindashboardController::class, 'updateCities'])->name('customers.updateCities');
+    Route::delete('/CitiesDelete/{id}', [admindashboardController::class, 'deleteCities'])->name('customers.deleteCities');
+    
 });
 
 require __DIR__.'/auth.php';

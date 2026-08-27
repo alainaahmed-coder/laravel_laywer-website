@@ -69,4 +69,5 @@ class CustomerController extends Controller
 
         return redirect()->back()->with('success', 'Customer deleted successfully!');
     }
+    
 }
