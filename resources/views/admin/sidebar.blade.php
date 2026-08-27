@@ -74,9 +74,9 @@
       <a class="side-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
        href="{{ route('admin.dashboard') }}">
         <i class="bi bi-grid-1x2"></i> Dashboard
-    </a> 
+    </a>
     <a class="side-link {{ request()->routeIs('admin.customers') ? 'active' : '' }}"
-       href="{{ route('admin.customers') }}">
+       href="{{ route('customers.index') }}">
         <i class="bi bi-people"></i> Customers
     </a>
 

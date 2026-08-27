@@ -8,6 +8,7 @@ use App\Http\Controllers\landingpageController;
 use App\Http\Controllers\lawyerdashboardController;
 use App\Http\Controllers\LawyerSidebarController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -79,7 +80,7 @@ Route::prefix('lawyer')->name('lawyer.')->group(function () {
 // Admin Sidebar Routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/Dashboard', [AdminSidebarController::class, 'dashboard'])->name('dashboard');
-   
+
     Route::get('/customers', [AdminSidebarController::class, 'customers'])->name('customers');
     Route::get('/cities', [AdminSidebarController::class, 'cities'])->name('cities');
     Route::get('/services', [AdminSidebarController::class, 'services'])->name('services');
@@ -96,6 +97,16 @@ Route::prefix('customer')->name('customer.')->group(function () {
     Route::get('/my-appointments', [CustomerSidebarController::class, 'myAppointments'])->name('my.appointments');
     Route::get('/my-profile', [CustomerSidebarController::class, 'myProfile'])->name('my.profile');
     Route::get('/profile-settings', [CustomerSidebarController::class, 'profileSettings'])->name('profile.settings');
+});
+
+
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+    Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
+    Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
+    Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 });
 
 require __DIR__.'/auth.php';
