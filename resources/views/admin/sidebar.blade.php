@@ -41,9 +41,9 @@
         <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
+            {{-- <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
               <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
-            </a>
+            </a> --}}
             <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
               <li><a class="dropdown-item rounded-2" href="{{route('profile.edit')}}" data-nav="">Profile settings</a></li>
               <li>
