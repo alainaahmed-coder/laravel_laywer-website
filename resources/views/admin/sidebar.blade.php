@@ -104,7 +104,7 @@
             </a>
 
             <a class="side-link {{ request()->routeIs('admin.website.content') ? 'active' : '' }}"
-              href="{{ route('admin.website.content') }}">
+              href="{{ route('admin.website_content') }}">
               <i class="bi bi-layout-text-window"></i> Website Content
             </a>
 

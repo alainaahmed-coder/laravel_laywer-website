@@ -9,6 +9,7 @@ use App\Http\Controllers\lawyerdashboardController;
 use App\Http\Controllers\LawyerSidebarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\WebsiteContentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -137,5 +138,12 @@ Route::prefix('admin')->group(function () {
     Route::put('/Citiesupdate/{id}', [admindashboardController::class, 'updateCities'])->name('customers.updateCities');
     Route::delete('/CitiesDelete/{id}', [admindashboardController::class, 'deleteCities'])->name('customers.deleteCities');
 });
+
+
+
+
+// Admin Website Content Management
+Route::get('/admin/website-content', [WebsiteContentController::class, 'index'])->name('admin.website_content');
+Route::post('/admin/website-content/update', [WebsiteContentController::class, 'update'])->name('admin.website_content.update');
 
 require __DIR__ . '/auth.php';

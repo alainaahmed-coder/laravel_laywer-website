@@ -110,7 +110,7 @@
 
                             <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">
                                 <i class="bi bi-geo-alt me-1"></i>
-                                {{ $lawyer->city->name }}
+                                {{-- {{ $lawyer->city->name }} --}}
                             </span>
 
                         @else
