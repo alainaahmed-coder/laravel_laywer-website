@@ -6,52 +6,50 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('lawyers', function (Blueprint $table) {
+
             $table->id();
 
-            // Optional User Link (agar lawyer login system active ho)
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            // Logged-in user
+            $table->foreignId('user_id')
+                  ->constrained('users')
+                  ->onDelete('cascade');
 
-            // Card & Header Main Details
-            $table->string('name');                          // e.g. Adv. Kamran Sheikh
-            $table->string('email')->unique();
-            $table->string('phone')->nullable();
-            $table->string('image')->nullable();              // Profile photo path
-            $table->boolean('is_verified')->default(false);  // Yellow/Gold checkmark badge
+            // City
+            $table->foreignId('city_id')
+                  ->constrained('cities')
+                  ->onDelete('cascade');
 
-            // Professional Details (Cards & Filters)
-            $table->string('specialization');                 // e.g. Criminal Law
-            $table->integer('experience')->default(0);        // Experience in Years (e.g. 21)
-            $table->decimal('fee', 10, 2)->default(0.00);     // Consultation Fee (e.g. 12000.00)
+            // Service
+            $table->foreignId('service_id')
+                  ->constrained('services')
+                  ->onDelete('cascade');
 
-            // Location
-            $table->string('city');                           // e.g. Islamabad (Direct String/Foreign key)
-            $table->text('office_address')->nullable();       // Full office address for single page
+            // Professional Details
+            $table->integer('experience')->default(0);
+            $table->decimal('fee', 10, 2)->default(0.00);
+            $table->text('bio')->nullable();
 
-            // Single Profile Page Extra Details
-            $table->text('bio')->nullable();                  // Short About section
-            $table->json('qualifications')->nullable();       // Multiple qualifications array/list (e.g. ["LL.B", "LL.M"])
+            // Profile
+            $table->string('image')->nullable();
+            $table->text('office_address')->nullable();
+            $table->json('qualifications')->nullable();
 
-            // Ratings & Reviews Counter (For Cards & Profile summary)
-            $table->decimal('rating', 3, 2)->default(5.00);   // Average rating e.g. 5.0
-            $table->integer('total_reviews')->default(0);     // Total reviews count e.g. 302
+            // Rating
+            $table->decimal('rating', 3, 2)->default(5.00);
+            $table->integer('total_reviews')->default(0);
 
-            // System / Admin Status
-            $table->boolean('is_approved')->default(false);   // Admin approval status
-            $table->boolean('is_active')->default(true);      // Active profile status
+            // Status
+            $table->boolean('is_verified')->default(false);
+            $table->boolean('is_approved')->default(false);
+            $table->boolean('is_active')->default(true);
 
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('lawyers');

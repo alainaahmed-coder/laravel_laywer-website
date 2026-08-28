@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Lawyer;
+use App\Models\City;
+use App\Models\Service;
+use App\Models\LawyerSchedule;
 
 class LawyerSidebarController extends Controller
 {
@@ -13,7 +17,76 @@ class LawyerSidebarController extends Controller
 
     public function profile()
     {
-        return view('lawyer.myprofile');
+        $lawyer = Lawyer::where('user_id', auth()->id())->first();
+
+        $cities = City::orderBy('name')->get();
+
+        $services = Service::orderBy('name')->get();
+
+        return view('lawyer.myprofile', compact(
+            'lawyer',
+            'cities',
+            'services'
+        ));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'city_id' => 'required|exists:cities,id',
+            'service_id' => 'required|exists:services,id',
+
+            // Experience ab string hai
+            'experience' => 'required|string|max:100',
+
+            'fee' => 'required|numeric|min:0',
+
+            'bio' => 'nullable|string',
+            'office_address' => 'nullable|string',
+            'qualifications' => 'nullable|string',
+
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $data = [
+            'user_id' => auth()->id(),
+            'city_id' => $request->city_id,
+            'service_id' => $request->service_id,
+            'experience' => $request->experience,
+            'fee' => $request->fee,
+            'bio' => $request->bio,
+            'office_address' => $request->office_address,
+
+            // Comma separated qualifications ko array bana rahe hain
+            'qualifications' => $request->qualifications
+                ? array_map('trim', explode(',', $request->qualifications))
+                : null,
+        ];
+
+        // Image upload
+        if ($request->hasFile('image')) {
+
+            $imageName = time() . '.' .
+                $request->image->extension();
+
+            $request->image->move(
+                public_path('uploads/lawyers'),
+                $imageName
+            );
+
+            $data['image'] = $imageName;
+        }
+
+        Lawyer::updateOrCreate(
+            [
+                'user_id' => auth()->id(),
+            ],
+            $data
+        );
+
+        return redirect()
+            ->route('lawyer.profiles')
+            ->with('success', 'Profile updated successfully!');
     }
 
     public function services()
@@ -23,7 +96,91 @@ class LawyerSidebarController extends Controller
 
     public function schedule()
     {
-        return view('lawyer.mysechedule');
+        $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
+
+        $schedules = LawyerSchedule::where('lawyer_id', $lawyer->id)
+            ->orderByRaw("
+            FIELD(
+                day,
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+                'Sunday'
+            )
+        ")
+            ->orderBy('start_time')
+            ->get();
+
+        return view('lawyer.mysechedule', compact(
+            'lawyer',
+            'schedules'
+        ));
+    }
+    public function storeSchedule(Request $request)
+    {
+        $request->validate([
+            'day' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'slot_duration' => 'required|integer|min:5|max:180',
+        ]);
+
+        $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
+
+        LawyerSchedule::create([
+            'lawyer_id' => $lawyer->id,
+            'day' => $request->day,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'slot_duration' => $request->slot_duration,
+        ]);
+
+        return redirect()
+            ->route('lawyer.schedule')
+            ->with('success', 'Schedule added successfully!');
+    }
+    public function updateSchedule(Request $request, $id)
+    {
+        $request->validate([
+            'day' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'slot_duration' => 'required|integer|min:5|max:180',
+        ]);
+
+        $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
+
+        $schedule = LawyerSchedule::where('id', $id)
+            ->where('lawyer_id', $lawyer->id)
+            ->firstOrFail();
+
+        $schedule->update([
+            'day' => $request->day,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'slot_duration' => $request->slot_duration,
+        ]);
+
+        return redirect()
+            ->route('lawyer.schedule')
+            ->with('success', 'Schedule updated successfully!');
+    }
+    public function deleteSchedule($id)
+    {
+        $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
+
+        $schedule = LawyerSchedule::where('id', $id)
+            ->where('lawyer_id', $lawyer->id)
+            ->firstOrFail();
+
+        $schedule->delete();
+
+        return redirect()
+            ->route('lawyer.schedule')
+            ->with('success', 'Schedule deleted successfully!');
     }
 
     public function clients()

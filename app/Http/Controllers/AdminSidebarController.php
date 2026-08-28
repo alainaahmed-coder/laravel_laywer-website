@@ -3,29 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\City; // 👈 1. City Model import karein
-use App\Models\services;
+use App\Models\City;
+use App\Models\Service;
 
 class AdminSidebarController extends Controller
 {
-    public function dashboard(){
+    public function dashboard()
+    {
         return view('admin.dashboard');
     }
-    
 
     public function customers()
     {
         return view('admin.customers');
     }
 
-    // 👈 2. Cities Page (Data pass kar diya)
+    // Cities
     public function cities()
     {
-        $cities = City::latest()->get(); // Database se cities mangwai
+        $cities = City::latest()->get();
+
         return view('admin.cities', compact('cities'));
     }
 
-    // 👈 3. New City Save karne ke liye
+    // New City Save
     public function storeCity(Request $request)
     {
         $request->validate([
@@ -36,54 +37,70 @@ class AdminSidebarController extends Controller
             'name' => $request->name
         ]);
 
-        return redirect()->back()->with('success', 'City added successfully!');
+        return redirect()
+            ->back()
+            ->with('success', 'City added successfully!');
     }
 
-    // 👈 4. City Update karne ke liye
+    // City Update
     public function updateCity(Request $request)
     {
         $request->validate([
-            'id'   => 'required|exists:cities,id',
+            'id' => 'required|exists:cities,id',
             'name' => 'required|string|max:255'
         ]);
 
         $city = City::findOrFail($request->id);
+
         $city->update([
             'name' => $request->name
         ]);
 
-        return redirect()->back()->with('success', 'City updated successfully!');
+        return redirect()
+            ->back()
+            ->with('success', 'City updated successfully!');
     }
 
-    // 👈 5. City Delete karne ke liye
+    // City Delete
     public function destroyCity(Request $request)
     {
         $city = City::findOrFail($request->id);
+
         $city->delete();
 
-        return redirect()->back()->with('success', 'City deleted successfully!');
+        return redirect()
+            ->back()
+            ->with('success', 'City deleted successfully!');
     }
+
+
+    // ================= SERVICES =================
 
     public function services()
     {
-         $services = services::latest()->get(); // Database se cities mangwai
+        $services = Service::latest()->get();
+
         return view('admin.services', compact('services'));
     }
+
 
     public function schedules()
     {
         return view('admin.schedules');
     }
 
+
     public function appointments()
     {
         return view('admin.appointments');
     }
 
+
     public function websiteContent()
     {
         return view('admin.websitecontent');
     }
+
 
     public function settings()
     {

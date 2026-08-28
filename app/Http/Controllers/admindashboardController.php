@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\city;
-use App\Models\services;
+use App\Models\service;
 use App\Models\Lawyer;
 use Illuminate\Http\Request;
 
@@ -17,11 +17,16 @@ class admindashboardController extends Controller
     ///////////////////////////////////
     ///////// Lawyers Functions //////
     /////////////////////////////////
-  public function lawyerList()
-{
-    $lawyers = Lawyer::all();
-    return view('admin.Lawyer', compact('lawyers')); // Capital 'L' aur singular
-}
+    public function lawyerList()
+    {
+        $lawyers = Lawyer::with([
+            'user',
+            'city',
+            'service'
+        ])->latest()->get();
+
+        return view('admin.Lawyer', compact('lawyers'));
+    }
     public function toggleLawyerStatus($id)
     {
         $lawyer = Lawyer::findOrFail($id);
@@ -48,7 +53,7 @@ class admindashboardController extends Controller
             'name' => 'required|string|max:20',
         ]);
 
-        services::create([
+        service::create([
             'name' => $request->name,
         ]);
 
@@ -57,7 +62,7 @@ class admindashboardController extends Controller
 
     public function updateService(Request $request, $id)
     {
-        $services = services::findOrFail($id);
+        $services = service::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:20',
@@ -71,7 +76,7 @@ class admindashboardController extends Controller
 
     public function deleteService($id)
     {
-        $services = services::findOrFail($id);
+        $services = service::findOrFail($id);
         $services->delete();
 
         return redirect()->back()->with('success', 'Service deleted successfully!');
