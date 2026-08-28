@@ -60,13 +60,38 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 });
 
 // Lawyer Sidebar Routes
+// Lawyer Sidebar Routes
 Route::prefix('lawyer')->name('lawyer.')->group(function () {
-    Route::get('/profile', [LawyerSidebarController::class, 'profile'])->name('profiles');
-    Route::get('/services', [LawyerSidebarController::class, 'services'])->name('services');
-    Route::get('/schedule', [LawyerSidebarController::class, 'schedule'])->name('schedule');
-    Route::get('/clients', [LawyerSidebarController::class, 'clients'])->name('clients');
-    Route::get('/appointment-history', [LawyerSidebarController::class, 'appointmentHistory'])->name('appointment.history');
-    Route::get('/settings', [LawyerSidebarController::class, 'settings'])->name('settings');
+
+    Route::get('/profile', [LawyerSidebarController::class, 'profile'])
+        ->name('profiles');
+
+    Route::post('/profile/update', [LawyerSidebarController::class, 'updateProfile'])
+        ->name('profile.update');
+
+    Route::get('/services', [LawyerSidebarController::class, 'services'])
+        ->name('services');
+
+    Route::get('/schedule', [LawyerSidebarController::class, 'schedule'])
+        ->name('schedule');
+
+    Route::post('/schedule', [LawyerSidebarController::class, 'storeSchedule'])
+        ->name('schedule.store');
+
+    Route::put('/schedule/{id}', [LawyerSidebarController::class, 'updateSchedule'])
+        ->name('schedule.update');
+
+    Route::delete('/schedule/{id}', [LawyerSidebarController::class, 'deleteSchedule'])
+        ->name('schedule.delete');
+
+    Route::get('/clients', [LawyerSidebarController::class, 'clients'])
+        ->name('clients');
+
+    Route::get('/appointment-history', [LawyerSidebarController::class, 'appointmentHistory'])
+        ->name('appointment.history');
+
+    Route::get('/settings', [LawyerSidebarController::class, 'settings'])
+        ->name('settings');
 });
 
 // Admin Sidebar Routes
@@ -113,4 +138,4 @@ Route::prefix('admin')->group(function () {
     Route::delete('/CitiesDelete/{id}', [admindashboardController::class, 'deleteCities'])->name('customers.deleteCities');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

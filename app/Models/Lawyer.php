@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\City;
+use App\Models\Service;
 
 class Lawyer extends Model
 {
@@ -13,33 +16,37 @@ class Lawyer extends Model
 
     protected $fillable = [
         'user_id',
-        'name',
-        'email',
-        'phone',
-        'specialization',
-        'city',
+        'city_id',
+        'service_id',
         'experience',
         'bio',
         'fee',
         'image',
-        'is_verified',
         'office_address',
         'qualifications',
-        'rating',
-        'total_reviews',
-        'is_approved',
-        'is_active',
     ];
 
     protected $casts = [
         'qualifications' => 'array',
-        'is_verified' => 'boolean',
-        'is_approved' => 'boolean',
-        'is_active' => 'boolean',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(LawyerSchedule::class);
     }
 }

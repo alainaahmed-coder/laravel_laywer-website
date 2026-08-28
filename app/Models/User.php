@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Lawyer;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
