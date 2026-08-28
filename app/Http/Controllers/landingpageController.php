@@ -11,7 +11,7 @@ class landingpageController extends Controller
     // 1. Welcome / Landing Page (Root '/')
     public function index()
     {
-        $lawyers = Lawyer::select('id', 'name', 'image', 'specialization', 'city', 'experience', 'fee', 'bio', 'is_verified')
+        $lawyers = Lawyer::select('id', 'image', 'specialization', 'city', 'experience', 'fee', 'bio', 'is_verified')
             ->latest()
             ->take(6)
             ->get();
