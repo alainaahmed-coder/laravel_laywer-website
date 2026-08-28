@@ -13,16 +13,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Public Pages
-// Welcome / Landing Page
 Route::get('/', [landingpageController::class, 'index'])->name('Home');
-
-// Find Lawyer Page
 Route::get('/FindLawyer', [landingpageController::class, 'findLawyer'])->name('lawyerfind');
-
-// Dynamic Lawyer Profile Page Route
 Route::get('/lawyer/profile/{id}', [landingpageController::class, 'lawyerProfile'])->name('lawyer.profile');
-
-// About & Contact
 Route::get('/About', [landingpageController::class, 'about'])->name('about');
 Route::get('/contact', [landingpageController::class, 'contact'])->name('contact');
 Route::post('/contact/send', [landingpageController::class, 'contactSend'])->name('contact.send');
@@ -67,7 +60,7 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 });
 
 // Lawyer Sidebar Routes
-Route::prefix('lawyer')->name('lawyer.')->group(function () { 
+Route::prefix('lawyer')->name('lawyer.')->group(function () {
     Route::get('/profile', [LawyerSidebarController::class, 'profile'])->name('profiles');
     Route::get('/services', [LawyerSidebarController::class, 'services'])->name('services');
     Route::get('/schedule', [LawyerSidebarController::class, 'schedule'])->name('schedule');
@@ -82,8 +75,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/customers', [AdminSidebarController::class, 'customers'])->name('customers');
     Route::get('/cities', [AdminSidebarController::class, 'cities'])->name('cities');
     Route::get('/services', [AdminSidebarController::class, 'services'])->name('services');
-    
-    Route::get('/schedules', [AdminSidebarController::class, 'schedules'])->name('schedules');
+
+    // Updated Lawyer Management route
+    Route::get('/lawyers', [admindashboardController::class, 'lawyerList'])->name('lawyers');
     Route::get('/appointments', [AdminSidebarController::class, 'appointments'])->name('appointments');
     Route::get('/website-content', [AdminSidebarController::class, 'websiteContent'])->name('website.content');
     Route::get('/settings', [AdminSidebarController::class, 'settings'])->name('settings');
@@ -98,23 +92,25 @@ Route::prefix('customer')->name('customer.')->group(function () {
     Route::get('/profile-settings', [CustomerSidebarController::class, 'profileSettings'])->name('profile.settings');
 });
 
-
-
-
 Route::prefix('admin')->group(function () {
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
     Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
     Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+    /////////// Lawyer Management Actions ///////////////////
+    Route::post('/lawyers/toggle/{id}', [admindashboardController::class, 'toggleLawyerStatus'])->name('admin.lawyers.toggle');
+    Route::delete('/lawyers/{id}', [admindashboardController::class, 'deleteLawyer'])->name('admin.lawyers.delete');
+
     /////////// Add Services ///////////////////
     Route::post('/ServicesPost', [admindashboardController::class, 'serviceStore'])->name('customers.Servcies');
     Route::put('/Services/{id}', [admindashboardController::class, 'updateService'])->name('customers.updateService');
     Route::delete('/Services/{id}', [admindashboardController::class, 'deleteService'])->name('customers.deleteService');
+
     /////////// Cities Routes //////////////////
     Route::post('/CitiesPost', [admindashboardController::class, 'citieStore'])->name('customers.citieStore');
     Route::put('/Citiesupdate/{id}', [admindashboardController::class, 'updateCities'])->name('customers.updateCities');
     Route::delete('/CitiesDelete/{id}', [admindashboardController::class, 'deleteCities'])->name('customers.deleteCities');
-    
 });
 
 require __DIR__.'/auth.php';

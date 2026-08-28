@@ -4,14 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Models\city;
 use App\Models\services;
+use App\Models\Lawyer;
 use Illuminate\Http\Request;
 
 class admindashboardController extends Controller
 {
-    function admindashboard()
+    public function admindashboard()
     {
         return view('admin.dashboard');
     }
+
+    ///////////////////////////////////
+    ///////// Lawyers Functions //////
+    /////////////////////////////////
+  public function lawyerList()
+{
+    $lawyers = Lawyer::all();
+    return view('admin.Lawyer', compact('lawyers')); // Capital 'L' aur singular
+}
+    public function toggleLawyerStatus($id)
+    {
+        $lawyer = Lawyer::findOrFail($id);
+        $lawyer->is_active = !$lawyer->is_active;
+        $lawyer->save();
+
+        return redirect()->back()->with('success', 'Lawyer status updated successfully!');
+    }
+
+    public function deleteLawyer($id)
+    {
+        $lawyer = Lawyer::findOrFail($id);
+        $lawyer->delete();
+
+        return redirect()->back()->with('success', 'Lawyer deleted successfully!');
+    }
+
     ///////////////////////////////////
     ///////// Add services  //////////
     /////////////////////////////////
@@ -25,10 +52,9 @@ class admindashboardController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->back()->with('success', 'Customer added successfully!');
+        return redirect()->back()->with('success', 'Service added successfully!');
     }
 
-    // Services Update karne ke liye
     public function updateService(Request $request, $id)
     {
         $services = services::findOrFail($id);
@@ -40,16 +66,17 @@ class admindashboardController extends Controller
         $services->name = $request->name;
         $services->save();
 
-        return redirect()->back()->with('success', 'Customer updated successfully!');
+        return redirect()->back()->with('success', 'Service updated successfully!');
     }
-    ////////// delete services ///////////
+
     public function deleteService($id)
     {
         $services = services::findOrFail($id);
         $services->delete();
 
-        return redirect()->back()->with('success', 'Customer deleted successfully!');
+        return redirect()->back()->with('success', 'Service deleted successfully!');
     }
+
     ////////////////////////////////
     /////// Cities Functions //////
     //////////////////////////////
@@ -65,7 +92,7 @@ class admindashboardController extends Controller
 
         return redirect()->back()->with('success', 'City added successfully!');
     }
-    // Services Update karne ke liye
+
     public function updateCities(Request $request, $id)
     {
         $Cities = city::findOrFail($id);
@@ -77,14 +104,14 @@ class admindashboardController extends Controller
         $Cities->name = $request->name;
         $Cities->save();
 
-        return redirect()->back()->with('success', 'Customer updated successfully!');
+        return redirect()->back()->with('success', 'City updated successfully!');
     }
-     ////////// delete services ///////////
+
     public function deleteCities($id)
     {
         $city = city::findOrFail($id);
         $city->delete();
 
-        return redirect()->back()->with('success', 'Customer deleted successfully!');
+        return redirect()->back()->with('success', 'City deleted successfully!');
     }
 }

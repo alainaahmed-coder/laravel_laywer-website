@@ -39,7 +39,7 @@
       </button>
       <div class="collapse navbar-collapse" id="dashNav">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-         
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
               <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
@@ -93,10 +93,10 @@
               <i class="bi bi-journal-text"></i> Services
             </a>
 
-            <a class="side-link {{ request()->routeIs('admin.schedules') ? 'active' : '' }}"
-              href="{{ route('admin.schedules') }}">
-              <i class="bi bi-people"></i> Lawyers
-            </a>
+            <a class="side-link {{ request()->routeIs('admin.lawyers') ? 'active' : '' }}"
+   href="{{ route('admin.lawyers') }}">
+   <i class="bi bi-people"></i> Lawyers
+</a>
 
             <a class="side-link {{ request()->routeIs('admin.appointments') ? 'active' : '' }}"
               href="{{ route('admin.appointments') }}">
