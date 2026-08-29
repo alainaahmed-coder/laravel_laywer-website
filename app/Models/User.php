@@ -18,13 +18,17 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'role',
-        'phone',
-        'password',
-    ];
+   protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'phone',
+    'role',
+    'profile_picture',
+    'city',
+    'address',
+    'cnic',
+];
 
     public function lawyer()
 {
@@ -54,5 +58,6 @@ class User extends Authenticatable
     }
 
 
- 
+
+
 }
