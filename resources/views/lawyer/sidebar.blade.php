@@ -73,7 +73,7 @@
 
             <a class="side-link {{ request()->routeIs('lawyer.services') ? 'active' : '' }}"
               href="{{ route('lawyer.services') }}">
-              <i class="bi bi-clock-history"></i> My Services
+              <i class="bi bi-clock-history"></i> Request
             </a>
 
             <a class="side-link {{ request()->routeIs('lawyer.schedule') ? 'active' : '' }}"

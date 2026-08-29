@@ -21,23 +21,35 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [landingpageController::class, 'index'])
-    ->name('Home');
+Route::get('/', [
+    landingpageController::class,
+    'index'
+])->name('Home');
 
-Route::get('/FindLawyer', [landingpageController::class, 'findLawyer'])
-    ->name('lawyerfind');
+Route::get('/FindLawyer', [
+    landingpageController::class,
+    'findLawyer'
+])->name('lawyerfind');
 
-Route::get('/lawyer/profile/{id}', [landingpageController::class, 'lawyerProfile'])
-    ->name('lawyer.profile');
+Route::get('/lawyer/profile/{id}', [
+    landingpageController::class,
+    'lawyerProfile'
+])->name('lawyer.profile');
 
-Route::get('/About', [landingpageController::class, 'about'])
-    ->name('about');
+Route::get('/About', [
+    landingpageController::class,
+    'about'
+])->name('about');
 
-Route::get('/contact', [landingpageController::class, 'contact'])
-    ->name('contact');
+Route::get('/contact', [
+    landingpageController::class,
+    'contact'
+])->name('contact');
 
-Route::post('/contact/send', [landingpageController::class, 'contactSend'])
-    ->name('contact.send');
+Route::post('/contact/send', [
+    landingpageController::class,
+    'contactSend'
+])->name('contact.send');
 
 
 /*
@@ -76,14 +88,21 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
+    Route::get('/profile', [
+        ProfileController::class,
+        'edit'
+    ])->name('profile.edit');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
+    Route::patch('/profile', [
+        ProfileController::class,
+        'update'
+    ])->name('profile.update');
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+    Route::delete('/profile', [
+        ProfileController::class,
+        'destroy'
+    ])->name('profile.destroy');
+
 });
 
 
@@ -143,7 +162,14 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 
 Route::prefix('lawyer')
     ->name('lawyer.')
+    ->middleware(['auth', 'role:lawyer'])
     ->group(function () {
+
+        /*
+        |----------------------------------------------------------------------
+        | Lawyer Profile
+        |----------------------------------------------------------------------
+        */
 
         Route::get('/profile', [
             LawyerSidebarController::class,
@@ -155,10 +181,42 @@ Route::prefix('lawyer')
             'updateProfile'
         ])->name('profile.update');
 
+
+        /*
+        |----------------------------------------------------------------------
+        | Appointment Requests
+        |----------------------------------------------------------------------
+        |
+        | Tumhara existing myservices.blade.php hi requests page hai.
+        | URL: /lawyer/services
+        |
+        */
+
         Route::get('/services', [
             LawyerSidebarController::class,
             'services'
         ])->name('services');
+
+
+        // Approve Appointment Request
+        Route::patch('/requests/{id}/approve', [
+            LawyerSidebarController::class,
+            'approveRequest'
+        ])->name('requests.approve');
+
+
+        // Reject Appointment Request
+        Route::patch('/requests/{id}/reject', [
+            LawyerSidebarController::class,
+            'rejectRequest'
+        ])->name('requests.reject');
+
+
+        /*
+        |----------------------------------------------------------------------
+        | Lawyer Schedule
+        |----------------------------------------------------------------------
+        */
 
         Route::get('/schedule', [
             LawyerSidebarController::class,
@@ -180,20 +238,42 @@ Route::prefix('lawyer')
             'deleteSchedule'
         ])->name('schedule.delete');
 
+
+        /*
+        |----------------------------------------------------------------------
+        | Lawyer Clients
+        |----------------------------------------------------------------------
+        */
+
         Route::get('/clients', [
             LawyerSidebarController::class,
             'clients'
         ])->name('clients');
+
+
+        /*
+        |----------------------------------------------------------------------
+        | Appointment History
+        |----------------------------------------------------------------------
+        */
 
         Route::get('/appointment-history', [
             LawyerSidebarController::class,
             'appointmentHistory'
         ])->name('appointment.history');
 
+
+        /*
+        |----------------------------------------------------------------------
+        | Lawyer Settings
+        |----------------------------------------------------------------------
+        */
+
         Route::get('/settings', [
             LawyerSidebarController::class,
             'settings'
         ])->name('settings');
+
     });
 
 
@@ -205,6 +285,7 @@ Route::prefix('lawyer')
 
 Route::prefix('admin')
     ->name('admin.')
+    ->middleware(['auth', 'role:admin'])
     ->group(function () {
 
         Route::get('/Dashboard', [
@@ -246,6 +327,7 @@ Route::prefix('admin')
             AdminSidebarController::class,
             'settings'
         ])->name('settings');
+
     });
 
 
@@ -257,6 +339,7 @@ Route::prefix('admin')
 
 Route::prefix('customer')
     ->name('customer.')
+    ->middleware(['auth', 'role:customer'])
     ->group(function () {
 
         Route::get('/overview', [
@@ -283,38 +366,28 @@ Route::prefix('customer')
             CustomerSidebarController::class,
             'profileSettings'
         ])->name('profile.settings');
+
     });
 
 
 /*
 |--------------------------------------------------------------------------
-| APPOINTMENT / BOOKING ROUTES
+| Appointment / Booking Routes
 |--------------------------------------------------------------------------
-|
-| IMPORTANT:
-| These routes are NOT inside auth middleware.
-|
-| Guest:
-| Book -> Register
-|
-| Logged in customer:
-| Book -> Customer Dashboard
-|
 */
 
-
 // Get lawyer available slots
-Route::get(
-    '/lawyer/{lawyer}/available-slots',
-    [AppointmentController::class, 'availableSlots']
-)->name('appointment.available-slots');
+Route::get('/lawyer/{lawyer}/available-slots', [
+    AppointmentController::class,
+    'availableSlots'
+])->name('appointment.available-slots');
 
 
 // Store appointment
-Route::post(
-    '/appointment/store',
-    [AppointmentController::class, 'store']
-)->name('appointment.store');
+Route::post('/appointment/store', [
+    AppointmentController::class,
+    'store'
+])->name('appointment.store');
 
 
 /*
@@ -323,90 +396,98 @@ Route::post(
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')
+    ->middleware(['auth', 'role:admin'])
+    ->group(function () {
 
-    Route::get('/customers', [
-        CustomerController::class,
-        'index'
-    ])->name('customers.index');
+        /*
+        |----------------------------------------------------------------------
+        | Customers
+        |----------------------------------------------------------------------
+        */
 
-    Route::post('/customers', [
-        CustomerController::class,
-        'store'
-    ])->name('customers.store');
+        Route::get('/customers', [
+            CustomerController::class,
+            'index'
+        ])->name('customers.index');
 
-    Route::put('/customers/{id}', [
-        CustomerController::class,
-        'update'
-    ])->name('customers.update');
+        Route::post('/customers', [
+            CustomerController::class,
+            'store'
+        ])->name('customers.store');
 
-    Route::delete('/customers/{id}', [
-        CustomerController::class,
-        'destroy'
-    ])->name('customers.destroy');
+        Route::put('/customers/{id}', [
+            CustomerController::class,
+            'update'
+        ])->name('customers.update');
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Lawyer Management
-    |--------------------------------------------------------------------------
-    */
-
-    Route::post('/lawyers/toggle/{id}', [
-        admindashboardController::class,
-        'toggleLawyerStatus'
-    ])->name('admin.lawyers.toggle');
-
-    Route::delete('/lawyers/{id}', [
-        admindashboardController::class,
-        'deleteLawyer'
-    ])->name('admin.lawyers.delete');
+        Route::delete('/customers/{id}', [
+            CustomerController::class,
+            'destroy'
+        ])->name('customers.destroy');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Services
-    |--------------------------------------------------------------------------
-    */
+        /*
+        |----------------------------------------------------------------------
+        | Lawyers
+        |----------------------------------------------------------------------
+        */
 
-    Route::post('/ServicesPost', [
-        admindashboardController::class,
-        'serviceStore'
-    ])->name('customers.Servcies');
+        Route::post('/lawyers/toggle/{id}', [
+            admindashboardController::class,
+            'toggleLawyerStatus'
+        ])->name('admin.lawyers.toggle');
 
-    Route::put('/Services/{id}', [
-        admindashboardController::class,
-        'updateService'
-    ])->name('customers.updateService');
-
-    Route::delete('/Services/{id}', [
-        admindashboardController::class,
-        'deleteService'
-    ])->name('customers.deleteService');
+        Route::delete('/lawyers/{id}', [
+            admindashboardController::class,
+            'deleteLawyer'
+        ])->name('admin.lawyers.delete');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Cities
-    |--------------------------------------------------------------------------
-    */
+        /*
+        |----------------------------------------------------------------------
+        | Services
+        |----------------------------------------------------------------------
+        */
 
-    Route::post('/CitiesPost', [
-        admindashboardController::class,
-        'citieStore'
-    ])->name('customers.citieStore');
+        Route::post('/ServicesPost', [
+            admindashboardController::class,
+            'serviceStore'
+        ])->name('customers.Servcies');
 
-    Route::put('/Citiesupdate/{id}', [
-        admindashboardController::class,
-        'updateCities'
-    ])->name('customers.updateCities');
+        Route::put('/Services/{id}', [
+            admindashboardController::class,
+            'updateService'
+        ])->name('customers.updateService');
 
-    Route::delete('/CitiesDelete/{id}', [
-        admindashboardController::class,
-        'deleteCities'
-    ])->name('customers.deleteCities');
+        Route::delete('/Services/{id}', [
+            admindashboardController::class,
+            'deleteService'
+        ])->name('customers.deleteService');
 
-});
+
+        /*
+        |----------------------------------------------------------------------
+        | Cities
+        |----------------------------------------------------------------------
+        */
+
+        Route::post('/CitiesPost', [
+            admindashboardController::class,
+            'citieStore'
+        ])->name('customers.citieStore');
+
+        Route::put('/Citiesupdate/{id}', [
+            admindashboardController::class,
+            'updateCities'
+        ])->name('customers.updateCities');
+
+        Route::delete('/CitiesDelete/{id}', [
+            admindashboardController::class,
+            'deleteCities'
+        ])->name('customers.deleteCities');
+
+    });
 
 
 /*

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\Lawyer;
 use App\Models\City;
@@ -10,10 +11,15 @@ use App\Models\LawyerSchedule;
 
 class LawyerSidebarController extends Controller
 {
+    // ================= OVERVIEW =================
+
     public function overview()
     {
         return view('lawyer.overview');
     }
+
+
+    // ================= PROFILE =================
 
     public function profile()
     {
@@ -30,21 +36,19 @@ class LawyerSidebarController extends Controller
         ));
     }
 
+
+    // ================= UPDATE PROFILE =================
+
     public function updateProfile(Request $request)
     {
         $request->validate([
             'city_id' => 'required|exists:cities,id',
             'service_id' => 'required|exists:services,id',
-
-            // Experience ab string hai
             'experience' => 'required|string|max:100',
-
             'fee' => 'required|numeric|min:0',
-
             'bio' => 'nullable|string',
             'office_address' => 'nullable|string',
             'qualifications' => 'nullable|string',
-
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -57,7 +61,6 @@ class LawyerSidebarController extends Controller
             'bio' => $request->bio,
             'office_address' => $request->office_address,
 
-            // Comma separated qualifications ko array bana rahe hain
             'qualifications' => $request->qualifications
                 ? array_map('trim', explode(',', $request->qualifications))
                 : null,
@@ -66,8 +69,7 @@ class LawyerSidebarController extends Controller
         // Image upload
         if ($request->hasFile('image')) {
 
-            $imageName = time() . '.' .
-                $request->image->extension();
+            $imageName = time() . '.' . $request->image->extension();
 
             $request->image->move(
                 public_path('uploads/lawyers'),
@@ -89,36 +91,102 @@ class LawyerSidebarController extends Controller
             ->with('success', 'Profile updated successfully!');
     }
 
-    public function services()
-    {
-        return view('lawyer.myservices');
-    }
 
-    public function schedule()
+    // ================= APPOINTMENT REQUESTS =================
+
+    public function services()
     {
         $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
 
-        $schedules = LawyerSchedule::where('lawyer_id', $lawyer->id)
-            ->orderByRaw("
-            FIELD(
-                day,
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday',
-                'Sunday'
+        $requests = Appointment::with('customer')
+            ->where('lawyer_id', $lawyer->id)
+            ->where('status', 'pending')
+            ->latest()
+            ->get();
+
+        return view('lawyer.myservices', compact('requests'));
+    }
+
+
+    // ================= APPROVE REQUEST =================
+
+    public function approveRequest($id)
+    {
+        $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
+
+        $appointment = Appointment::where('id', $id)
+            ->where('lawyer_id', $lawyer->id)
+            ->where('status', 'pending')
+            ->firstOrFail();
+
+        $appointment->update([
+            'status' => 'approved'
+        ]);
+
+        return back()->with(
+            'success',
+            'Appointment approved successfully.'
+        );
+    }
+
+
+    // ================= REJECT REQUEST =================
+
+    public function rejectRequest($id)
+    {
+        $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
+
+        $appointment = Appointment::where('id', $id)
+            ->where('lawyer_id', $lawyer->id)
+            ->where('status', 'pending')
+            ->firstOrFail();
+
+        $appointment->update([
+            'status' => 'rejected'
+        ]);
+
+        return back()->with(
+            'success',
+            'Appointment rejected successfully.'
+        );
+    }
+
+
+    // ================= SCHEDULE =================
+
+    public function schedule()
+    {
+        $lawyer = Lawyer::where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $schedules = LawyerSchedule::where(
+                'lawyer_id',
+                $lawyer->id
             )
-        ")
+            ->orderByRaw("
+                FIELD(
+                    day,
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
+                    'Sunday'
+                )
+            ")
             ->orderBy('start_time')
             ->get();
 
-        return view('lawyer.mysechedule', compact(
-            'lawyer',
-            'schedules'
-        ));
+        return view(
+            'lawyer.mysechedule',
+            compact('lawyer', 'schedules')
+        );
     }
+
+
+    // ================= STORE SCHEDULE =================
+
     public function storeSchedule(Request $request)
     {
         $request->validate([
@@ -128,7 +196,8 @@ class LawyerSidebarController extends Controller
             'slot_duration' => 'required|integer|min:5|max:180',
         ]);
 
-        $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
+        $lawyer = Lawyer::where('user_id', auth()->id())
+            ->firstOrFail();
 
         LawyerSchedule::create([
             'lawyer_id' => $lawyer->id,
@@ -142,6 +211,10 @@ class LawyerSidebarController extends Controller
             ->route('lawyer.schedule')
             ->with('success', 'Schedule added successfully!');
     }
+
+
+    // ================= UPDATE SCHEDULE =================
+
     public function updateSchedule(Request $request, $id)
     {
         $request->validate([
@@ -151,7 +224,8 @@ class LawyerSidebarController extends Controller
             'slot_duration' => 'required|integer|min:5|max:180',
         ]);
 
-        $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
+        $lawyer = Lawyer::where('user_id', auth()->id())
+            ->firstOrFail();
 
         $schedule = LawyerSchedule::where('id', $id)
             ->where('lawyer_id', $lawyer->id)
@@ -168,9 +242,14 @@ class LawyerSidebarController extends Controller
             ->route('lawyer.schedule')
             ->with('success', 'Schedule updated successfully!');
     }
+
+
+    // ================= DELETE SCHEDULE =================
+
     public function deleteSchedule($id)
     {
-        $lawyer = Lawyer::where('user_id', auth()->id())->firstOrFail();
+        $lawyer = Lawyer::where('user_id', auth()->id())
+            ->firstOrFail();
 
         $schedule = LawyerSchedule::where('id', $id)
             ->where('lawyer_id', $lawyer->id)
@@ -183,15 +262,24 @@ class LawyerSidebarController extends Controller
             ->with('success', 'Schedule deleted successfully!');
     }
 
+
+    // ================= MY CLIENTS =================
+
     public function clients()
     {
         return view('lawyer.myclient');
     }
 
+
+    // ================= APPOINTMENT HISTORY =================
+
     public function appointmentHistory()
     {
         return view('lawyer.appointmenthistory');
     }
+
+
+    // ================= SETTINGS =================
 
     public function settings()
     {

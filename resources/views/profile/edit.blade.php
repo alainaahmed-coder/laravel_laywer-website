@@ -1,5 +1,5 @@
-@extends('customer.sidebar')
-@section('customer')
+@extends('admin.sidebar')
+@section('admin')
 <main class="col-lg-9 col-xl-10">
 <x-app-layout>
    
