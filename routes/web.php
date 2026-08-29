@@ -357,10 +357,16 @@ Route::prefix('customer')
             'myAppointments'
         ])->name('my.appointments');
 
+        // UPDATED: Connected to CustomerController
         Route::get('/my-profile', [
-            CustomerSidebarController::class,
+            CustomerController::class,
             'myProfile'
         ])->name('my.profile');
+
+        Route::post('/my-profile/update', [
+            CustomerController::class,
+            'updateProfile'
+        ])->name('my.profile.update');
 
         Route::get('/profile-settings', [
             CustomerSidebarController::class,

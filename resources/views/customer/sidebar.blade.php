@@ -26,7 +26,7 @@
       <i class="bi bi-list fs-2 text-navy"></i>
     </button>
     <div class="collapse navbar-collapse" id="dashNav">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">        
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
             <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
@@ -52,25 +52,28 @@
 
 
 <div class="container-fluid px-lg-4 py-4">
-  <div class="row g-4">
-<aside class="col-lg-3 col-xl-2">
-      <div class="dash-sidebar">
-        <p class="text-uppercase small opacity-50 px-2 mb-2">Client menu</p>
-        <div class="d-grid gap-1">
-       <a class="side-link active" href="{{ route('customer.overview') }}" data-nav="overview"><i class="bi bi-grid-1x2"></i> Overview</a>
-<a class="side-link" href="{{ route('customer.find.lawyer') }}" data-nav="active"><i class="bi bi-calendar2-event"></i> Find Lawyer</a>
-<a class="side-link" href="{{ route('customer.my.appointments') }}" data-nav="history"><i class="bi bi-clock-history"></i> My Appointments</a>
-<a class="side-link" href="{{ route('customer.my.profile') }}" data-nav="consultations"><i class="bi bi-chat-left-text"></i> My Profile</a>
-<a class="side-link" href="{{ route('customer.profile.settings') }}" data-nav="settings"><i class="bi bi-gear"></i> Profile settings</a>
-        </div>
-        <hr class="border-secondary">
-        <a href="lawyers.html" class="btn btn-gold btn-sm w-100">Book new consultation</a>
-      </div>
-    </aside>
-    @yield('customer')
-  </div>
-</div>
+    <div class="row g-4">
+        <!-- SIDEBAR -->
+        <aside class="col-lg-3 col-xl-2">
+            <div class="dash-sidebar">
+                <p class="text-uppercase small opacity-50 px-2 mb-2">Client menu</p>
+                <div class="d-grid gap-1">
+                    <a class="side-link active" href="{{ route('customer.overview') }}" data-nav="overview"><i class="bi bi-grid-1x2"></i> Overview</a>
+                    <a class="side-link" href="{{ route('customer.find.lawyer') }}" data-nav="active"><i class="bi bi-calendar2-event"></i> Find Lawyer</a>
+                    <a class="side-link" href="{{ route('customer.my.appointments') }}" data-nav="history"><i class="bi bi-clock-history"></i> My Appointments</a>
+                    <a class="side-link" href="{{ route('customer.my.profile') }}" data-nav="consultations"><i class="bi bi-chat-left-text"></i> My Profile</a>
+                    <a class="side-link" href="{{ route('customer.profile.settings') }}" data-nav="settings"><i class="bi bi-gear"></i> Profile Settings</a>
+                </div>
+                <hr class="border-secondary">
+                </div>
+        </aside>
 
+        <!-- MAIN CONTENT AREA (YEH DIV MISSING THA) -->
+        <main class="col-lg-9 col-xl-10">
+            @yield('customer')
+        </main>
+    </div>
+</div>
 
 
 
