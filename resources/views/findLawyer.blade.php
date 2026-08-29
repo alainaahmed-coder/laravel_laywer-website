@@ -75,70 +75,148 @@
 
         <!-- CARDS GRID -->
         <div class="row g-4">
-          @forelse($lawyers as $lawyer)
-            <div class="col-md-6 col-xl-4">
-              <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white d-flex flex-column justify-content-between">
-                <div>
-                  <!-- Image & Basic Info -->
-                  <div class="d-flex align-items-center gap-3 mb-3">
-                    <img src="{{ !empty($lawyer->image) ? asset('images/Lawyer/' . $lawyer->image) : asset('images/default-avatar.jpg') }}"
-                         alt="{{ $lawyer->name }}"
-                         class="rounded-circle object-fit-cover border"
-                         width="60" height="60">
+     @forelse($lawyers as $lawyer)
+
+    <div class="col-md-6 col-xl-4">
+
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white d-flex flex-column justify-content-between">
+
+            <div>
+
+                <!-- Image & Basic Info -->
+                <div class="d-flex align-items-center gap-3 mb-3">
+
+                   <img
+                                src="{{ asset('uploads/lawyers/' . $lawyer->image) }}"
+                                alt="Lawyer Profile"
+                                width="100"
+                                height="100"
+                                class="rounded-circle object-fit-cover">
+
+
                     <div>
-                      <h6 class="fw-bold mb-1 text-dark d-flex align-items-center gap-1">
-                        {{ $lawyer->name }}
-                        @if(isset($lawyer->is_verified) && $lawyer->is_verified == 1)
-                          <i class="bi bi-patch-check-fill text-warning" title="Verified Advocate"></i>
-                        @endif
-                      </h6>
-                      <div class="small text-warning">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <span class="text-secondary ms-1 fw-semibold">5.0</span>
-                      </div>
-                    </div>
-                  </div>
 
-                  <!-- Specialization & City Badges -->
-                  <div class="d-flex flex-wrap gap-2 mb-3">
-                    <span class="badge bg-light text-dark fw-normal px-3 py-2 rounded-pill border">
-                      {{ $lawyer->specialization ?? 'Lawyer' }}
-                    </span>
-                    @if(!empty($lawyer->city))
-                      <span class="badge bg-warning bg-opacity-10 text-dark fw-normal px-3 py-2 rounded-pill">
-                        <i class="bi bi-geo-alt text-warning me-1"></i>{{ $lawyer->city }}
-                      </span>
-                    @endif
-                  </div>
+                        <h6 class="fw-bold mb-1 text-dark d-flex align-items-center gap-1">
 
-                  <!-- Experience & Fee Details -->
-                  <div class="row g-2 align-items-center mb-3 small text-muted">
-                    <div class="col-6 d-flex align-items-center gap-1">
-                      <i class="bi bi-briefcase fs-6"></i>
-                      <span>{{ $lawyer->experience ?? 0 }} yrs exp</span>
+                            {{ $lawyer->user->name ?? 'Lawyer' }}
+
+                            @if($lawyer->is_verified == 1)
+
+                                <i
+                                    class="bi bi-patch-check-fill text-warning"
+                                    title="Verified Advocate">
+                                </i>
+
+                            @endif
+
+                        </h6>
+
+                        <!-- Rating -->
+                        <div class="small text-warning">
+
+                            @for($i = 1; $i <= 5; $i++)
+                                <i class="bi bi-star-fill"></i>
+                            @endfor
+
+                            <span class="text-secondary ms-1 fw-semibold">
+                                {{ number_format($lawyer->rating ?? 5, 1) }}
+                            </span>
+
+                        </div>
+
                     </div>
-                    <div class="col-6 text-end text-navy fw-bold fs-6">
-                      <i class="bi bi-cash-stack me-1"></i>PKR {{ number_format($lawyer->fee ?? 0) }}
-                    </div>
-                  </div>
+
                 </div>
 
-                <!-- Action Button Dynamic ID ke sath -->
-                <a href="{{ route('lawyer.profile', $lawyer->id) }}" class="btn btn-gold">View Profile</a>
-              </div>
+
+                <!-- Service & City -->
+                <div class="d-flex flex-wrap gap-2 mb-3">
+
+                    <!-- Service -->
+                    <span class="badge bg-light text-dark fw-normal px-3 py-2 rounded-pill border">
+
+                        {{ $lawyer->service->name ?? 'Legal Service' }}
+
+                    </span>
+
+
+                    <!-- City -->
+                    @if($lawyer->city)
+
+                        <span class="badge bg-warning bg-opacity-10 text-dark fw-normal px-3 py-2 rounded-pill">
+
+                            <i class="bi bi-geo-alt text-warning me-1"></i>
+
+                            {{ $lawyer->city->name }}
+
+                        </span>
+
+                    @endif
+
+                </div>
+
+
+                <!-- Experience & Fee -->
+                <div class="row g-2 align-items-center mb-3 small text-muted">
+
+                    <div class="col-6 d-flex align-items-center gap-1">
+
+                        <i class="bi bi-briefcase fs-6"></i>
+
+                        <span>
+                            {{ $lawyer->experience ?? 0 }} yrs exp
+                        </span>
+
+                    </div>
+
+
+                    <div class="col-6 text-end text-navy fw-bold fs-6">
+
+                        <i class="bi bi-cash-stack me-1"></i>
+
+                        PKR {{ number_format($lawyer->fee ?? 0) }}
+
+                    </div>
+
+                </div>
+
             </div>
-          @empty
-            <div class="col-12 text-center py-5 bg-white rounded-4 shadow-sm">
-              <i class="bi bi-search fs-1 text-gold mb-2 d-block"></i>
-              <h3 class="h5">No lawyers match your filters</h3>
-              <p class="text-muted mb-3">Try clearing search keywords or selecting all cities.</p>
-              <a href="{{ route('lawyerfind') }}" class="btn btn-navy">Clear all filters</a>
-            </div>
-          @endforelse
+
+
+            <!-- View Profile -->
+            <a
+                href="{{ route('lawyer.profile', $lawyer->id) }}"
+                class="btn btn-gold">
+                View Profile
+            </a>
+
+        </div>
+
+    </div>
+
+@empty
+
+    <div class="col-12 text-center py-5 bg-white rounded-4 shadow-sm">
+
+        <i class="bi bi-search fs-1 text-gold mb-2 d-block"></i>
+
+        <h3 class="h5">
+            No lawyers match your filters
+        </h3>
+
+        <p class="text-muted mb-3">
+            Try clearing search keywords or selecting all cities.
+        </p>
+
+        <a
+            href="{{ route('lawyerfind') }}"
+            class="btn btn-navy">
+            Clear all filters
+        </a>
+
+    </div>
+
+@endforelse
         </div>
       </div>
 

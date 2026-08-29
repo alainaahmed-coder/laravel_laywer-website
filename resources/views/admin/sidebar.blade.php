@@ -37,31 +37,27 @@
       <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#dashNav" aria-label="Toggle navigation">
         <i class="bi bi-list fs-2 text-navy"></i>
       </button>
-      <div class="collapse navbar-collapse" id="dashNav">
-        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+     <div class="collapse navbar-collapse" id="dashNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
+            <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
+            <li><a class="dropdown-item rounded-2" href="{{route('profile.edit')}}" data-nav="">Profile settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+             <form method="POST" action="{{ route('logout') }}">
+                            @csrf
 
-          <li class="nav-item dropdown">
-            {{-- <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
-              <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
-            </a> --}}
-            <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
-              <li><a class="dropdown-item rounded-2" href="{{route('profile.edit')}}" data-nav="">Profile settings</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-
-                <x-dropdown-link :href="route('logout')"
-                  onclick="event.preventDefault();
+                            <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                  {{ __('Log Out') }}
-                </x-dropdown-link>
-              </form>
-            </ul>
-          </li>
-        </ul>
-      </div>
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>  </ul>
+        </li>
+      </ul>
+    </div>
     </div>
   </nav>
 

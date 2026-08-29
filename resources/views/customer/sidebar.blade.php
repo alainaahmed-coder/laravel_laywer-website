@@ -26,10 +26,7 @@
       <i class="bi bi-list fs-2 text-navy"></i>
     </button>
     <div class="collapse navbar-collapse" id="dashNav">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-        <li class="nav-item"><a class="nav-link" href="lawyers.html">Find Lawyers</a></li>
-        <li class="nav-item"><a class="nav-link" href="dashboard-lawyer.html">Lawyer Panel</a></li>
-        <li class="nav-item"><a class="nav-link" href="dashboard-admin.html">Admin Panel</a></li>
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
             <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
