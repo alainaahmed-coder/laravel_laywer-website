@@ -513,6 +513,26 @@ Route::post('/admin/website-content/update', [
 ])->name('admin.website_content.update');
 
 
+
+
+/*
+|--------------------------------------------------------------------------
+| Customer Appointment Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->group(function () {
+
+    // 1. Customer se Appointment Form Submit karne ke liye
+    Route::post('/appointments/store', [AppointmentController::class, 'store'])
+        ->name('appointments.store');
+
+    // 2. Customer ki apni Booked Appointments Table View karne ke liye
+    Route::get('/customer/my-appointments', [AppointmentController::class, 'myAppointments'])
+        ->name('customer.myappointments');
+
+});
+
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes

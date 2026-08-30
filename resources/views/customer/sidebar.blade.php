@@ -60,7 +60,7 @@
                 <div class="d-grid gap-1">
                     <a class="side-link active" href="{{ route('customer.overview') }}" data-nav="overview"><i class="bi bi-grid-1x2"></i> Overview</a>
                     <a class="side-link" href="{{ route('customer.find.lawyer') }}" data-nav="active"><i class="bi bi-calendar2-event"></i> Find Lawyer</a>
-                    <a class="side-link" href="{{ route('customer.my.appointments') }}" data-nav="history"><i class="bi bi-clock-history"></i> My Appointments</a>
+                    <a class="side-link" href="{{ route('customer.myappointments') }}" data-nav="history"><i class="bi bi-clock-history"></i> My Appointments</a>
                     <a class="side-link" href="{{ route('customer.my.profile') }}" data-nav="consultations"><i class="bi bi-chat-left-text"></i> My Profile</a>
                     <a class="side-link" href="{{ route('customer.profile.settings') }}" data-nav="settings"><i class="bi bi-gear"></i> Profile Settings</a>
                 </div>
