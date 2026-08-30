@@ -23,6 +23,155 @@
       display: inline-block !important;
       vertical-align: middle !important;
     }
+    /* Latest Appointments */
+.latest-appointments {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+.latest-appointments table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.latest-appointments thead tr {
+    background: #0f172a !important;
+}
+
+.latest-appointments thead th {
+    color: #cbd5e1 !important;
+    background: #0f172a !important;
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    white-space: nowrap;
+}
+
+.latest-appointments tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: .2s ease;
+}
+
+.latest-appointments tbody tr:hover {
+    background: #fffbeb !important;
+}
+
+.latest-appointments tbody td {
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #475569;
+}
+
+/* ID */
+.appointment-id {
+    display: inline-block;
+    padding: 4px 8px;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* Customer */
+.customer-dot {
+    width: 6px;
+    height: 6px;
+    background: #f59e0b;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 7px;
+}
+
+.customer-name,
+.lawyer-name {
+    color: #0f172a !important;
+    font-weight: 700;
+}
+
+/* Lawyer */
+.lawyer-dot {
+    width: 6px;
+    height: 6px;
+    background: #0f172a;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 7px;
+}
+
+/* Meeting Type */
+.meeting-type {
+    display: inline-block;
+    padding: 4px 8px;
+    background: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* Approved */
+.status-approved {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* Rejected */
+.status-rejected {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* Status Dot */
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-approved .status-dot {
+    background: #10b981;
+}
+
+.status-rejected .status-dot {
+    background: #ef4444;
+}
+
+/* View All */
+.latest-view-all {
+    background: #0f172a !important;
+    color: #f59e0b !important;
+    border: 1px solid #0f172a !important;
+    font-weight: 700;
+}
+
+.latest-view-all:hover {
+    background: #f59e0b !important;
+    color: #0f172a !important;
+}
   </style>
 </head>
 
@@ -37,27 +186,30 @@
       <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#dashNav" aria-label="Toggle navigation">
         <i class="bi bi-list fs-2 text-navy"></i>
       </button>
-     <div class="collapse navbar-collapse" id="dashNav">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">        
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
-            <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
-            <li><a class="dropdown-item rounded-2" href="{{route('profile.edit')}}" data-nav="">Profile settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-             <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+      <div class="collapse navbar-collapse" id="dashNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
+              <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
+              <li><a class="dropdown-item rounded-2" href="{{route('profile.edit')}}" data-nav="">Profile settings</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <form method="POST" action="{{ route('logout') }}">
+                @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                <x-dropdown-link :href="route('logout')"
+                  onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>  </ul>
-        </li>
-      </ul>
-    </div>
+                  {{ __('Log Out') }}
+                </x-dropdown-link>
+              </form>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 
@@ -90,13 +242,18 @@
             </a>
 
             <a class="side-link {{ request()->routeIs('admin.lawyers') ? 'active' : '' }}"
-   href="{{ route('admin.lawyers') }}">
-   <i class="bi bi-people"></i> Lawyers
-</a>
+              href="{{ route('admin.lawyers') }}">
+              <i class="bi bi-people"></i> Lawyers
+            </a>
 
             <a class="side-link {{ request()->routeIs('admin.appointments') ? 'active' : '' }}"
               href="{{ route('admin.appointments') }}">
               <i class="bi bi-calendar-check"></i> Appointments
+            </a>
+
+            <a class="side-link {{ request()->routeIs('admin.History') ? 'active' : '' }}"
+              href="{{ route('admin.History') }}">
+              <i class="bi bi-clock-history"></i> History
             </a>
 
             <a class="side-link {{ request()->routeIs('admin.website.content') ? 'active' : '' }}"

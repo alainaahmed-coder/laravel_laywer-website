@@ -61,7 +61,6 @@ Route::post('/contact/send', [
 Route::get('/dashboard', function () {
 
     $user = Auth::user();
-
     if ($user->role === 'admin') {
         return redirect()->route('admindashboard');
     }
@@ -75,9 +74,8 @@ Route::get('/dashboard', function () {
     }
 
     abort(403);
-
 })->middleware(['auth', 'verified'])
-  ->name('dashboard');
+    ->name('dashboard');
 
 
 /*
@@ -102,7 +100,6 @@ Route::middleware('auth')->group(function () {
         ProfileController::class,
         'destroy'
     ])->name('profile.destroy');
-
 });
 
 
@@ -118,7 +115,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         admindashboardController::class,
         'admindashboard'
     ])->name('admindashboard');
-
 });
 
 
@@ -134,7 +130,6 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
         customerdashboardController::class,
         'customerdashboard'
     ])->name('customerdashboard');
-
 });
 
 
@@ -150,7 +145,6 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
         lawyerdashboardController::class,
         'lawyerdashboard'
     ])->name('lawyerdashboard');
-
 });
 
 
@@ -273,7 +267,6 @@ Route::prefix('lawyer')
             LawyerSidebarController::class,
             'settings'
         ])->name('settings');
-
     });
 
 
@@ -318,6 +311,11 @@ Route::prefix('admin')
             'appointments'
         ])->name('appointments');
 
+        Route::get('/History', [
+            AdminSidebarController::class,
+            'History'
+        ])->name('History');
+
         Route::get('/website-content', [
             AdminSidebarController::class,
             'websiteContent'
@@ -327,7 +325,6 @@ Route::prefix('admin')
             AdminSidebarController::class,
             'settings'
         ])->name('settings');
-
     });
 
 
@@ -372,7 +369,6 @@ Route::prefix('customer')
             CustomerSidebarController::class,
             'profileSettings'
         ])->name('profile.settings');
-
     });
 
 
@@ -492,7 +488,6 @@ Route::prefix('admin')
             admindashboardController::class,
             'deleteCities'
         ])->name('customers.deleteCities');
-
     });
 
 

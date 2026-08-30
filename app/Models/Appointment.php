@@ -25,7 +25,7 @@ class Appointment extends Model
 
     public function lawyer()
     {
-        return $this->belongsTo(Lawyer::class);
+        return $this->belongsTo(Lawyer::class, 'lawyer_id');
     }
 
     public function customer()

@@ -220,17 +220,6 @@
 
                                     </span>
 
-                                    
-                                 @elseif($appointment->status === 'pending')
-
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-info-50 text-dark-700 rounded-lg font-bold text-xs border border-red-100">
-
-                                        <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-
-                                        Pending
-
-                                    </span>
-
                                 @else
 
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg font-bold text-xs border border-slate-200">

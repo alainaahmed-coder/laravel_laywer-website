@@ -1,28 +1,177 @@
 @extends('admin.sidebar')
 @section('admin')
-    <main class="col-lg-9 col-xl-10">
-      <section data-pane="overview">
-        <h1 class="h4 mb-1">Platform dashboard</h1>
-        <p class="text-muted-legal">System-wide activity for August 2026.</p>
-        <div class="row g-3 mb-4">
-          <div class="col-6 col-xl-3"><div class="card-legal stat-card p-3"><small class="text-muted-legal">Total lawyers</small><div class="stat-value">1,214</div></div></div>
-          <div class="col-6 col-xl-3"><div class="card-legal stat-card p-3"><small class="text-muted-legal">Total customers</small><div class="stat-value">18,930</div></div></div>
-          <div class="col-6 col-xl-3"><div class="card-legal stat-card p-3"><small class="text-muted-legal">Pending approvals</small><div class="stat-value text-warning">27</div></div></div>
-          <div class="col-6 col-xl-3"><div class="card-legal stat-card p-3"><small class="text-muted-legal">Appointments (30d)</small><div class="stat-value">3,486</div></div></div>
+<main class="col-lg-12 col-xl-12">
+  <section data-pane="overview">
+    <h1 class="h4 mb-1">Platform dashboard</h1>
+    <p class="text-muted-legal">System-wide activity for August 2026.</p>
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-xl-3">
+        <div class="card-legal stat-card p-3"><small class="text-muted-legal">Total lawyers</small>
+          <div class="stat-value">{{$lawyers}}</div>
         </div>
-        <div class="row g-4">
-          <div class="col-xl-7"><div class="card-legal p-4 h-100">
-            <h2 class="h6 text-uppercase text-muted-legal mb-3">Latest appointment activity</h2>
-            <div class="d-grid gap-3" id="activityList"></div>
-          </div></div>
-          <div class="col-xl-5"><div class="card-legal p-4 h-100">
-            <h2 class="h6 text-uppercase text-muted-legal mb-3">Bookings by practice area</h2>
-            <div class="d-grid gap-3" id="areaBars"></div>
-          </div></div>
+      </div>
+      <div class="col-6 col-xl-3">
+        <div class="card-legal stat-card p-3"><small class="text-muted-legal">Total customers</small>
+          <div class="stat-value">{{$Customers}}</div>
         </div>
-      </section>
+      </div>
+      <div class="col-6 col-xl-3">
+        <div class="card-legal stat-card p-3"><small class="text-muted-legal">Total Cities</small>
+          <div class="stat-value text-warning">{{$totleCities}}</div>
+        </div>
+      </div>
+      <div class="col-6 col-xl-3">
+        <div class="card-legal stat-card p-3"><small class="text-muted-legal">Complete Appointments</small>
+          <div class="stat-value">3,486</div>
+        </div>
+      </div>
+    </div>
+    
+    {{-- Latest Appointment Activity --}}
+    <div class="row g-4">
 
-      {{-- <section data-pane="approvals" class="d-none">
+      <div class="col-xl-12">
+
+        <div class="card-legal p-3 h-100">
+
+          {{-- Header --}}
+          <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <div>
+              <h2 class="h6 text-uppercase text-muted-legal mb-1">
+                Latest Appointment Activity
+              </h2>
+
+              <p class="text-muted small mb-0">
+                Recent approved and rejected appointments
+              </p>
+            </div>
+
+            <a href="{{ route('admin.appointments') }}"
+              class="btn btn-sm btn-navy px-3 rounded-3">
+              View All
+            </a>
+
+          </div>
+
+
+          {{-- Table --}}
+          <div class="latest-appointments">
+
+            <div class="table-responsive">
+
+              <table>
+
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Lawyer</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Type</th>
+                    <th>Case</th>
+                    <th class="text-center">Status</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  @forelse($appoinmnets as $appointment)
+
+                  <tr>
+
+                    <td>
+                      <span class="appointment-id">
+                        #{{ $appointment->id }}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span class="customer-dot"></span>
+                      <span class="customer-name">
+                        {{ $appointment->customer->name ?? 'N/A' }}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span class="lawyer-dot"></span>
+                      <span class="lawyer-name">
+                        {{ $appointment->lawyer->user->name ?? 'N/A' }}
+                      </span>
+                    </td>
+
+                    <td>
+                      {{ $appointment->appointment_date
+                                ? $appointment->appointment_date->format('d M, Y')
+                                : 'N/A' }}
+                    </td>
+
+                    <td>
+                      {{ $appointment->appointment_time
+                                ? \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A')
+                                : 'N/A' }}
+                    </td>
+
+                    <td>
+                      <span class="meeting-type">
+                        {{ ucfirst($appointment->meeting_type ?? 'N/A') }}
+                      </span>
+                    </td>
+
+                    <td>
+                      {{ Str::limit($appointment->case_summary ?? 'N/A', 25) }}
+                    </td>
+
+                    <td class="text-center">
+
+                      @if($appointment->status === 'approved')
+
+                      <span class="status-approved">
+                        <span class="status-dot"></span>
+                        Approved
+                      </span>
+
+                      @elseif($appointment->status === 'pending')
+
+                      <span class="status-rejected">
+                        <span class="status-dot"></span>
+                        Pending
+                      </span>
+
+                      @endif
+
+                    </td>
+
+                  </tr>
+
+                  @empty
+
+                  <tr>
+                    <td colspan="8" class="text-center py-4">
+                      No appointment activity found.
+                    </td>
+                  </tr>
+
+                  @endforelse
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  
+
+  </section>
+
+  {{-- <section data-pane="approvals" class="d-none">
         <h1 class="h4 mb-3">Approve / reject lawyer profiles</h1>
         <div class="row g-4" id="approvalCards"></div>
       </section>
@@ -117,4 +266,4 @@
  --}}
 
 
-@endsection
+  @endsection
