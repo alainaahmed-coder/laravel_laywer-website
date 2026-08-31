@@ -37,8 +37,7 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="bg-light">
                         <tr class="text-secondary small text-uppercase">
-                            <th class="ps-4">#ID</th>
-                            <th>Lawyer ID</th>
+                            <th class="text-center">Lawyer</th>
                             <th>Date & Time</th>
                             <th>Meeting Type</th>
                             <th>Case Summary</th>
@@ -49,10 +48,10 @@
                     <tbody>
                         @forelse($appointments as $appointment)
                         <tr>
-                            <td class="ps-4 fw-bold text-primary">#{{ $appointment->id }}</td>
+
                             <td>
-                                <h6 class="mb-0 fw-semibold text-dark">
-                                    {{ $appointment->lawyer->name ?? 'Lawyer #'.$appointment->lawyer_id }}
+                                <h6 class="mb-0 fw-semibold text-dark text-center">
+                                    {{ $appointment->lawyer->user->name}}
                                 </h6>
                             </td>
                             <td>
@@ -97,6 +96,16 @@
                                         Cancel
                                     </button>
                                 </form>
+                                @else
+                                <span style="cursor: not-allowed;">
+                                    <button type="button"
+                                        class="btn btn-sm btn-outline-secondary"
+                                        disabled
+                                        style="pointer-events: none;">
+                                        <i class="bi bi-x-circle me-1"></i>
+                                        Cancel
+                                    </button>
+                                </span>
                                 @endif
                             </td>
                         </tr>
