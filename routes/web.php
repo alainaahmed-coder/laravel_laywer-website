@@ -141,10 +141,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
 Route::middleware(['auth', 'role:lawyer'])->group(function () {
 
-    Route::get('/lawyer-dashboard', [
-        lawyerdashboardController::class,
-        'lawyerdashboard'
-    ])->name('lawyerdashboard');
+    // Method name corrected from 'dashboard' to 'lawyerdashboard'
+    Route::get('/lawyer-dashboard', [lawyerdashboardController::class, 'lawyerdashboard'])->name('lawyerdashboard');
 });
 
 
@@ -384,6 +382,10 @@ Route::prefix('customer')
             CustomerSidebarController::class,
             'profileSettings'
         ])->name('profile.settings');
+
+        // Customer Sidebar Routes Group ke andar add karein:
+        Route::get('/history', [CustomerSidebarController::class, 'history'])
+            ->name('history'); // prefix 'customer.' ke sath ye 'customer.history' banega
     });
 
 
@@ -536,8 +538,8 @@ Route::middleware(['auth'])->group(function () {
     // 1. Customer se Appointment Form Submit karne ke liye
     Route::post('/appointments/store', [AppointmentController::class, 'store'])
         ->name('appointments.store');
-Route::get('/customer/my-appointments', [AppointmentController::class, 'myAppointments'])
-    ->name('customer.myappointments');
+    Route::get('/customer/my-appointments', [AppointmentController::class, 'myAppointments'])
+        ->name('customer.myappointments');
 });
 
 /*

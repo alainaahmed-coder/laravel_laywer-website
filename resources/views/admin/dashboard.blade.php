@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    
+
     {{-- Latest Appointment Activity --}}
     <div class="row g-4">
 
@@ -77,7 +77,7 @@
 
                 <tbody>
 
-                  @forelse($appoinmnets as $appointment)
+              @forelse($appointments as $appointment)
 
                   <tr>
 
@@ -167,7 +167,7 @@
       </div>
 
     </div>
-  
+
 
   </section>
 

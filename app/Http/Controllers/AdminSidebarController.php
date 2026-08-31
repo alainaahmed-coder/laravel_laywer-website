@@ -109,29 +109,21 @@ class AdminSidebarController extends Controller
 
     // ================= APPOINTMENTS =================
 
-    public function appointments()
-    {
-        $appointments = Appointment::with([
-            'lawyer',
-            'customer'
-        ])
-        ->whereIn('status', ['approved', 'rejected' ,'pending'])
-        ->latest()
+   // ================= APPOINTMENT HISTORY =================
+
+public function appointmentHistory()
+{
+    $appointments = Appointment::with('customer')
+        ->whereHas('lawyer', function ($query) {
+            $query->where('user_id', Auth::id());
+        })
+        ->where('status', 'completed')
+        ->latest('appointment_date')
+        ->latest('appointment_time')
         ->get();
 
-        return view('admin.appointments', compact('appointments'));
-    }
-
-    function History(){
-        $appointments = Appointment::with([
-            'lawyer',
-            'customer'
-        ])
-        ->where('status', 'rejected')
-        ->latest()
-        ->get();
-        return view('admin.history', compact('appointments'));
-    }
+    return view('lawyer.appointmenthistory', compact('appointments'));
+}
 
 
     // ================= WEBSITE CONTENT =================

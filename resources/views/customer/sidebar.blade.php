@@ -79,6 +79,11 @@
               <i class="bi bi-clock-history"></i> My Appointments
             </a>
 
+<a class="side-link {{ request()->routeIs('customer.history') ? 'active' : '' }}"
+              href="{{ route('customer.history') }}">
+              <i class="bi bi-clock-history"></i> History
+            </a>
+
             <a class="side-link {{ request()->routeIs('customer.my.profile') ? 'active' : '' }}"
               href="{{ route('customer.my.profile') }}">
               <i class="bi bi-chat-left-text"></i> My Profile

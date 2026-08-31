@@ -106,4 +106,19 @@ class CustomerSidebarController extends Controller
         $user = Auth::user();
         return view('customer.profilesettings', compact('user'));
     }
+
+
+    public function history()
+{
+    $userId = auth()->id();
+
+    // Sirf completed aur cancelled appointments History ke liye
+   $appointments = Appointment::with('lawyer.user')
+    ->where('customer_id', $userId)
+    ->whereIn('status', ['completed', 'cancelled'])
+    ->latest()
+    ->paginate(10);
+
+    return view('customer.history', compact('appointments'));
+}
 }
