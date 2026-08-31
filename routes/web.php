@@ -61,7 +61,6 @@ Route::post('/contact/send', [
 Route::get('/dashboard', function () {
 
     $user = Auth::user();
-
     if ($user->role === 'admin') {
         return redirect()->route('admindashboard');
     }
@@ -75,9 +74,8 @@ Route::get('/dashboard', function () {
     }
 
     abort(403);
-
 })->middleware(['auth', 'verified'])
-  ->name('dashboard');
+    ->name('dashboard');
 
 
 /*
@@ -102,7 +100,6 @@ Route::middleware('auth')->group(function () {
         ProfileController::class,
         'destroy'
     ])->name('profile.destroy');
-
 });
 
 
@@ -118,7 +115,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         admindashboardController::class,
         'admindashboard'
     ])->name('admindashboard');
-
 });
 
 
@@ -134,7 +130,6 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
         customerdashboardController::class,
         'customerdashboard'
     ])->name('customerdashboard');
-
 });
 
 
@@ -150,7 +145,6 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
         lawyerdashboardController::class,
         'lawyerdashboard'
     ])->name('lawyerdashboard');
-
 });
 
 
@@ -250,6 +244,16 @@ Route::prefix('lawyer')
             'clients'
         ])->name('clients');
 
+        Route::post(
+            '/lawyer/clients/{id}/completed',
+            [LawyerSidebarController::class, 'markCompleted']
+        )->name('client.completed');
+
+        Route::post(
+            '/lawyer/clients/{id}/not-completed',
+            [LawyerSidebarController::class, 'markNotCompleted']
+        )->name('client.not_completed');
+
 
         /*
         |----------------------------------------------------------------------
@@ -273,7 +277,6 @@ Route::prefix('lawyer')
             LawyerSidebarController::class,
             'settings'
         ])->name('settings');
-
     });
 
 
@@ -318,6 +321,11 @@ Route::prefix('admin')
             'appointments'
         ])->name('appointments');
 
+        Route::get('/History', [
+            AdminSidebarController::class,
+            'History'
+        ])->name('History');
+
         Route::get('/website-content', [
             AdminSidebarController::class,
             'websiteContent'
@@ -327,7 +335,6 @@ Route::prefix('admin')
             AdminSidebarController::class,
             'settings'
         ])->name('settings');
-
     });
 
 
@@ -347,8 +354,9 @@ Route::prefix('customer')
             'overview'
         ])->name('overview');
 
+        // CONNECTED TO CustomerController WITH ROUTE NAME: customer.find.lawyer
         Route::get('/find-lawyer', [
-            CustomerSidebarController::class,
+            CustomerController::class,
             'findLawyer'
         ])->name('find.lawyer');
 
@@ -357,7 +365,11 @@ Route::prefix('customer')
             'myAppointments'
         ])->name('my.appointments');
 
-        // UPDATED: Connected to CustomerController
+        Route::patch(
+            '/customer/appointment/{appointment}/cancel',
+            [AppointmentController::class, 'cancel']
+        )->name('appointment.cancel');
+
         Route::get('/my-profile', [
             CustomerController::class,
             'myProfile'
@@ -372,7 +384,6 @@ Route::prefix('customer')
             CustomerSidebarController::class,
             'profileSettings'
         ])->name('profile.settings');
-
     });
 
 
@@ -492,7 +503,6 @@ Route::prefix('admin')
             admindashboardController::class,
             'deleteCities'
         ])->name('customers.deleteCities');
-
     });
 
 
@@ -526,11 +536,8 @@ Route::middleware(['auth'])->group(function () {
     // 1. Customer se Appointment Form Submit karne ke liye
     Route::post('/appointments/store', [AppointmentController::class, 'store'])
         ->name('appointments.store');
-
-    // 2. Customer ki apni Booked Appointments Table View karne ke liye
-    Route::get('/customer/my-appointments', [AppointmentController::class, 'myAppointments'])
-        ->name('customer.myappointments');
-
+Route::get('/customer/my-appointments', [AppointmentController::class, 'myAppointments'])
+    ->name('customer.myappointments');
 });
 
 /*

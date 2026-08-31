@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\Lawyer;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Appointment;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,22 +19,28 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-   protected $fillable = [
-    'name',
-    'email',
-    'password',
-    'phone',
-    'role',
-    'profile_picture',
-    'city',
-    'address',
-    'cnic',
-];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+        'role',
+        'profile_picture',
+        'city',
+        'address',
+        'cnic',
+    ];
 
     public function lawyer()
-{
-    return $this->hasOne(Lawyer::class);
-}
+    {
+        return $this->hasOne(Lawyer::class);
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'customer_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -56,8 +63,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-
-
-
 }

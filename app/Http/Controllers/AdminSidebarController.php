@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\City;
 use App\Models\Service;
+use App\Models\Appointment;
+use App\Models\Lawyer;
+use App\Models\User;
 
 class AdminSidebarController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $lawyers = Lawyer::all()->count();
+        $Customers = User::where('role','customer')->get()->count();
+        $totleCities = City::all()->count();
+        $appoinmnets = Appointment::with(['lawyer','customer'])->where('status','pending')->latest()->get();
+        return view('admin.dashboard', compact('lawyers', 'Customers', 'totleCities','appoinmnets'));
     }
 
     public function customers()
@@ -18,13 +25,16 @@ class AdminSidebarController extends Controller
         return view('admin.customers');
     }
 
-    // Cities
+
+    // ================= CITIES =================
+
     public function cities()
     {
         $cities = City::latest()->get();
 
         return view('admin.cities', compact('cities'));
     }
+
 
     // New City Save
     public function storeCity(Request $request)
@@ -41,6 +51,7 @@ class AdminSidebarController extends Controller
             ->back()
             ->with('success', 'City added successfully!');
     }
+
 
     // City Update
     public function updateCity(Request $request)
@@ -61,6 +72,7 @@ class AdminSidebarController extends Controller
             ->with('success', 'City updated successfully!');
     }
 
+
     // City Delete
     public function destroyCity(Request $request)
     {
@@ -74,6 +86,7 @@ class AdminSidebarController extends Controller
     }
 
 
+
     // ================= SERVICES =================
 
     public function services()
@@ -84,17 +97,44 @@ class AdminSidebarController extends Controller
     }
 
 
+
+    // ================= SCHEDULES =================
+
     public function schedules()
     {
         return view('admin.schedules');
     }
 
 
+
+    // ================= APPOINTMENTS =================
+
     public function appointments()
     {
-        return view('admin.appointments');
+        $appointments = Appointment::with([
+            'lawyer',
+            'customer'
+        ])
+        ->whereIn('status', ['approved', 'rejected' ,'pending'])
+        ->latest()
+        ->get();
+
+        return view('admin.appointments', compact('appointments'));
     }
 
+    function History(){
+        $appointments = Appointment::with([
+            'lawyer',
+            'customer'
+        ])
+        ->where('status', 'rejected')
+        ->latest()
+        ->get();
+        return view('admin.history', compact('appointments'));
+    }
+
+
+    // ================= WEBSITE CONTENT =================
 
     public function websiteContent()
     {
@@ -102,10 +142,13 @@ class AdminSidebarController extends Controller
     }
 
 
-  public function settings()
-{
-    $user = auth()->user();
 
-    return view('admin.settings', compact('user'));
-}
+    // ================= SETTINGS =================
+
+    public function settings()
+    {
+        $user = auth()->user();
+
+        return view('admin.settings', compact('user'));
+    }
 }

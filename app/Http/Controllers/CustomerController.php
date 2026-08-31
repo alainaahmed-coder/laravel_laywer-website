@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Lawyer;
+use App\Models\City;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -77,18 +80,17 @@ class CustomerController extends Controller
 
 
     // ==========================================
-    // CUSTOMER DASHBOARD METHODS (My Profile)
+    // CUSTOMER DASHBOARD METHODS
     // ==========================================
 
     // My Profile View
     public function myProfile()
     {
         $user = Auth::user();
-        // Yeh view usi customer.myprofile file par point karega jo aapne banayi hai
         return view('customer.myprofile', compact('user'));
     }
 
-public function updateProfile(Request $request)
+    public function updateProfile(Request $request)
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -126,4 +128,33 @@ public function updateProfile(Request $request)
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
+    // Find Lawyer View (Customer Dashboard)
+    public function findLawyer(Request $request)
+    {
+        $query = Lawyer::with(['user', 'city', 'service']);
+
+        // Search Keyword
+        if ($request->filled('q')) {
+            $search = $request->q;
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
+        }
+
+        // City Filter
+        if ($request->filled('city')) {
+            $query->where('city_id', $request->city);
+        }
+
+        // Service Filter
+        if ($request->filled('spec')) {
+            $query->where('service_id', $request->spec);
+        }
+
+        $lawyers = $query->latest()->get();
+        $cities = City::all();
+        $services = Service::all();
+
+        return view('customer.findlawyer', compact('lawyers', 'cities', 'services'));
     }
+}

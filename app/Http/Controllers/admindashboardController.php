@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\city;
 use App\Models\service;
 use App\Models\Lawyer;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class admindashboardController extends Controller
 {
     public function admindashboard()
     {
-        return view('admin.dashboard');
+       $lawyers = Lawyer::all()->count();
+        $Customers = User::where('role','customer')->get()->count();
+        $totleCities = City::all()->count();
+        // $appoinmnets = Appointment::where('status','Completd')->get()->count();
+        return view('admin.dashboard', compact('lawyers', 'Customers', 'totleCities',));
     }
 
     ///////////////////////////////////

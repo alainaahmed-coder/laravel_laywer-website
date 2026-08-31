@@ -1,4 +1,3 @@
-
 @extends('user.navbar')
 
 @section('user')
@@ -62,8 +61,7 @@
                             alt="Lawyer Profile"
                             width="100"
                             height="100"
-                            class="rounded-circle object-fit-cover"
-                        >
+                            class="rounded-circle object-fit-cover">
 
 
                         <div>
@@ -77,10 +75,10 @@
 
                                 @if($lawyer->is_verified)
 
-                                    <i
-                                        class="bi bi-patch-check-fill text-gold"
-                                        title="Verified">
-                                    </i>
+                                <i
+                                    class="bi bi-patch-check-fill text-gold"
+                                    title="Verified">
+                                </i>
 
                                 @endif
 
@@ -93,11 +91,11 @@
 
                                 @php
 
-                                    $rating =
-                                        $lawyer->rating ?? 5.0;
+                                $rating =
+                                $lawyer->rating ?? 5.0;
 
-                                    $totalReviews =
-                                        $lawyer->total_reviews ?? 0;
+                                $totalReviews =
+                                $lawyer->total_reviews ?? 0;
 
                                 @endphp
 
@@ -105,23 +103,23 @@
                                 @for($i = 1; $i <= 5; $i++)
 
                                     <i
-                                        class="bi bi-star{{ $i <= round($rating) ? '-fill' : '' }} text-warning">
+                                    class="bi bi-star{{ $i <= round($rating) ? '-fill' : '' }} text-warning">
                                     </i>
 
-                                @endfor
+                                    @endfor
 
 
-                                <span class="text-muted-legal small ms-1">
+                                    <span class="text-muted-legal small ms-1">
 
-                                    {{ number_format($rating, 1) }}
+                                        {{ number_format($rating, 1) }}
 
-                                    ·
+                                        ·
 
-                                    {{ $totalReviews }}
+                                        {{ $totalReviews }}
 
-                                    reviews
+                                        reviews
 
-                                </span>
+                                    </span>
 
                             </div>
 
@@ -130,29 +128,28 @@
 
                             <div
                                 class="d-flex flex-wrap gap-2"
-                                id="pTags"
-                            >
+                                id="pTags">
 
                                 @if($lawyer->service)
 
-                                    <span class="badge-spec small">
+                                <span class="badge-spec small">
 
-                                        {{ $lawyer->service->name }}
+                                    {{ $lawyer->service->name }}
 
-                                    </span>
+                                </span>
 
                                 @endif
 
 
                                 @if($lawyer->city)
 
-                                    <span class="badge-gold small">
+                                <span class="badge-gold small">
 
-                                        <i class="bi bi-geo-alt me-1"></i>
+                                    <i class="bi bi-geo-alt me-1"></i>
 
-                                        {{ $lawyer->city->name }}
+                                    {{ $lawyer->city->name }}
 
-                                    </span>
+                                </span>
 
                                 @endif
 
@@ -202,40 +199,39 @@
 
                     <ul
                         class="list-unstyled d-grid gap-2 mb-4"
-                        id="pQuals"
-                    >
+                        id="pQuals">
 
                         @if(is_array($lawyer->qualifications))
 
-                            @foreach($lawyer->qualifications as $qual)
+                        @foreach($lawyer->qualifications as $qual)
 
-                                <li>
+                        <li>
 
-                                    <i class="bi bi-check2-circle text-gold me-2"></i>
+                            <i class="bi bi-check2-circle text-gold me-2"></i>
 
-                                    {{ $qual }}
+                            {{ $qual }}
 
-                                </li>
+                        </li>
 
-                            @endforeach
+                        @endforeach
 
                         @elseif(!empty($lawyer->qualifications))
 
-                            <li>
+                        <li>
 
-                                <i class="bi bi-check2-circle text-gold me-2"></i>
+                            <i class="bi bi-check2-circle text-gold me-2"></i>
 
-                                {{ $lawyer->qualifications }}
+                            {{ $lawyer->qualifications }}
 
-                            </li>
+                        </li>
 
                         @else
 
-                            <li class="text-muted small">
+                        <li class="text-muted small">
 
-                                N/A
+                            N/A
 
-                            </li>
+                        </li>
 
                         @endif
 
@@ -259,8 +255,7 @@
 
                                 <span
                                     class="fw-semibold"
-                                    id="pAddress"
-                                >
+                                    id="pAddress">
 
                                     {{ $lawyer->office_address
                                         ?? ($lawyer->city->name ?? 'Not available') }}
@@ -285,8 +280,7 @@
 
                                 <span
                                     class="fw-semibold text-navy fs-5"
-                                    id="pFee"
-                                >
+                                    id="pFee">
 
                                     Rs.
 
@@ -311,8 +305,7 @@
                 <div class="card-legal p-4 p-lg-5 mt-4">
 
                     <div
-                        class="d-flex justify-content-between align-items-center mb-4"
-                    >
+                        class="d-flex justify-content-between align-items-center mb-4">
 
                         <h2 class="h5 mb-0">
 
@@ -338,63 +331,61 @@
 
                     <div
                         class="d-grid gap-3"
-                        id="reviewList"
-                    >
+                        id="reviewList">
 
                         @forelse($lawyer->reviews ?? [] as $review)
 
-                            <div class="p-3 border rounded-3">
+                        <div class="p-3 border rounded-3">
 
-                                <div
-                                    class="d-flex justify-content-between align-items-center"
-                                >
+                            <div
+                                class="d-flex justify-content-between align-items-center">
 
-                                    <strong class="text-navy">
+                                <strong class="text-navy">
 
-                                        {{ $review->user_name ?? 'Anonymous Client' }}
+                                    {{ $review->user_name ?? 'Anonymous Client' }}
 
-                                    </strong>
+                                </strong>
 
 
-                                    <small class="text-muted-legal">
+                                <small class="text-muted-legal">
 
-                                        {{ $review->created_at
+                                    {{ $review->created_at
                                             ? $review->created_at->diffForHumans()
                                             : 'Recently' }}
 
-                                    </small>
-
-                                </div>
-
-
-                                <div class="rating my-1">
-
-                                    @for($i = 1; $i <= 5; $i++)
-
-                                        <i
-                                            class="bi bi-star{{ $i <= $review->rating ? '-fill' : '' }} text-warning">
-                                        </i>
-
-                                    @endfor
-
-                                </div>
-
-
-                                <p class="mb-0 small text-muted-legal">
-
-                                    {{ $review->comment ?? $review->text ?? '' }}
-
-                                </p>
+                                </small>
 
                             </div>
 
-                        @empty
 
-                            <p class="text-muted small mb-0">
+                            <div class="rating my-1">
 
-                                No reviews available yet.
+                                @for($i = 1; $i <= 5; $i++)
+
+                                    <i
+                                    class="bi bi-star{{ $i <= $review->rating ? '-fill' : '' }} text-warning">
+                                    </i>
+
+                                    @endfor
+
+                            </div>
+
+
+                            <p class="mb-0 small text-muted-legal">
+
+                                {{ $review->comment ?? $review->text ?? '' }}
 
                             </p>
+
+                        </div>
+
+                        @empty
+
+                        <p class="text-muted small mb-0">
+
+                            No reviews available yet.
+
+                        </p>
 
                         @endforelse
 
@@ -410,190 +401,183 @@
                  RIGHT COLUMN - BOOKING
             ====================================================== -->
 
-           <!-- ================= RIGHT COLUMN ================= -->
+            <!-- ================= RIGHT COLUMN ================= -->
 
-<aside class="col-lg-5 col-xl-4">
+            <aside class="col-lg-5 col-xl-4">
 
-    <div
-        class="card-legal p-4 sticky-lg-top"
-        style="top:88px"
-    >
+                <div
+                    class="card-legal p-4 sticky-lg-top"
+                    style="top:88px">
 
-        <h2 class="h5 mb-1">
-            Book an appointment
-        </h2>
+                    <h2 class="h5 mb-1">
+                        Book an appointment
+                    </h2>
 
-        <p class="text-muted-legal small">
-            Select a date, choose an available slot and confirm.
-        </p>
-
-
-        <!-- Success -->
-        @if(session('success'))
-
-            <div class="alert alert-success py-2 small">
-
-                <i class="bi bi-check-circle me-1"></i>
-
-                {{ session('success') }}
-
-            </div>
-
-        @endif
+                    <p class="text-muted-legal small">
+                        Select a date, choose an available slot and confirm.
+                    </p>
 
 
-        <!-- Errors -->
-        @if($errors->any())
+                    <!-- Success -->
+                    @if(session('success'))
 
-            <div class="alert alert-danger py-2 small">
+                    <div class="alert alert-success py-2 small">
 
-                <ul class="mb-0 ps-3">
+                        <i class="bi bi-check-circle me-1"></i>
 
-                    @foreach($errors->all() as $error)
-
-                        <li>{{ $error }}</li>
-
-                    @endforeach
-
-                </ul>
-
-            </div>
-
-        @endif
-
-
-        <!-- ================= BOOKING FORM ================= -->
-
-        <form
-            id="bookingForm"
-            action="{{ route('appointment.store') }}"
-            method="POST"
-            class="needs-validation"
-            novalidate
-        >
-
-            @csrf
-
-
-            <!-- Lawyer ID -->
-
-            <input
-                type="hidden"
-                name="lawyer_id"
-                value="{{ $lawyer->id }}"
-            >
-
-
-            <!-- Selected Time -->
-
-            <input
-                type="hidden"
-                name="time_slot"
-                id="selectedSlot"
-                value=""
-            >
-
-
-            <!-- ================= DATE ================= -->
-
-            <div class="mb-3">
-
-                <label
-                    for="bDate"
-                    class="form-label small fw-semibold"
-                >
-                    Appointment date
-                </label>
-
-
-                <input
-                    type="date"
-                    class="form-control"
-                    name="appointment_date"
-                    id="bDate"
-                    value="{{ $selectedDate }}"
-                    min="{{ date('Y-m-d') }}"
-                    required
-                >
-
-
-                <div class="invalid-feedback">
-                    Please choose a date.
-                </div>
-
-            </div>
-
-
-            <!-- ================= SELECTED DAY ================= -->
-
-            <div class="mb-3">
-
-                <div class="small text-muted-legal">
-
-                    Selected day:
-
-                    <strong class="text-navy">
-                        {{ $dayName }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- ================= AVAILABLE SLOTS ================= -->
-
-            <div class="mb-3">
-
-                <label class="form-label small fw-semibold">
-
-                    Available time slots
-
-                </label>
-
-
-                @if(!$schedule)
-
-                    <div class="alert alert-warning py-2 small mb-0">
-
-                        <i class="bi bi-calendar-x me-1"></i>
-
-                        Lawyer is not available on
-                        <strong>{{ $dayName }}</strong>.
+                        {{ session('success') }}
 
                     </div>
 
+                    @endif
 
-                @elseif(count($slots) === 0)
 
-                    <div class="alert alert-warning py-2 small mb-0">
+                    <!-- Errors -->
+                    @if($errors->any())
 
-                        <i class="bi bi-calendar-x me-1"></i>
+                    <div class="alert alert-danger py-2 small">
 
-                        No slots are available for this date.
+                        <ul class="mb-0 ps-3">
+
+                            @foreach($errors->all() as $error)
+
+                            <li>{{ $error }}</li>
+
+                            @endforeach
+
+                        </ul>
 
                     </div>
 
-
-                @else
-
-                    <div class="row g-2">
-
-                        @foreach($slots as $slot)
-
-                            <div class="col-6">
-
-                                <button
-                                    type="button"
-                                    class="slot-btn w-100 {{ $slot['booked'] ? 'disabled' : '' }}"
-                                    data-time="{{ $slot['time'] }}"
-                                    {{ $slot['booked'] ? 'disabled' : '' }}
-                                >
-
-                                    {{ $slot['display_time'] }}
+                    @endif
 
 
-                                    @if($slot['booked'])
+                    <!-- ================= BOOKING FORM ================= -->
+
+                    <form
+                        id="bookingForm"
+                        action="{{ route('appointment.store') }}"
+                        method="POST"
+                        class="needs-validation"
+                        novalidate>
+
+                        @csrf
+
+
+                        <!-- Lawyer ID -->
+
+                        <input
+                            type="hidden"
+                            name="lawyer_id"
+                            value="{{ $lawyer->id }}">
+
+
+                        <!-- Selected Time -->
+
+                        <input
+                            type="hidden"
+                            name="appointment_time"
+                            id="selectedSlot"
+                            value="">
+
+
+                        <!-- ================= DATE ================= -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="bDate"
+                                class="form-label small fw-semibold">
+                                Appointment date
+                            </label>
+
+
+                            <input
+                                type="date"
+                                class="form-control"
+                                name="appointment_date"
+                                id="bDate"
+                                value="{{ $selectedDate }}"
+                                min="{{ date('Y-m-d') }}"
+                                required>
+
+
+                            <div class="invalid-feedback">
+                                Please choose a date.
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================= SELECTED DAY ================= -->
+
+                        <div class="mb-3">
+
+                            <div class="small text-muted-legal">
+
+                                Selected day:
+
+                                <strong class="text-navy">
+                                    {{ $dayName }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================= AVAILABLE SLOTS ================= -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label small fw-semibold">
+
+                                Available time slots
+
+                            </label>
+
+
+                            @if(!$schedule)
+
+                            <div class="alert alert-warning py-2 small mb-0">
+
+                                <i class="bi bi-calendar-x me-1"></i>
+
+                                Lawyer is not available on
+                                <strong>{{ $dayName }}</strong>.
+
+                            </div>
+
+
+                            @elseif(count($slots) === 0)
+
+                            <div class="alert alert-warning py-2 small mb-0">
+
+                                <i class="bi bi-calendar-x me-1"></i>
+
+                                No slots are available for this date.
+
+                            </div>
+
+
+                            @else
+
+                            <div class="row g-2">
+
+                                @foreach($slots as $slot)
+
+                                <div class="col-6">
+
+                                    <button
+                                        type="button"
+                                        class="slot-btn w-100 {{ $slot['booked'] ? 'disabled' : '' }}"
+                                        data-time="{{ $slot['time'] }}"
+                                        {{ $slot['booked'] ? 'disabled' : '' }}>
+
+                                        {{ $slot['display_time'] }}
+
+
+                                        @if($slot['booked'])
 
                                         <small class="d-block text-danger">
 
@@ -601,170 +585,162 @@
 
                                         </small>
 
-                                    @endif
+                                        @endif
 
-                                </button>
+                                    </button>
+
+                                </div>
+
+                                @endforeach
 
                             </div>
 
-                        @endforeach
+                            @endif
 
-                    </div>
-
-                @endif
-
-            </div>
+                        </div>
 
 
-            <!-- ================= MEETING TYPE ================= -->
+                        <!-- ================= MEETING TYPE ================= -->
 
-            <div class="mb-3">
+                        <div class="mb-3">
 
-                <label
-                    class="form-label small fw-semibold"
-                    for="bMode"
-                >
+                            <label
+                                class="form-label small fw-semibold"
+                                for="bMode">
 
-                    Meeting place / type
+                                Meeting place / type
 
-                </label>
-
-
-                <select
-                    class="form-select"
-                    name="meeting_type"
-                    id="bMode"
-                    required
-                >
-
-                    <option value="">
-                        Select meeting type
-                    </option>
-
-                    <option value="Office Visit">
-                        Office Visit
-                    </option>
-
-                    <option value="Video Call">
-                        Video Call
-                    </option>
-
-                    <option value="Phone Call">
-                        Phone Call
-                    </option>
-
-                    <option value="Court Premises">
-                        Court Premises
-                    </option>
-
-                </select>
+                            </label>
 
 
-                <div class="invalid-feedback">
+                            <select
+                                class="form-select"
+                                name="meeting_type"
+                                id="bMode"
+                                required>
 
-                    Please select a meeting type.
+                                <option value="">
+                                    Select meeting type
+                                </option>
+
+                                <option value="Office Visit">
+                                    Office Visit
+                                </option>
+
+                                <option value="Video Call">
+                                    Video Call
+                                </option>
+
+                                <option value="Phone Call">
+                                    Phone Call
+                                </option>
+
+                                <option value="Court Premises">
+                                    Court Premises
+                                </option>
+
+                            </select>
+
+
+                            <div class="invalid-feedback">
+
+                                Please select a meeting type.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================= CASE SUMMARY ================= -->
+
+                        <div class="mb-3">
+
+                            <label
+                                class="form-label small fw-semibold"
+                                for="bNotes">
+
+                                Case summary
+
+                                <span class="text-muted-legal fw-normal">
+
+                                    (optional)
+
+                                </span>
+
+                            </label>
+
+
+                            <textarea
+                                class="form-control"
+                                name="case_summary"
+                                id="bNotes"
+                                rows="3"
+                                placeholder="Briefly describe your matter"></textarea>
+
+                        </div>
+
+
+                        <!-- ================= SLOT ALERT ================= -->
+
+                        <div
+                            class="alert alert-warning py-2 small d-none"
+                            id="slotAlert">
+
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+
+                            Please select an available time slot.
+
+                        </div>
+
+
+                        <!-- ================= TOTAL ================= -->
+
+                        <div
+                            class="d-flex justify-content-between align-items-center bg-light-gray rounded-3 p-3 mb-3">
+
+                            <span class="small text-muted-legal">
+
+                                Total payable
+
+                            </span>
+
+
+                            <span class="fw-bold text-navy">
+
+                                Rs. {{ number_format($lawyer->fee ?? 0) }}
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- ================= SUBMIT ================= -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-gold w-100 py-2">
+
+                            <i class="bi bi-calendar2-check me-1"></i>
+
+                            Confirm Booking
+
+                        </button>
+
+
+                        <p
+                            class="text-muted-legal small text-center mt-3 mb-0">
+
+                            <i class="bi bi-shield-lock me-1"></i>
+
+                            Free cancellation up to 12 hours before.
+
+                        </p>
+
+                    </form>
 
                 </div>
 
-            </div>
-
-
-            <!-- ================= CASE SUMMARY ================= -->
-
-            <div class="mb-3">
-
-                <label
-                    class="form-label small fw-semibold"
-                    for="bNotes"
-                >
-
-                    Case summary
-
-                    <span class="text-muted-legal fw-normal">
-
-                        (optional)
-
-                    </span>
-
-                </label>
-
-
-                <textarea
-                    class="form-control"
-                    name="case_summary"
-                    id="bNotes"
-                    rows="3"
-                    placeholder="Briefly describe your matter"
-                ></textarea>
-
-            </div>
-
-
-            <!-- ================= SLOT ALERT ================= -->
-
-            <div
-                class="alert alert-warning py-2 small d-none"
-                id="slotAlert"
-            >
-
-                <i class="bi bi-exclamation-triangle me-1"></i>
-
-                Please select an available time slot.
-
-            </div>
-
-
-            <!-- ================= TOTAL ================= -->
-
-            <div
-                class="d-flex justify-content-between align-items-center bg-light-gray rounded-3 p-3 mb-3"
-            >
-
-                <span class="small text-muted-legal">
-
-                    Total payable
-
-                </span>
-
-
-                <span class="fw-bold text-navy">
-
-                    Rs. {{ number_format($lawyer->fee ?? 0) }}
-
-                </span>
-
-            </div>
-
-
-            <!-- ================= SUBMIT ================= -->
-
-            <button
-                type="submit"
-                class="btn btn-gold w-100 py-2"
-            >
-
-                <i class="bi bi-calendar2-check me-1"></i>
-
-                Confirm Booking
-
-            </button>
-
-
-            <p
-                class="text-muted-legal small text-center mt-3 mb-0"
-            >
-
-                <i class="bi bi-shield-lock me-1"></i>
-
-                Free cancellation up to 12 hours before.
-
-            </p>
-
-        </form>
-
-    </div>
-
-</aside>
+            </aside>
         </div>
 
     </div>
@@ -781,8 +757,7 @@
     class="modal fade"
     id="confirmModal"
     tabindex="-1"
-    aria-hidden="true"
->
+    aria-hidden="true">
 
     <div class="modal-dialog modal-dialog-centered">
 
@@ -802,8 +777,7 @@
                     type="button"
                     class="btn-close"
                     data-bs-dismiss="modal"
-                    aria-label="Close"
-                ></button>
+                    aria-label="Close"></button>
 
             </div>
 
@@ -814,8 +788,7 @@
 
                     <i
                         class="bi bi-check-circle-fill text-gold"
-                        style="font-size:3rem"
-                    ></i>
+                        style="font-size:3rem"></i>
 
 
                     <p class="text-muted-legal mt-2 mb-0">
@@ -830,8 +803,7 @@
 
                 <ul
                     class="list-group list-group-flush small"
-                    id="summaryList"
-                ></ul>
+                    id="summaryList"></ul>
 
             </div>
 
@@ -841,8 +813,7 @@
                 <button
                     type="button"
                     class="btn btn-gold"
-                    data-bs-dismiss="modal"
-                >
+                    data-bs-dismiss="modal">
 
                     Close
 
@@ -863,134 +834,131 @@
 ============================================================= -->
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
 
-document.addEventListener("DOMContentLoaded", function () {
+        const dateInput =
+            document.getElementById("bDate");
 
-    const dateInput =
-        document.getElementById("bDate");
+        const selectedSlot =
+            document.getElementById("selectedSlot");
 
-    const selectedSlot =
-        document.getElementById("selectedSlot");
+        const bookingForm =
+            document.getElementById("bookingForm");
 
-    const bookingForm =
-        document.getElementById("bookingForm");
-
-    const slotAlert =
-        document.getElementById("slotAlert");
-
-
-    // ==========================================
-    // DATE CHANGE
-    // ==========================================
-
-    dateInput.addEventListener("change", function () {
-
-        if (!this.value) {
-            return;
-        }
+        const slotAlert =
+            document.getElementById("slotAlert");
 
 
-        // Reload page with selected date
-        const url =
-            new URL(window.location.href);
+        // ==========================================
+        // DATE CHANGE
+        // ==========================================
 
-        url.searchParams.set(
-            "appointment_date",
-            this.value
-        );
+        dateInput.addEventListener("change", function() {
 
-
-        window.location.href =
-            url.toString();
-
-    });
-
-
-    // ==========================================
-    // SLOT SELECT
-    // ==========================================
-
-    document.addEventListener(
-        "click",
-        function (event) {
-
-            const button =
-                event.target.closest(".slot-btn");
-
-
-            if (!button || button.disabled) {
+            if (!this.value) {
                 return;
             }
 
 
-            document
-                .querySelectorAll(".slot-btn")
-                .forEach(function (btn) {
+            // Reload page with selected date
+            const url =
+                new URL(window.location.href);
 
-                    btn.classList.remove("active");
-
-                });
-
-
-            button.classList.add("active");
-
-
-            selectedSlot.value =
-                button.dataset.time;
-
-
-            slotAlert.classList.add(
-                "d-none"
-            );
-
-        }
-    );
-
-
-    // ==========================================
-    // FORM VALIDATION
-    // ==========================================
-
-    bookingForm.addEventListener(
-        "submit",
-        function (event) {
-
-            this.classList.add(
-                "was-validated"
+            url.searchParams.set(
+                "appointment_date",
+                this.value
             );
 
 
-            if (!this.checkValidity()) {
+            window.location.href =
+                url.toString();
 
-                event.preventDefault();
-
-                return;
-
-            }
+        });
 
 
-            if (!selectedSlot.value) {
+        // ==========================================
+        // SLOT SELECT
+        // ==========================================
 
-                event.preventDefault();
+        document.addEventListener(
+            "click",
+            function(event) {
 
-                slotAlert.classList.remove(
+                const button =
+                    event.target.closest(".slot-btn");
+
+
+                if (!button || button.disabled) {
+                    return;
+                }
+
+
+                document
+                    .querySelectorAll(".slot-btn")
+                    .forEach(function(btn) {
+
+                        btn.classList.remove("active");
+
+                    });
+
+
+                button.classList.add("active");
+
+
+                selectedSlot.value =
+                    button.dataset.time;
+
+
+                slotAlert.classList.add(
                     "d-none"
                 );
 
-                slotAlert.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
+            }
+        );
+
+
+        // ==========================================
+        // FORM VALIDATION
+        // ==========================================
+
+        bookingForm.addEventListener(
+            "submit",
+            function(event) {
+
+                this.classList.add(
+                    "was-validated"
+                );
+
+
+                if (!this.checkValidity()) {
+
+                    event.preventDefault();
+
+                    return;
+
+                }
+
+
+                if (!selectedSlot.value) {
+
+                    event.preventDefault();
+
+                    slotAlert.classList.remove(
+                        "d-none"
+                    );
+
+                    slotAlert.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                }
 
             }
+        );
 
-        }
-    );
-
-});
-
+    });
 </script>
 
 
 @endsection
-
