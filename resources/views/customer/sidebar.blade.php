@@ -1,84 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Client Dashboard — Appointments &amp; History | LegalEase</title>
-<meta name="description" content="Track active appointments, review booking history, manage profile settings and see recent consultations in your LegalEase client dashboard.">
-<meta property="og:title" content="Client Dashboard — Appointments &amp; History | LegalEase">
-<meta property="og:description" content="Everything about your legal consultations in one responsive dashboard.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="{{asset('css/style.css')}}" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Client Dashboard — Appointments &amp; History | LegalEase</title>
+  <meta name="description" content="Track active appointments, review booking history, manage profile settings and see recent consultations in your LegalEase client dashboard.">
+  <meta property="og:title" content="Client Dashboard — Appointments &amp; History | LegalEase">
+  <meta property="og:description" content="Everything about your legal consultations in one responsive dashboard.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="{{asset('css/style.css')}}" rel="stylesheet">
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-legal sticky-top py-2">
-  <div class="container-fluid px-lg-4">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-      <span class="brand-badge"><i class="bi bi-bank2"></i></span>
-      <span class="brand-text">Legal<span>Ease</span></span>
-    </a>
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#dashNav" aria-label="Toggle navigation">
-      <i class="bi bi-list fs-2 text-navy"></i>
-    </button>
-    <div class="collapse navbar-collapse" id="dashNav">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
-            <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
-            <li><a class="dropdown-item rounded-2" href="{{route('profile.edit')}}" data-nav="">Profile settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-             <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+  <nav class="navbar navbar-expand-lg navbar-legal sticky-top py-2">
+    <div class="container-fluid px-lg-4">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <span class="brand-badge"><i class="bi bi-bank2"></i></span>
+        <span class="brand-text">Legal<span>Ease</span></span>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#dashNav" aria-label="Toggle navigation">
+        <i class="bi bi-list fs-2 text-navy"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="dashNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown">
+              <img src="https://i.pravatar.cc/64?img=8" class="rounded-circle" width="30" height="30" alt="Your avatar">{{ Auth::user()->name }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
+              <li><a class="dropdown-item rounded-2" href="{{route('profile.edit')}}" data-nav="">Profile settings</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <form method="POST" action="{{ route('logout') }}">
+                @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                <x-dropdown-link :href="route('logout')"
+                  onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>  </ul>
-        </li>
-      </ul>
+                  {{ __('Log Out') }}
+                </x-dropdown-link>
+              </form>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+
+  <div class="container-fluid px-lg-4 py-4">
+    <div class="row g-4">
+      <!-- SIDEBAR -->
+      <aside class="col-lg-3 col-xl-2">
+        <div class="dash-sidebar">
+          <p class="text-uppercase small opacity-50 px-2 mb-2">Client menu</p>
+          <div class="d-grid gap-1">
+
+            <a class="side-link {{ request()->routeIs('customer.overview') ? 'active' : '' }}"
+              href="{{ route('customer.overview') }}">
+              <i class="bi bi-grid-1x2"></i> Dashboard
+            </a>
+
+            <a class="side-link {{ request()->routeIs('customer.find.lawyer') ? 'active' : '' }}"
+              href="{{ route('customer.find.lawyer') }}">
+              <i class="bi bi-calendar2-event"></i> Find Lawyer
+            </a>
+
+            <a class="side-link {{ request()->routeIs('customer.myappointments') ? 'active' : '' }}"
+              href="{{ route('customer.myappointments') }}">
+              <i class="bi bi-clock-history"></i> My Appointments
+            </a>
+
+            <a class="side-link {{ request()->routeIs('customer.my.profile') ? 'active' : '' }}"
+              href="{{ route('customer.my.profile') }}">
+              <i class="bi bi-chat-left-text"></i> My Profile
+            </a>
+
+            <a class="side-link {{ request()->routeIs('customer.profile.settings') ? 'active' : '' }}"
+              href="{{ route('customer.profile.settings') }}">
+              <i class="bi bi-gear"></i> Profile Settings
+            </a>
+
+          </div>
+          <hr class="border-secondary">
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT AREA (YEH DIV MISSING THA) -->
+      <main class="col-lg-9 col-xl-10">
+        @yield('customer')
+      </main>
     </div>
   </div>
-</nav>
 
 
 
-<div class="container-fluid px-lg-4 py-4">
-    <div class="row g-4">
-        <!-- SIDEBAR -->
-        <aside class="col-lg-3 col-xl-2">
-            <div class="dash-sidebar">
-                <p class="text-uppercase small opacity-50 px-2 mb-2">Client menu</p>
-                <div class="d-grid gap-1">
-                    <a class="side-link active" href="{{ route('customer.overview') }}" data-nav="overview"><i class="bi bi-grid-1x2"></i> Overview</a>
-                    <a class="side-link" href="{{ route('customer.find.lawyer') }}" data-nav="active"><i class="bi bi-calendar2-event"></i> Find Lawyer</a>
-                    <a class="side-link" href="{{ route('customer.my.appointments') }}" data-nav="history"><i class="bi bi-clock-history"></i> My Appointments</a>
-                    <a class="side-link" href="{{ route('customer.my.profile') }}" data-nav="consultations"><i class="bi bi-chat-left-text"></i> My Profile</a>
-                    <a class="side-link" href="{{ route('customer.profile.settings') }}" data-nav="settings"><i class="bi bi-gear"></i> Profile Settings</a>
-                </div>
-                <hr class="border-secondary">
-                </div>
-        </aside>
-
-        <!-- MAIN CONTENT AREA (YEH DIV MISSING THA) -->
-        <main class="col-lg-9 col-xl-10">
-            @yield('customer')
-        </main>
-    </div>
-</div>
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-{{-- <script src="assets/js/data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  {{-- <script src="assets/js/data.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/dashboard.js"></script>
 <script>
@@ -131,5 +157,5 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script> --}}
 </body>
-</html>
 
+</html>

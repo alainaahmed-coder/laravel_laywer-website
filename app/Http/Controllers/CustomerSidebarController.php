@@ -28,6 +28,7 @@ class CustomerSidebarController extends Controller
 
     public function profileSettings()
     {
-        return view('customer.profilesettings');
+        $user = auth()->user();
+        return view('customer.profilesettings',compact('user'));
     }
 }

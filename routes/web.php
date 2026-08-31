@@ -244,6 +244,16 @@ Route::prefix('lawyer')
             'clients'
         ])->name('clients');
 
+        Route::post(
+            '/lawyer/clients/{id}/completed',
+            [LawyerSidebarController::class, 'markCompleted']
+        )->name('client.completed');
+
+        Route::post(
+            '/lawyer/clients/{id}/not-completed',
+            [LawyerSidebarController::class, 'markNotCompleted']
+        )->name('client.not_completed');
+
 
         /*
         |----------------------------------------------------------------------
@@ -353,6 +363,11 @@ Route::prefix('customer')
             CustomerSidebarController::class,
             'myAppointments'
         ])->name('my.appointments');
+
+        Route::patch(
+            '/customer/appointment/{appointment}/cancel',
+            [AppointmentController::class, 'cancel']
+        )->name('appointment.cancel');
 
         // UPDATED: Connected to CustomerController
         Route::get('/my-profile', [
@@ -507,6 +522,25 @@ Route::post('/admin/website-content/update', [
     'update'
 ])->name('admin.website_content.update');
 
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Customer Appointment Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->group(function () {
+
+    // 1. Customer se Appointment Form Submit karne ke liye
+    Route::post('/appointments/store', [AppointmentController::class, 'store'])
+        ->name('appointments.store');
+
+    // 2. Customer ki apni Booked Appointments Table View karne ke liye
+    Route::get('/customer/my-appointments', [AppointmentController::class, 'myAppointments'])
+        ->name('customer.myappointments');
+});
 
 /*
 |--------------------------------------------------------------------------

@@ -40,7 +40,7 @@
     <!-- Stylish Modern Table Card Layout -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
         <table class="w-full text-left border-collapse">
-            <thead>
+            <thead> 
                 <tr class="bg-slate-900 text-slate-300 text-xs font-bold uppercase tracking-wider border-b border-slate-800">
                     <th class="py-4 px-6">ID</th>
                     <th class="py-4 px-6">City Name</th>

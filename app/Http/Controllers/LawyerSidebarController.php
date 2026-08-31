@@ -8,6 +8,7 @@ use App\Models\Lawyer;
 use App\Models\City;
 use App\Models\Service;
 use App\Models\LawyerSchedule;
+use Illuminate\Support\Facades\Auth;
 
 class LawyerSidebarController extends Controller
 {
@@ -160,9 +161,9 @@ class LawyerSidebarController extends Controller
             ->firstOrFail();
 
         $schedules = LawyerSchedule::where(
-                'lawyer_id',
-                $lawyer->id
-            )
+            'lawyer_id',
+            $lawyer->id
+        )
             ->orderByRaw("
                 FIELD(
                     day,
@@ -267,7 +268,63 @@ class LawyerSidebarController extends Controller
 
     public function clients()
     {
-        return view('lawyer.myclient');
+        $lawyer = Lawyer::where('user_id', auth()->id())
+            ->firstOrFail();
+
+        // Sirf approved appointments
+        $clients = Appointment::with('customer')
+            ->where('lawyer_id', $lawyer->id)
+            ->where('status', 'approved')
+            ->latest()
+            ->get();
+
+        return view('lawyer.myclient', compact('clients'));
+    }
+
+
+    // ================= MARK COMPLETED =================
+
+    public function markCompleted($id)
+    {
+        $lawyer = Lawyer::where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $appointment = Appointment::where('id', $id)
+            ->where('lawyer_id', $lawyer->id)
+            ->where('status', 'approved')
+            ->firstOrFail();
+
+        $appointment->update([
+            'status' => 'completed'
+        ]);
+
+        return back()->with(
+            'success',
+            'Appointment marked as completed.'
+        );
+    }
+
+
+    // ================= MARK NOT COMPLETED =================
+
+    public function markNotCompleted($id)
+    {
+        $lawyer = Lawyer::where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $appointment = Appointment::where('id', $id)
+            ->where('lawyer_id', $lawyer->id)
+            ->where('status', 'approved')
+            ->firstOrFail();
+
+        $appointment->update([
+            'status' => 'not_completed'
+        ]);
+
+        return back()->with(
+            'success',
+            'Appointment marked as not completed.'
+        );
     }
 
 
@@ -275,7 +332,15 @@ class LawyerSidebarController extends Controller
 
     public function appointmentHistory()
     {
-        return view('lawyer.appointmenthistory');
+       $history = Appointment::with('customer')
+        ->whereHas('lawyer', function ($query) {
+            $query->where('user_id', Auth::id());
+        })
+        ->where('status', 'completed')
+        ->latest('appointment_date')
+        ->latest('appointment_time')
+        ->get();
+        return view('lawyer.appointmenthistory', compact('history'));
     }
 
 

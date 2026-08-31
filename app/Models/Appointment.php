@@ -23,6 +23,7 @@ class Appointment extends Model
         'appointment_date' => 'date',
     ];
 
+    // Simple Direct Relationships
     public function lawyer()
     {
         return $this->belongsTo(Lawyer::class, 'lawyer_id');
