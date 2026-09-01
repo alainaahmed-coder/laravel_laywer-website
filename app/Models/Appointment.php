@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Feedback;
 
 class Appointment extends Model
 {
@@ -32,5 +33,9 @@ class Appointment extends Model
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');
+    }
+    public function feedback()
+    {
+        return $this->hasOne(Feedback::class, 'appointment_id');
     }
 }

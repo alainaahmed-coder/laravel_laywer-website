@@ -348,6 +348,7 @@ class LawyerSidebarController extends Controller
 
     public function settings()
     {
-        return view('lawyer.setting');
+          $user = Auth::user();
+        return view('lawyer.setting', compact('user'));
     }
 }

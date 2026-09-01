@@ -9,6 +9,7 @@ use App\Http\Controllers\lawyerdashboardController;
 use App\Http\Controllers\LawyerSidebarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\WebsiteContentController;
 use App\Http\Controllers\AppointmentController;
 use Illuminate\Support\Facades\Auth;
@@ -26,25 +27,30 @@ Route::get('/', [
     'index'
 ])->name('Home');
 
+
 Route::get('/FindLawyer', [
     landingpageController::class,
     'findLawyer'
 ])->name('lawyerfind');
+
 
 Route::get('/lawyer/profile/{id}', [
     landingpageController::class,
     'lawyerProfile'
 ])->name('lawyer.profile');
 
+
 Route::get('/About', [
     landingpageController::class,
     'about'
 ])->name('about');
 
+
 Route::get('/contact', [
     landingpageController::class,
     'contact'
 ])->name('contact');
+
 
 Route::post('/contact/send', [
     landingpageController::class,
@@ -61,6 +67,7 @@ Route::post('/contact/send', [
 Route::get('/dashboard', function () {
 
     $user = Auth::user();
+
     if ($user->role === 'admin') {
         return redirect()->route('admindashboard');
     }
@@ -91,10 +98,12 @@ Route::middleware('auth')->group(function () {
         'edit'
     ])->name('profile.edit');
 
+
     Route::patch('/profile', [
         ProfileController::class,
         'update'
     ])->name('profile.update');
+
 
     Route::delete('/profile', [
         ProfileController::class,
@@ -141,8 +150,10 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
 Route::middleware(['auth', 'role:lawyer'])->group(function () {
 
-    // Method name corrected from 'dashboard' to 'lawyerdashboard'
-    Route::get('/lawyer-dashboard', [lawyerdashboardController::class, 'lawyerdashboard'])->name('lawyerdashboard');
+    Route::get('/lawyer-dashboard', [
+        lawyerdashboardController::class,
+        'lawyerdashboard'
+    ])->name('lawyerdashboard');
 });
 
 
@@ -158,15 +169,16 @@ Route::prefix('lawyer')
     ->group(function () {
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         | Lawyer Profile
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         */
 
         Route::get('/profile', [
             LawyerSidebarController::class,
             'profile'
         ])->name('profiles');
+
 
         Route::post('/profile/update', [
             LawyerSidebarController::class,
@@ -175,13 +187,9 @@ Route::prefix('lawyer')
 
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         | Appointment Requests
-        |----------------------------------------------------------------------
-        |
-        | Tumhara existing myservices.blade.php hi requests page hai.
-        | URL: /lawyer/services
-        |
+        |--------------------------------------------------------------------------
         */
 
         Route::get('/services', [
@@ -205,9 +213,9 @@ Route::prefix('lawyer')
 
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         | Lawyer Schedule
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         */
 
         Route::get('/schedule', [
@@ -215,15 +223,18 @@ Route::prefix('lawyer')
             'schedule'
         ])->name('schedule');
 
+
         Route::post('/schedule', [
             LawyerSidebarController::class,
             'storeSchedule'
         ])->name('schedule.store');
 
+
         Route::put('/schedule/{id}', [
             LawyerSidebarController::class,
             'updateSchedule'
         ])->name('schedule.update');
+
 
         Route::delete('/schedule/{id}', [
             LawyerSidebarController::class,
@@ -232,9 +243,9 @@ Route::prefix('lawyer')
 
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         | Lawyer Clients
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         */
 
         Route::get('/clients', [
@@ -242,10 +253,12 @@ Route::prefix('lawyer')
             'clients'
         ])->name('clients');
 
+
         Route::post(
             '/lawyer/clients/{id}/completed',
             [LawyerSidebarController::class, 'markCompleted']
         )->name('client.completed');
+
 
         Route::post(
             '/lawyer/clients/{id}/not-completed',
@@ -254,9 +267,9 @@ Route::prefix('lawyer')
 
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         | Appointment History
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         */
 
         Route::get('/appointment-history', [
@@ -266,9 +279,24 @@ Route::prefix('lawyer')
 
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
+        | Lawyer Feedback
+        |--------------------------------------------------------------------------
+        |
+        | Lawyer apne clients ke feedback yahan dekhega.
+        |
+        */
+
+        Route::get('/feedback', [
+            FeedbackController::class,
+            'lawyerFeedback'
+        ])->name('feedback');
+
+
+        /*
+        |--------------------------------------------------------------------------
         | Lawyer Settings
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         */
 
         Route::get('/settings', [
@@ -294,40 +322,48 @@ Route::prefix('admin')
             'dashboard'
         ])->name('dashboard');
 
+
         Route::get('/customers', [
             AdminSidebarController::class,
             'customers'
         ])->name('customers');
+
 
         Route::get('/cities', [
             AdminSidebarController::class,
             'cities'
         ])->name('cities');
 
+
         Route::get('/services', [
             AdminSidebarController::class,
             'services'
         ])->name('services');
+
 
         Route::get('/lawyers', [
             admindashboardController::class,
             'lawyerList'
         ])->name('lawyers');
 
+
         Route::get('/appointments', [
             AdminSidebarController::class,
             'appointments'
         ])->name('appointments');
+
 
         Route::get('/History', [
             AdminSidebarController::class,
             'History'
         ])->name('History');
 
+
         Route::get('/website-content', [
             AdminSidebarController::class,
             'websiteContent'
         ])->name('website.content');
+
 
         Route::get('/settings', [
             AdminSidebarController::class,
@@ -347,45 +383,109 @@ Route::prefix('customer')
     ->middleware(['auth', 'role:customer'])
     ->group(function () {
 
+        /*
+        |--------------------------------------------------------------------------
+        | Customer Overview
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/overview', [
             CustomerSidebarController::class,
             'overview'
         ])->name('overview');
 
-        // CONNECTED TO CustomerController WITH ROUTE NAME: customer.find.lawyer
+
+        /*
+        |--------------------------------------------------------------------------
+        | Find Lawyer
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/find-lawyer', [
             CustomerController::class,
             'findLawyer'
         ])->name('find.lawyer');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | My Appointments
+        |--------------------------------------------------------------------------
+        */
 
         Route::get('/my-appointments', [
             CustomerSidebarController::class,
             'myAppointments'
         ])->name('my.appointments');
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Cancel Appointment
+        |--------------------------------------------------------------------------
+        */
+
         Route::patch(
             '/customer/appointment/{appointment}/cancel',
             [AppointmentController::class, 'cancel']
         )->name('appointment.cancel');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Customer Profile
+        |--------------------------------------------------------------------------
+        */
 
         Route::get('/my-profile', [
             CustomerController::class,
             'myProfile'
         ])->name('my.profile');
 
+
         Route::post('/my-profile/update', [
             CustomerController::class,
             'updateProfile'
         ])->name('my.profile.update');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Profile Settings
+        |--------------------------------------------------------------------------
+        */
 
         Route::get('/profile-settings', [
             CustomerSidebarController::class,
             'profileSettings'
         ])->name('profile.settings');
 
-        // Customer Sidebar Routes Group ke andar add karein:
-        Route::get('/history', [CustomerSidebarController::class, 'history'])
-            ->name('history'); // prefix 'customer.' ke sath ye 'customer.history' banega
+
+        /*
+        |--------------------------------------------------------------------------
+        | Appointment History
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/history', [
+            CustomerSidebarController::class,
+            'history'
+        ])->name('history');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Customer Feedback
+        |--------------------------------------------------------------------------
+        |
+        | Customer completed appointment par feedback submit karega.
+        |
+        */
+
+        Route::post('/feedback/store', [
+            FeedbackController::class,
+            'store'
+        ])->name('feedback.store');
     });
 
 
@@ -394,6 +494,7 @@ Route::prefix('customer')
 | Appointment / Booking Routes
 |--------------------------------------------------------------------------
 */
+
 
 // Get lawyer available slots
 Route::get('/lawyer/{lawyer}/available-slots', [
@@ -420,9 +521,9 @@ Route::prefix('admin')
     ->group(function () {
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         | Customers
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         */
 
         Route::get('/customers', [
@@ -430,15 +531,18 @@ Route::prefix('admin')
             'index'
         ])->name('customers.index');
 
+
         Route::post('/customers', [
             CustomerController::class,
             'store'
         ])->name('customers.store');
 
+
         Route::put('/customers/{id}', [
             CustomerController::class,
             'update'
         ])->name('customers.update');
+
 
         Route::delete('/customers/{id}', [
             CustomerController::class,
@@ -447,15 +551,16 @@ Route::prefix('admin')
 
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         | Lawyers
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         */
 
         Route::post('/lawyers/toggle/{id}', [
             admindashboardController::class,
             'toggleLawyerStatus'
         ])->name('admin.lawyers.toggle');
+
 
         Route::delete('/lawyers/{id}', [
             admindashboardController::class,
@@ -464,9 +569,9 @@ Route::prefix('admin')
 
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         | Services
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         */
 
         Route::post('/ServicesPost', [
@@ -474,10 +579,12 @@ Route::prefix('admin')
             'serviceStore'
         ])->name('customers.Servcies');
 
+
         Route::put('/Services/{id}', [
             admindashboardController::class,
             'updateService'
         ])->name('customers.updateService');
+
 
         Route::delete('/Services/{id}', [
             admindashboardController::class,
@@ -486,9 +593,9 @@ Route::prefix('admin')
 
 
         /*
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         | Cities
-        |----------------------------------------------------------------------
+        |--------------------------------------------------------------------------
         */
 
         Route::post('/CitiesPost', [
@@ -496,10 +603,12 @@ Route::prefix('admin')
             'citieStore'
         ])->name('customers.citieStore');
 
+
         Route::put('/Citiesupdate/{id}', [
             admindashboardController::class,
             'updateCities'
         ])->name('customers.updateCities');
+
 
         Route::delete('/CitiesDelete/{id}', [
             admindashboardController::class,
@@ -519,12 +628,11 @@ Route::get('/admin/website-content', [
     'index'
 ])->name('admin.website_content');
 
+
 Route::post('/admin/website-content/update', [
     WebsiteContentController::class,
     'update'
 ])->name('admin.website_content.update');
-
-
 
 
 /*
@@ -535,12 +643,19 @@ Route::post('/admin/website-content/update', [
 
 Route::middleware(['auth'])->group(function () {
 
-    // 1. Customer se Appointment Form Submit karne ke liye
-    Route::post('/appointments/store', [AppointmentController::class, 'store'])
-        ->name('appointments.store');
-    Route::get('/customer/my-appointments', [AppointmentController::class, 'myAppointments'])
-        ->name('customer.myappointments');
+    // Customer se Appointment Form Submit karne ke liye
+    Route::post(
+        '/appointments/store',
+        [AppointmentController::class, 'store']
+    )->name('appointments.store');
+
+
+    Route::get(
+        '/customer/my-appointments',
+        [AppointmentController::class, 'myAppointments']
+    )->name('customer.myappointments');
 });
+
 
 /*
 |--------------------------------------------------------------------------

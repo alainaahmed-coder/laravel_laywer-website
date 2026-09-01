@@ -4,10 +4,10 @@
 
 <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-
 <section class="bg-navy py-4">
     <div class="container">
 
+        
         <ol class="breadcrumb mb-0 small">
 
             <li class="breadcrumb-item">
@@ -23,8 +23,7 @@
             </li>
 
             <li class="breadcrumb-item active text-white-50"
-                aria-current="page"
-                id="crumbName">
+                aria-current="page">
 
                 {{ $lawyer->user->name ?? 'Lawyer' }}
 
@@ -33,21 +32,26 @@
         </ol>
 
     </div>
-</section>
+    
 
+</section>
 
 <main class="section pt-4">
 
+    
     <div class="container">
 
         <div class="row g-4">
 
 
             <!-- =====================================================
-                 LEFT COLUMN
-            ====================================================== -->
+             LEFT COLUMN
+        ====================================================== -->
 
             <div class="col-lg-7 col-xl-8">
+
+
+                <!-- ================= LAWYER PROFILE ================= -->
 
                 <div class="card-legal p-4 p-lg-5">
 
@@ -56,6 +60,8 @@
 
                         <!-- Profile Image -->
 
+                        @if($lawyer->image)
+
                         <img
                             src="{{ asset('uploads/lawyers/' . $lawyer->image) }}"
                             alt="Lawyer Profile"
@@ -63,13 +69,25 @@
                             height="100"
                             class="rounded-circle object-fit-cover">
 
+                        @else
+
+                        <div
+                            class="rounded-circle bg-light d-flex align-items-center justify-content-center"
+                            style="width:100px;height:100px;">
+
+                            <i class="bi bi-person fs-1 text-muted"></i>
+
+                        </div>
+
+                        @endif
+
 
                         <div>
 
 
                             <!-- Lawyer Name -->
 
-                            <h1 class="h3 mb-1" id="pName">
+                            <h1 class="h3 mb-1">
 
                                 {{ $lawyer->user->name ?? 'Lawyer' }}
 
@@ -87,35 +105,47 @@
 
                             <!-- Rating -->
 
-                            <div class="rating mb-2" id="pRating">
+                            @php
 
-                                @php
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Real Feedback Rating
+                            |--------------------------------------------------------------------------
+                            */
 
-                                $rating =
-                                $lawyer->rating ?? 5.0;
+                            $feedbackCount = $lawyer->feedbacks->count();
 
-                                $totalReviews =
-                                $lawyer->total_reviews ?? 0;
+                            $feedbackAverage = $feedbackCount > 0
+                            ? $lawyer->feedbacks->avg('rating')
+                            : 0;
 
-                                @endphp
+                            @endphp
 
+
+                            <div class="rating mb-2">
 
                                 @for($i = 1; $i <= 5; $i++)
 
-                                    <i
-                                    class="bi bi-star{{ $i <= round($rating) ? '-fill' : '' }} text-warning">
-                                    </i>
+                                    @if($i <=round($feedbackAverage))
+
+                                    <i class="bi bi-star-fill text-warning"></i>
+
+                                    @else
+
+                                    <i class="bi bi-star text-warning"></i>
+
+                                    @endif
 
                                     @endfor
 
 
                                     <span class="text-muted-legal small ms-1">
 
-                                        {{ number_format($rating, 1) }}
+                                        {{ number_format($feedbackAverage, 1) }}
 
                                         ·
 
-                                        {{ $totalReviews }}
+                                        {{ $feedbackCount }}
 
                                         reviews
 
@@ -126,9 +156,8 @@
 
                             <!-- Service / City / Experience -->
 
-                            <div
-                                class="d-flex flex-wrap gap-2"
-                                id="pTags">
+                            <div class="d-flex flex-wrap gap-2">
+
 
                                 @if($lawyer->service)
 
@@ -164,6 +193,7 @@
 
                                 </span>
 
+
                             </div>
 
                         </div>
@@ -174,21 +204,20 @@
                     <hr class="my-4">
 
 
-                    <!-- ABOUT -->
+                    <!-- ================= ABOUT ================= -->
 
                     <h2 class="h6 text-uppercase text-muted-legal">
                         About
                     </h2>
 
-
-                    <p class="mb-4" id="pBio">
+                    <p class="mb-4">
 
                         {{ $lawyer->bio ?? 'No biography available.' }}
 
                     </p>
 
 
-                    <!-- QUALIFICATIONS -->
+                    <!-- ================= QUALIFICATIONS ================= -->
 
                     <h2 class="h6 text-uppercase text-muted-legal">
 
@@ -197,9 +226,7 @@
                     </h2>
 
 
-                    <ul
-                        class="list-unstyled d-grid gap-2 mb-4"
-                        id="pQuals">
+                    <ul class="list-unstyled d-grid gap-2 mb-4">
 
                         @if(is_array($lawyer->qualifications))
 
@@ -238,7 +265,7 @@
                     </ul>
 
 
-                    <!-- CONTACT / LOCATION -->
+                    <!-- ================= CONTACT / LOCATION ================= -->
 
                     <div class="row g-3">
 
@@ -252,13 +279,10 @@
 
                                 </small>
 
-
-                                <span
-                                    class="fw-semibold"
-                                    id="pAddress">
+                                <span class="fw-semibold">
 
                                     {{ $lawyer->office_address
-                                        ?? ($lawyer->city->name ?? 'Not available') }}
+                                    ?? ($lawyer->city->name ?? 'Not available') }}
 
                                 </span>
 
@@ -277,10 +301,7 @@
 
                                 </small>
 
-
-                                <span
-                                    class="fw-semibold text-navy fs-5"
-                                    id="pFee">
+                                <span class="fw-semibold text-navy fs-5">
 
                                     Rs.
 
@@ -299,126 +320,254 @@
 
 
                 <!-- =====================================================
-                     REVIEWS
-                ====================================================== -->
+                 CLIENT REVIEWS
+            ====================================================== -->
+
 
                 <div class="card-legal p-4 p-lg-5 mt-4">
 
-                    <div
-                        class="d-flex justify-content-between align-items-center mb-4">
 
-                        <h2 class="h5 mb-0">
+                    <!-- Review Header -->
 
-                            Client reviews
+                    <div class="d-flex justify-content-between align-items-center mb-4">
 
-                        </h2>
+                        <div>
 
+                            <h2 class="h5 mb-1">
 
-                        <span class="badge-gold" id="rSummary">
+                                Client Reviews
 
-                            {{ number_format($rating, 1) }}
+                            </h2>
 
-                            average from
+                            <p class="text-muted-legal small mb-0">
 
-                            {{ $totalReviews }}
-
-                            clients
-
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        class="d-grid gap-3"
-                        id="reviewList">
-
-                        @forelse($lawyer->reviews ?? [] as $review)
-
-                        <div class="p-3 border rounded-3">
-
-                            <div
-                                class="d-flex justify-content-between align-items-center">
-
-                                <strong class="text-navy">
-
-                                    {{ $review->user_name ?? 'Anonymous Client' }}
-
-                                </strong>
-
-
-                                <small class="text-muted-legal">
-
-                                    {{ $review->created_at
-                                            ? $review->created_at->diffForHumans()
-                                            : 'Recently' }}
-
-                                </small>
-
-                            </div>
-
-
-                            <div class="rating my-1">
-
-                                @for($i = 1; $i <= 5; $i++)
-
-                                    <i
-                                    class="bi bi-star{{ $i <= $review->rating ? '-fill' : '' }} text-warning">
-                                    </i>
-
-                                    @endfor
-
-                            </div>
-
-
-                            <p class="mb-0 small text-muted-legal">
-
-                                {{ $review->comment ?? $review->text ?? '' }}
+                                Feedback from clients who consulted this lawyer.
 
                             </p>
 
                         </div>
 
+
+                        <!-- Average Rating -->
+
+                        <div class="text-end">
+
+                            @php
+
+                            $reviewCount = $lawyer->feedbacks->count();
+
+                            $averageRating = $reviewCount > 0
+                            ? $lawyer->feedbacks->avg('rating')
+                            : 0;
+
+                            @endphp
+
+
+                            <div class="fw-bold fs-5 text-navy">
+
+                                {{ number_format($averageRating, 1) }}
+
+                                <i class="bi bi-star-fill text-warning"></i>
+
+                            </div>
+
+
+                            <small class="text-muted-legal">
+
+                                {{ $reviewCount }}
+
+                                {{ $reviewCount == 1 ? 'Review' : 'Reviews' }}
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= REVIEWS LIST ================= -->
+
+                    <div class="d-grid gap-3">
+
+
+                        @forelse($lawyer->feedbacks as $feedback)
+
+
+                        <div class="p-3 border rounded-3">
+
+
+                            <div class="d-flex justify-content-between align-items-start">
+
+
+                                <!-- Customer -->
+
+                                <div class="d-flex align-items-center">
+
+
+                                    <!-- Customer Avatar -->
+
+                                    <div
+                                        class="rounded-circle bg-light-gray d-flex align-items-center justify-content-center me-3"
+                                        style="width:45px;height:45px;">
+
+
+                                        <img
+                                            src="{{ asset('uploads/profile/' . $feedback->customer->profile_picture) }}"
+                                            alt="Customer Profile"
+                                            width="50"
+                                            height="50"
+                                            class="rounded-circle object-fit-cover">
+
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <strong class="text-navy d-block">
+
+                                            {{ $feedback->customer->name ?? 'Anonymous Client' }}
+
+                                        </strong>
+
+
+                                        <small class="text-muted-legal">
+
+                                            {{ $feedback->created_at
+                                                ? $feedback->created_at->format('M d, Y')
+                                                : 'Recently' }}
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- Stars -->
+
+                                <div class="rating">
+
+                                    @for($i = 1; $i <= 5; $i++)
+
+                                        @if($i <=$feedback->rating)
+
+                                        <i class="bi bi-star-fill text-warning"></i>
+
+                                        @else
+
+                                        <i class="bi bi-star text-warning"></i>
+
+                                        @endif
+
+                                        @endfor
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- Comment -->
+
+                            @if($feedback->comment)
+
+                            <p class="mb-0 mt-3 small text-muted-legal">
+
+                                "{{ $feedback->comment }}"
+
+                            </p>
+
+                            @else
+
+                            <p class="mb-0 mt-3 small text-muted-legal">
+
+                                No comment provided.
+
+                            </p>
+
+                            @endif
+
+
+                        </div>
+
+
                         @empty
 
-                        <p class="text-muted small mb-0">
 
-                            No reviews available yet.
+                        <!-- No Reviews -->
 
-                        </p>
+                        <div class="text-center py-5">
+
+
+                            <div class="mb-3">
+
+                                <i
+                                    class="bi bi-chat-square-text text-muted"
+                                    style="font-size:3rem;">
+                                </i>
+
+                            </div>
+
+
+                            <h6 class="fw-semibold text-navy">
+
+                                No Reviews Yet
+
+                            </h6>
+
+
+                            <p class="text-muted-legal small mb-0">
+
+                                This lawyer hasn't received any feedback yet.
+
+                            </p>
+
+                        </div>
+
 
                         @endforelse
+
 
                     </div>
 
                 </div>
+
 
             </div>
 
 
 
             <!-- =====================================================
-                 RIGHT COLUMN - BOOKING
-            ====================================================== -->
-
-            <!-- ================= RIGHT COLUMN ================= -->
+             RIGHT COLUMN - BOOKING
+        ====================================================== -->
 
             <aside class="col-lg-5 col-xl-4">
+
 
                 <div
                     class="card-legal p-4 sticky-lg-top"
                     style="top:88px">
 
+
                     <h2 class="h5 mb-1">
+
                         Book an appointment
+
                     </h2>
 
+
                     <p class="text-muted-legal small">
+
                         Select a date, choose an available slot and confirm.
+
                     </p>
 
 
                     <!-- Success -->
+
                     @if(session('success'))
 
                     <div class="alert alert-success py-2 small">
@@ -433,6 +582,7 @@
 
 
                     <!-- Errors -->
+
                     @if($errors->any())
 
                     <div class="alert alert-danger py-2 small">
@@ -441,7 +591,11 @@
 
                             @foreach($errors->all() as $error)
 
-                            <li>{{ $error }}</li>
+                            <li>
+
+                                {{ $error }}
+
+                            </li>
 
                             @endforeach
 
@@ -450,6 +604,7 @@
                     </div>
 
                     @endif
+
 
 
                     <!-- ================= BOOKING FORM ================= -->
@@ -481,6 +636,7 @@
                             value="">
 
 
+
                         <!-- ================= DATE ================= -->
 
                         <div class="mb-3">
@@ -488,7 +644,9 @@
                             <label
                                 for="bDate"
                                 class="form-label small fw-semibold">
+
                                 Appointment date
+
                             </label>
 
 
@@ -503,10 +661,13 @@
 
 
                             <div class="invalid-feedback">
+
                                 Please choose a date.
+
                             </div>
 
                         </div>
+
 
 
                         <!-- ================= SELECTED DAY ================= -->
@@ -518,12 +679,15 @@
                                 Selected day:
 
                                 <strong class="text-navy">
+
                                     {{ $dayName }}
+
                                 </strong>
 
                             </div>
 
                         </div>
+
 
 
                         <!-- ================= AVAILABLE SLOTS ================= -->
@@ -544,7 +708,12 @@
                                 <i class="bi bi-calendar-x me-1"></i>
 
                                 Lawyer is not available on
-                                <strong>{{ $dayName }}</strong>.
+
+                                <strong>
+
+                                    {{ $dayName }}
+
+                                </strong>.
 
                             </div>
 
@@ -600,6 +769,7 @@
                         </div>
 
 
+
                         <!-- ================= MEETING TYPE ================= -->
 
                         <div class="mb-3">
@@ -620,23 +790,33 @@
                                 required>
 
                                 <option value="">
+
                                     Select meeting type
+
                                 </option>
 
                                 <option value="Office Visit">
+
                                     Office Visit
+
                                 </option>
 
                                 <option value="Video Call">
+
                                     Video Call
+
                                 </option>
 
                                 <option value="Phone Call">
+
                                     Phone Call
+
                                 </option>
 
                                 <option value="Court Premises">
+
                                     Court Premises
+
                                 </option>
 
                             </select>
@@ -649,6 +829,7 @@
                             </div>
 
                         </div>
+
 
 
                         <!-- ================= CASE SUMMARY ================= -->
@@ -680,6 +861,7 @@
                         </div>
 
 
+
                         <!-- ================= SLOT ALERT ================= -->
 
                         <div
@@ -691,6 +873,7 @@
                             Please select an available time slot.
 
                         </div>
+
 
 
                         <!-- ================= TOTAL ================= -->
@@ -707,11 +890,14 @@
 
                             <span class="fw-bold text-navy">
 
-                                Rs. {{ number_format($lawyer->fee ?? 0) }}
+                                Rs.
+
+                                {{ number_format($lawyer->fee ?? 0) }}
 
                             </span>
 
                         </div>
+
 
 
                         <!-- ================= SUBMIT ================= -->
@@ -736,18 +922,18 @@
 
                         </p>
 
+
                     </form>
 
                 </div>
 
             </aside>
+
         </div>
 
     </div>
 
 </main>
-
-
 
 <!-- ============================================================
      BOOKING CONFIRMATION MODAL
@@ -759,6 +945,7 @@
     tabindex="-1"
     aria-hidden="true">
 
+    
     <div class="modal-dialog modal-dialog-centered">
 
         <div class="modal-content border-0 rounded-4">
@@ -777,23 +964,27 @@
                     type="button"
                     class="btn-close"
                     data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                    aria-label="Close">
+                </button>
 
             </div>
 
 
             <div class="modal-body pt-0">
 
+
                 <div class="text-center mb-4">
 
                     <i
                         class="bi bi-check-circle-fill text-gold"
-                        style="font-size:3rem"></i>
+                        style="font-size:3rem">
+                    </i>
 
 
                     <p class="text-muted-legal mt-2 mb-0">
 
                         Your consultation request has been sent.
+
                         You will be notified once the lawyer approves it.
 
                     </p>
@@ -803,7 +994,8 @@
 
                 <ul
                     class="list-group list-group-flush small"
-                    id="summaryList"></ul>
+                    id="summaryList">
+                </ul>
 
             </div>
 
@@ -824,10 +1016,9 @@
         </div>
 
     </div>
+    ```
 
 </div>
-
-
 
 <!-- ============================================================
      REAL BOOKING JAVASCRIPT
@@ -836,17 +1027,22 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
+
         const dateInput =
             document.getElementById("bDate");
+
 
         const selectedSlot =
             document.getElementById("selectedSlot");
 
+
         const bookingForm =
             document.getElementById("bookingForm");
 
+
         const slotAlert =
             document.getElementById("slotAlert");
+
 
 
         // ==========================================
@@ -860,9 +1056,9 @@
             }
 
 
-            // Reload page with selected date
             const url =
                 new URL(window.location.href);
+
 
             url.searchParams.set(
                 "appointment_date",
@@ -876,6 +1072,7 @@
         });
 
 
+
         // ==========================================
         // SLOT SELECT
         // ==========================================
@@ -883,6 +1080,7 @@
         document.addEventListener(
             "click",
             function(event) {
+
 
                 const button =
                     event.target.closest(".slot-btn");
@@ -917,6 +1115,7 @@
         );
 
 
+
         // ==========================================
         // FORM VALIDATION
         // ==========================================
@@ -924,6 +1123,7 @@
         bookingForm.addEventListener(
             "submit",
             function(event) {
+
 
                 this.classList.add(
                     "was-validated"
@@ -943,9 +1143,11 @@
 
                     event.preventDefault();
 
+
                     slotAlert.classList.remove(
                         "d-none"
                     );
+
 
                     slotAlert.scrollIntoView({
                         behavior: "smooth",
@@ -959,6 +1161,5 @@
 
     });
 </script>
-
 
 @endsection

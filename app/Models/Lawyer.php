@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\City;
 use App\Models\Service;
+use App\Models\Feedback;
 
 class Lawyer extends Model
 {
@@ -53,5 +54,9 @@ class Lawyer extends Model
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class, 'lawyer_id');
     }
 }

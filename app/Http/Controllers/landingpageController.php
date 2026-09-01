@@ -65,44 +65,66 @@ class landingpageController extends Controller
 
                 // Search in users table
                 $q->whereHas('user', function ($userQuery) use ($search) {
-                    $userQuery->where('name', 'like', "%{$search}%");
+                    $userQuery->where(
+                        'name',
+                        'like',
+                        "%{$search}%"
+                    );
                 })
 
                     // Search in services table
                     ->orWhereHas('service', function ($serviceQuery) use ($search) {
-                        $serviceQuery->where('name', 'like', "%{$search}%");
+                        $serviceQuery->where(
+                            'name',
+                            'like',
+                            "%{$search}%"
+                        );
                     });
             });
         }
+
 
         // Filter by city
         if ($request->filled('city')) {
 
             $query->whereHas('city', function ($cityQuery) use ($request) {
-                $cityQuery->where('name', $request->city);
+
+                $cityQuery->where(
+                    'name',
+                    $request->city
+                );
             });
         }
+
 
         // Filter by service
         if ($request->filled('spec')) {
 
             $query->whereHas('service', function ($serviceQuery) use ($request) {
-                $serviceQuery->where('name', $request->spec);
+
+                $serviceQuery->where(
+                    'name',
+                    $request->spec
+                );
             });
         }
+
 
         // Get lawyers
         $lawyers = $query
             ->latest()
             ->get();
 
+
         // Cities dropdown
         $cities = \App\Models\City::orderBy('name')
             ->pluck('name');
 
+
         // Services dropdown
         $specializations = \App\Models\Service::orderBy('name')
             ->pluck('name');
+
 
         return view(
             'findLawyer',
@@ -118,11 +140,22 @@ class landingpageController extends Controller
     // 3. Lawyer Profile
     public function lawyerProfile(Request $request, $id)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Lawyer + Feedbacks
+        |--------------------------------------------------------------------------
+        |
+        | feedbacks.customer se lawyer ke tamam feedbacks
+        | aur har feedback dene wale customer ki information load hogi.
+        |
+        */
+
         $lawyer = Lawyer::with([
             'user',
             'city',
             'service',
-            'schedules'
+            'schedules',
+            'feedbacks.customer'
         ])->findOrFail($id);
 
 
@@ -136,7 +169,7 @@ class landingpageController extends Controller
         $date = Carbon::parse($selectedDate);
 
 
-        // Example: Sunday
+        // Day name
         $dayName = $date->format('l');
 
 
@@ -155,6 +188,7 @@ class landingpageController extends Controller
             $start = Carbon::parse(
                 $selectedDate . ' ' . $schedule->start_time
             );
+
 
             $end = Carbon::parse(
                 $selectedDate . ' ' . $schedule->end_time
@@ -186,7 +220,9 @@ class landingpageController extends Controller
             while ($start->lt($end)) {
 
                 $slotEnd = $start->copy()
-                    ->addMinutes($schedule->slot_duration);
+                    ->addMinutes(
+                        $schedule->slot_duration
+                    );
 
 
                 if ($slotEnd->gt($end)) {
@@ -204,7 +240,10 @@ class landingpageController extends Controller
                     $start->format('h:i A'),
 
                     'booked' =>
-                    in_array($time, $bookedSlots),
+                    in_array(
+                        $time,
+                        $bookedSlots
+                    ),
                 ];
 
 
@@ -226,6 +265,7 @@ class landingpageController extends Controller
             )
         );
     }
+
 
     // 4. About Page
     public function about()
@@ -252,7 +292,9 @@ class landingpageController extends Controller
             'message' => 'required|string|min:10',
         ]);
 
+
         $data = $request->all();
+
 
         Mail::raw(
             "Name: {$data['name']}\n" .
@@ -263,9 +305,12 @@ class landingpageController extends Controller
             function ($message) use ($data) {
 
                 $message->to('support@legalease.pk')
-                    ->subject("Contact Form: " . $data['subject']);
+                    ->subject(
+                        "Contact Form: " . $data['subject']
+                    );
             }
         );
+
 
         return redirect()
             ->back()
