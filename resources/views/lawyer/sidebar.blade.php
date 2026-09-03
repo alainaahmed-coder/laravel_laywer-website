@@ -32,7 +32,9 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-2">
               <li><a class="dropdown-item rounded-2" href="{{ route('lawyer.profiles') }}">Profile settings</a></li>
-              <li><hr class="dropdown-divider"></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
               <li>
                 <form method="POST" action="{{ route('logout') }}">
                   @csrf
@@ -106,5 +108,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.botpress.cloud/webchat/v3.7/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2026/09/03/14/20260903142716-I5516HOB.js" defer></script>
+
 </body>
+
 </html>

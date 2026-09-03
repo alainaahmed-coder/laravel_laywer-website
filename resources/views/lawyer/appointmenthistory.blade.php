@@ -26,20 +26,18 @@
             <table class="table table-hover align-middle mb-0 w-100" style="table-layout: fixed;">
                 <thead class="bg-light">
                     <tr class="text-uppercase small text-muted fw-bold border-bottom">
-                        <th style="width: 8%;" class="ps-3 py-3">ID</th>
-                        <th style="width: 27%;" class="py-3">Client</th>
-                        <th style="width: 30%;" class="py-3">Email</th>
-                        <th style="width: 15%;" class="py-3">Date</th>
-                        <th style="width: 10%;" class="py-3">Time</th>
-                        <th style="width: 10%;" class="py-3 text-end pe-3">Status</th>
+                        <th style="width: 27%;" class="py-3 text-center">Client</th>
+                        <th style="width: 30%;" class="py-3 text-center">Email</th>
+                        <th style="width: 15%;" class="py-3 text-center">Date</th>
+                        <th style="width: 10%;" class="py-3 text-center">Time</th>
+                        <th style="width: 10%;" class="py-3 text-center pe-3">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($appointments ?? [] as $appointment)
                         <tr>
-                            <td class="ps-3 fw-bold text-muted">#{{ $appointment->id }}</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
+                            <td class="text-start">
+                                <div class="d-flex align-items-center justify-content-center gap-2">
                                     <div class="bg-dark text-warning rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 35px; height: 35px;">
                                         👤
                                     </div>
@@ -49,18 +47,18 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-muted small text-break">{{ optional($appointment->customer)->email ?? 'N/A' }}</td>
-                            <td>
+                            <td class="text-muted small text-break text-center">{{ optional($appointment->customer)->email ?? 'N/A' }}</td>
+                            <td class="text-center">
                                 <div class="fw-semibold text-dark small">
                                     📅 {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('d M, Y') }}
                                 </div>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 small">
                                     🕒 {{ $appointment->appointment_time }}
                                 </span>
                             </td>
-                            <td class="text-end pe-3">
+                            <td class="text-center pe-3">
                                 <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1">
                                     ✓ Completed
                                 </span>

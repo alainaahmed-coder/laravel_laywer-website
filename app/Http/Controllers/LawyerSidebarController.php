@@ -332,15 +332,15 @@ class LawyerSidebarController extends Controller
 
     public function appointmentHistory()
     {
-       $history = Appointment::with('customer')
-        ->whereHas('lawyer', function ($query) {
-            $query->where('user_id', Auth::id());
-        })
-        ->where('status', 'completed')
-        ->latest('appointment_date')
-        ->latest('appointment_time')
-        ->get();
-        return view('lawyer.appointmenthistory', compact('history'));
+        $lawyer = Lawyer::where('user_id', auth()->id())
+            ->firstOrFail();
+        $appointments = Appointment::with('customer')
+            ->where('lawyer_id', $lawyer->id)
+            ->where('status', 'completed')
+            ->latest('appointment_date')
+            ->latest('appointment_time')
+            ->get();
+        return view('lawyer.appointmenthistory', compact('appointments'));
     }
 
 
