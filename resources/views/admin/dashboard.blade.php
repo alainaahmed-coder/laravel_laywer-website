@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="col-6 col-xl-3">
-        <div class="card-legal stat-card p-3"><small class="text-muted-legal">Complete Appointments</small>
+        <div class="card-legal stat-card p-3"><small class="text-muted-legal">Complete appointments</small>
           <div class="stat-value">3,486</div>
         </div>
       </div>

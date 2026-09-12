@@ -222,8 +222,8 @@
           <p class="text-uppercase small opacity-50 px-2 mb-2">Administration</p>
           <div class="d-grid gap-1">
 
-            <a class="side-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-              href="{{ route('admin.dashboard') }}">
+            <a class="side-link {{ request()->routeIs('admindashboard') ? 'active' : '' }}"
+              href="{{ route('admindashboard') }}">
               <i class="bi bi-grid-1x2"></i> Dashboard
             </a>
             <a class="side-link {{ request()->routeIs('customers.index') ? 'active' : '' }}"

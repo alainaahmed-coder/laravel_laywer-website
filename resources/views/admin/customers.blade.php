@@ -1,162 +1,602 @@
 @extends('admin.sidebar')
 
-
 @section('admin')
 
+<style>
+    /* Custom Modal Overlay - Same as Cities UI */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.70);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        padding: 20px;
+    }
 
+    .modal-overlay:target {
+        display: flex;
+    }
 
+    /* Prevent modal from becoming too tall */
+    .custom-modal {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+</style>
 
-<div class="container-fluid px-4 py-4">
-  <!-- Flash Success Alert -->
-  @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ session('success') }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<!-- Main Wrapper -->
+<div class="p-2 sm:p-4 bg-slate-50 min-h-screen w-full">
+
+    <!-- Header Section -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+
+        <div>
+            <h1 class="text-2xl font-black text-slate-900 tracking-tight">
+                Customers Management
+            </h1>
+
+            <p class="text-xs text-slate-500 font-medium">
+                Manage and organize all registered customers
+            </p>
+        </div>
+
+        <!-- Add Customer Button -->
+        <a href="#addCustomerModal"
+           class="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-xl shadow-md hover:shadow-lg transition duration-200">
+
+            <svg class="w-4 h-4"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2.5"
+                      d="M12 4v16m8-8H4">
+                </path>
+
+            </svg>
+
+            Add New Customer
+        </a>
+
     </div>
-  @endif
 
-  <!-- Header Section -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h1 class="h3 text-navy fw-bold mb-1">Customers Management</h1>
-      <p class="text-muted small mb-0">Manage and organize all registered customers</p>
+
+    <!-- Customers Table Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left border-collapse">
+
+                <!-- Table Header -->
+                <thead>
+
+                    <tr class="bg-slate-900 text-slate-300 text-xs font-bold uppercase tracking-wider border-b border-slate-800">
+
+                        <th class="py-4 px-6">
+                            ID
+                        </th>
+
+                        <th class="py-4 px-6">
+                            Customer Name
+                        </th>
+
+                        <th class="py-4 px-6">
+                            Email
+                        </th>
+
+                        <th class="py-4 px-6">
+                            Phone
+                        </th>
+
+                        <th class="py-4 px-6">
+                            Created At
+                        </th>
+
+                        <th class="py-4 px-6 text-center">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <!-- Table Body -->
+                <tbody class="divide-y divide-slate-100 text-sm font-semibold text-slate-700">
+
+                    @forelse($customers as $customer)
+
+                    <tr class="hover:bg-slate-50/80 transition duration-150">
+
+                        <!-- ID -->
+                        <td class="py-4 px-6">
+
+                            <span class="inline-block px-2.5 py-1 bg-slate-100 text-slate-700 font-mono text-xs font-bold rounded-lg border border-slate-200">
+
+                                #{{ $customer->id }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- Customer Name -->
+                        <td class="py-4 px-6 text-slate-900 font-bold">
+
+                            <div class="flex items-center gap-2.5">
+
+                                <!-- Active Dot -->
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+
+                                {{ $customer->name }}
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- Email -->
+                        <td class="py-4 px-6 text-slate-600 font-medium">
+
+                            {{ $customer->email }}
+
+                        </td>
+
+
+                        <!-- Phone -->
+                        <td class="py-4 px-6 text-slate-600 font-medium">
+
+                            {{ $customer->phone ?? 'N/A' }}
+
+                        </td>
+
+
+                        <!-- Created At -->
+                        <td class="py-4 px-6 text-slate-500 text-xs font-medium">
+
+                            @if($customer->created_at)
+
+                                {{ \Carbon\Carbon::parse($customer->created_at)->format('d M, Y') }}
+
+                            @else
+
+                                N/A
+
+                            @endif
+
+                        </td>
+
+
+                        <!-- Actions -->
+                        <td class="py-4 px-6 text-center">
+
+                            <div class="flex items-center justify-center gap-2">
+
+                                <!-- Edit Button -->
+                                <a href="#editCustomerModal-{{ $customer->id }}"
+                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white rounded-lg font-bold text-xs transition duration-200 border border-indigo-100 hover:border-indigo-600 shadow-sm">
+
+                                    <svg class="w-3.5 h-3.5"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         viewBox="0 0 24 24">
+
+                                        <path stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-width="2"
+                                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                        </path>
+
+                                    </svg>
+
+                                    Edit
+
+                                </a>
+
+
+                                <!-- Delete Button -->
+                                <form action="{{ route('customers.destroy', $customer->id) }}"
+                                      method="POST"
+                                      class="inline"
+                                      onsubmit="return confirm('Are you sure you want to delete this customer?');">
+
+                                    @csrf
+
+                                    @method('DELETE')
+
+                                    <button type="submit"
+                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 hover:bg-red-600 text-red-700 hover:text-white rounded-lg font-bold text-xs transition duration-200 border border-red-100 hover:border-red-600 shadow-sm">
+
+                                        <svg class="w-3.5 h-3.5"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             viewBox="0 0 24 24">
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  stroke-width="2"
+                                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m-9 0h10">
+                                            </path>
+
+                                        </svg>
+
+                                        Delete
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    @empty
+
+                    <!-- Empty State -->
+                    <tr>
+
+                        <td colspan="6"
+                            class="py-12 text-center text-slate-400 font-medium">
+
+                            <div class="flex flex-col items-center justify-center">
+
+                                <svg class="w-10 h-10 mb-3 text-slate-300"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     viewBox="0 0 24 24">
+
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="1.5"
+                                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+
+                                </svg>
+
+                                No registered customers found.
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
     </div>
-    <button class="btn btn-warning text-dark fw-bold px-4 rounded-3" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
-      + ADD NEW CUSTOMER
-    </button>
-  </div>
 
-  <!-- Customers Table Card -->
-  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-    <div class="table-responsive">
-      <table class="table align-middle mb-0">
-        <thead style="background-color: #0d1b2a; color: #ffffff;">
-          <tr>
-            <th class="py-3 px-4">ID</th>
-            <th class="py-3">NAME</th>
-            <th class="py-3">EMAIL</th>
-            <th class="py-3">PHONE</th>
-            <th class="py-3">CREATED AT</th>
-            <th class="py-3 text-end px-4">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody>
-          @forelse($customers as $customer)
-            <tr class="border-bottom">
-              <td class="px-4 fw-semibold text-muted">#{{ $customer->id }}</td>
-              <td class="fw-bold text-dark">{{ $customer->name }}</td>
-              <td>{{ $customer->email }}</td>
-              <td>{{ $customer->phone ?? 'N/A' }}</td>
-              <td>{{ $customer->created_at ? $customer->created_at->format('Y-m-d') : 'N/A' }}</td>
-              <td class="text-end px-4">
-                <button class="btn btn-sm btn-outline-primary me-2 rounded-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editCustomerModal{{ $customer->id }}">
-                  <i class="bi bi-pencil-square me-1"></i> Edit
-                </button>
-                <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this customer?');">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-sm btn-outline-danger rounded-2">
-                    <i class="bi bi-trash me-1"></i> Delete
-                  </button>
-                </form>
-              </td>
-            </tr>
+</div>
 
-            <!-- Edit Customer Modal -->
-            <div class="modal fade" id="editCustomerModal{{ $customer->id }}" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content rounded-4 border-0">
-                  <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Edit Customer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <form action="{{ route('customers.update', $customer->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-body">
-                      <div class="mb-3">
-                        <label class="form-label small fw-semibold">Full Name</label>
-                        <input type="text" name="name" class="form-control" value="{{ $customer->name }}" required>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label small fw-semibold">Email Address</label>
-                        <input type="email" name="email" class="form-control" value="{{ $customer->email }}" required>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label small fw-semibold">Phone Number</label>
-                        <input type="text" name="phone" class="form-control" value="{{ $customer->phone }}">
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label small fw-semibold">New Password <span class="text-muted fw-normal">(Leave blank if unchanged)</span></label>
-                        <input type="password" name="password" class="form-control">
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label small fw-semibold">Confirm New Password</label>
-                        <input type="password" name="password_confirmation" class="form-control">
-                      </div>
-                    </div>
-                    <div class="modal-footer border-0 pt-0">
-                      <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                      <button type="submit" class="btn btn-primary px-4">Update Customer</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
+
+
+<!-- ========================================================= -->
+<!-- EDIT CUSTOMER MODALS -->
+<!-- ========================================================= -->
+
+@foreach($customers as $customer)
+
+<div id="editCustomerModal-{{ $customer->id }}"
+     class="modal-overlay">
+
+    <div class="custom-modal bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 border border-slate-100">
+
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+
+            <h3 class="text-lg font-bold text-slate-900">
+
+                Edit Customer
+
+            </h3>
+
+            <a href="#"
+               class="text-slate-400 hover:text-slate-700 text-xl font-bold">
+
+                &times;
+
+            </a>
+
+        </div>
+
+
+        <!-- Edit Form -->
+        <form action="{{ route('customers.update', $customer->id) }}"
+              method="POST">
+
+            @csrf
+
+            @method('PUT')
+
+
+            <!-- Full Name -->
+            <div class="mb-5">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    Full Name
+
+                </label>
+
+                <input type="text"
+                       name="name"
+                       value="{{ $customer->name }}"
+                       required
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
             </div>
-          @empty
-            <tr>
-              <td colspan="6" class="text-center py-4 text-muted">No customers found.</td>
-            </tr>
-          @endforelse
-        </tbody>
-      </table>
+
+
+            <!-- Email -->
+            <div class="mb-5">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    Email Address
+
+                </label>
+
+                <input type="email"
+                       name="email"
+                       value="{{ $customer->email }}"
+                       required
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
+            </div>
+
+
+            <!-- Phone -->
+            <div class="mb-5">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    Phone Number
+
+                </label>
+
+                <input type="text"
+                       name="phone"
+                       value="{{ $customer->phone }}"
+                       placeholder="03001234567"
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
+            </div>
+
+
+            <!-- New Password -->
+            <div class="mb-5">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    New Password
+
+                    <span class="normal-case text-slate-400 font-medium">
+
+                        (Optional)
+
+                    </span>
+
+                </label>
+
+                <input type="password"
+                       name="password"
+                       placeholder="Leave blank if unchanged"
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
+            </div>
+
+
+            <!-- Confirm Password -->
+            <div class="mb-6">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    Confirm New Password
+
+                </label>
+
+                <input type="password"
+                       name="password_confirmation"
+                       placeholder="Confirm new password"
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="flex justify-end gap-2">
+
+                <a href="#"
+                   class="px-4 py-2 border border-slate-300 rounded-xl text-slate-600 hover:bg-slate-50 font-semibold text-xs transition">
+
+                    Cancel
+
+                </a>
+
+                <button type="submit"
+                        class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl shadow-md transition">
+
+                    Update Customer
+
+                </button>
+
+            </div>
+
+        </form>
+
     </div>
-  </div>
+
 </div>
 
-<!-- Add Customer Modal -->
-<div class="modal fade" id="addCustomerModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 border-0">
-      <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title fw-bold">Add New Customer</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form action="{{ route('customers.store') }}" method="POST">
-        @csrf
-        <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Full Name</label>
-            <input type="text" name="name" class="form-control" placeholder="Enter full name" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Email Address</label>
-            <input type="email" name="email" class="form-control" placeholder="Enter email" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Phone Number</label>
-            <input type="text" name="phone" class="form-control" placeholder="03001234567">
-          </div>
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Password</label>
-            <input type="password" name="password" class="form-control" placeholder="••••••••" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Confirm Password</label>
-            <input type="password" name="password_confirmation" class="form-control" placeholder="••••••••" required>
-          </div>
-        </div>
-        <div class="modal-footer border-0 pt-0">
-          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-warning text-dark fw-bold px-4">Save Customer</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+@endforeach
 
+
+
+<!-- ========================================================= -->
+<!-- ADD CUSTOMER MODAL -->
+<!-- ========================================================= -->
+
+<div id="addCustomerModal"
+     class="modal-overlay">
+
+    <div class="custom-modal bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 border border-slate-100">
+
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+
+            <h3 class="text-lg font-bold text-slate-900">
+
+                Add New Customer
+
+            </h3>
+
+            <a href="#"
+               class="text-slate-400 hover:text-slate-700 text-xl font-bold">
+
+                &times;
+
+            </a>
+
+        </div>
+
+
+        <!-- Add Customer Form -->
+        <form action="{{ route('customers.store') }}"
+              method="POST">
+
+            @csrf
+
+
+            <!-- Full Name -->
+            <div class="mb-5">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    Full Name
+
+                </label>
+
+                <input type="text"
+                       name="name"
+                       required
+                       placeholder="Enter full name"
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
+            </div>
+
+
+            <!-- Email -->
+            <div class="mb-5">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    Email Address
+
+                </label>
+
+                <input type="email"
+                       name="email"
+                       required
+                       placeholder="Enter email address"
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
+            </div>
+
+
+            <!-- Phone -->
+            <div class="mb-5">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    Phone Number
+
+                </label>
+
+                <input type="text"
+                       name="phone"
+                       placeholder="03001234567"
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="mb-5">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    Password
+
+                </label>
+
+                <input type="password"
+                       name="password"
+                       required
+                       placeholder="Enter password"
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
+            </div>
+
+
+            <!-- Confirm Password -->
+            <div class="mb-6">
+
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-2">
+
+                    Confirm Password
+
+                </label>
+
+                <input type="password"
+                       name="password_confirmation"
+                       required
+                       placeholder="Confirm password"
+                       class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-semibold text-slate-800 text-sm">
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="flex justify-end gap-2">
+
+                <a href="#"
+                   class="px-4 py-2 border border-slate-300 rounded-xl text-slate-600 hover:bg-slate-50 font-semibold text-xs transition">
+
+                    Cancel
+
+                </a>
+
+                <button type="submit"
+                        class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl shadow-md transition">
+
+                    Save Customer
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
 
 @endsection
+
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>

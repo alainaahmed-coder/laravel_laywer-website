@@ -346,12 +346,10 @@ Route::prefix('admin')
             'lawyerList'
         ])->name('lawyers');
 
-
         Route::get('/appointments', [
             AdminSidebarController::class,
             'appointments'
         ])->name('appointments');
-
 
         Route::get('/History', [
             AdminSidebarController::class,

@@ -13,12 +13,8 @@ class AdminSidebarController extends Controller
 {
     public function dashboard()
     {
-        $lawyers = Lawyer::all()->count();
-        $Customers = User::where('role','customer')->get()->count();
-        $totleCities = City::all()->count();
-        $appoinmnets = Appointment::with(['lawyer','customer'])->where('status','pending')->latest()->get();
-        return view('admin.dashboard', compact('lawyers', 'Customers', 'totleCities','appoinmnets'));
-    }
+        return redirect()->route('admindashboard');
+ }
 
     public function customers()
     {
