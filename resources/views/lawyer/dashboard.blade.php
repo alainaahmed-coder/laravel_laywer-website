@@ -1,6 +1,6 @@
 @extends('lawyer.sidebar')
 
-@section('laywer')
+@section('lawyer')
 
 <div class="w-100">
 

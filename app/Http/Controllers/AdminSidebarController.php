@@ -14,7 +14,7 @@ class AdminSidebarController extends Controller
     public function dashboard()
     {
         return redirect()->route('admindashboard');
- }
+    }
 
     public function customers()
     {
@@ -105,23 +105,48 @@ class AdminSidebarController extends Controller
 
     // ================= APPOINTMENTS =================
 
-   // ================= APPOINTMENT HISTORY =================
+    // ================= APPOINTMENT HISTORY =================
 
-public function appointmentHistory()
-{
-    $appointments = Appointment::with('customer')
-        ->whereHas('lawyer', function ($query) {
-            $query->where('user_id', Auth::id());
-        })
-        ->where('status', 'completed')
-        ->latest('appointment_date')
-        ->latest('appointment_time')
-        ->get();
+    public function appointmentHistory()
+    {
+        $appointments = Appointment::with('customer')
+            ->whereHas('lawyer', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->where('status', 'completed')
+            ->latest('appointment_date')
+            ->latest('appointment_time')
+            ->get();
 
-    return view('lawyer.appointmenthistory', compact('appointments'));
-}
+        return view('lawyer.appointmenthistory', compact('appointments'));
+    }
 
 
+    public function appointments()
+    {
+        $appointments = \App\Models\Appointment::with([
+            'lawyer.user',
+            'customer'
+        ])
+            ->whereIn('status', ['approved', 'pending'])
+            ->latest()
+            ->get();
+
+        return view('admin.appointments', compact('appointments'));
+    }
+
+    public function History()
+    {
+        $appointments = \App\Models\Appointment::with([
+            'lawyer.user',
+            'customer'
+        ])
+            ->whereIn('status', ['completed', 'cancelled', 'rejected'])
+            ->latest()
+            ->get();
+
+        return view('admin.History', compact('appointments'));
+    }
     // ================= WEBSITE CONTENT =================
 
     public function websiteContent()

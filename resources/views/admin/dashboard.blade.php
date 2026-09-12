@@ -71,7 +71,7 @@
                     <th>Time</th>
                     <th>Type</th>
                     <th>Case</th>
-                    <th class="text-center">Status</th>
+                    <th >Status</th>
                   </tr>
                 </thead>
 
@@ -138,6 +138,19 @@
                         <span class="status-dot"></span>
                         Pending
                       </span>
+                      @elseif($appointment->status === 'cancelled')
+
+                      <span class="status-rejected">
+                        <span class="status-dot"></span>
+                        Cancelled
+                      </span>
+                      @elseif($appointment->status === 'rejected')
+
+                      <span class="status-rejected">
+                        <span class="status-dot"></span>
+                        Rejected
+                      </span>
+                      
 
                       @endif
 

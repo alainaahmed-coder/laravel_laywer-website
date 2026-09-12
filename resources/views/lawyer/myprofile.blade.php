@@ -1,6 +1,6 @@
 @extends('lawyer.sidebar')
 
-@section('laywer')
+@section('lawyer')
 
 <div class="container-fluid py-4">
 

@@ -1,5 +1,5 @@
 @extends('lawyer.sidebar')
-@section('customer')
+@section('lawyer')
 <main class="col-lg-9 col-xl-10">
 <x-app-layout>
    

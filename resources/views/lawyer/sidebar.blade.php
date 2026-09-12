@@ -91,17 +91,16 @@
 
             <a class="side-link {{ request()->routeIs('lawyer.settings') ? 'active' : '' }}"
               href="{{ route('lawyer.settings') }}">
-              <i class="bi bi-gear"></i> Setting
+              <i class="bi bi-gear"></i>Profile Setting
             </a>
           </div>
-          <hr class="border-secondary">
-          <a href="#" class="btn btn-gold btn-sm w-100">Book new consultation</a>
+         
         </div>
       </aside>
 
       {{-- Right Content Area --}}
       <main class="col-lg-9 col-xl-10">
-        @yield('laywer')
+        @yield('lawyer')
       </main>
 
     </div>

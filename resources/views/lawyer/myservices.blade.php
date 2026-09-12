@@ -1,6 +1,6 @@
 @extends('lawyer.sidebar')
 
-@section('laywer')
+@section('lawyer')
 
 <style>
     /* ===============================
@@ -179,7 +179,7 @@
 MAIN CONTENT
 ========================================= --}}
 
-<div class="col-lg-9 col-xl-10">
+<div class="col-lg-12">
 
 
 <div class="requests-page">

@@ -1,8 +1,8 @@
 @extends('lawyer.sidebar')
 
-@section('laywer')
+@section('lawyer')
 
-<div class="col-lg-9 col-xl-10">
+
     <div class="w-100">
 
         {{-- ================= HEADER ================= --}}
@@ -289,6 +289,6 @@
 
     </div>
 
-</div>
+
 
 @endsection

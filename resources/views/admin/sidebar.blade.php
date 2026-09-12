@@ -256,14 +256,14 @@
               <i class="bi bi-clock-history"></i> History
             </a>
 
-            <a class="side-link {{ request()->routeIs('admin.website.content') ? 'active' : '' }}"
+            <a class="side-link {{ request()->routeIs('admin.website_content') ? 'active' : '' }}"
               href="{{ route('admin.website_content') }}">
               <i class="bi bi-layout-text-window"></i> Website Content
             </a>
 
             <a class="side-link {{ request()->routeIs('admin.settings') ? 'active' : '' }}"
               href="{{ route('admin.settings') }}">
-              <i class="bi bi-gear"></i> Setting
+              <i class="bi bi-gear"></i>Profile Setting
             </a>
 
           </div>
